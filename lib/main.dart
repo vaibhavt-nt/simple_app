@@ -6,17 +6,26 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent
   ));
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Simple App ',
-      home: Splash_Screen(),
+    return const AnnotatedRegion(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+
+      ),
+      child: MaterialApp(
+        color: Colors.white,
+
+        debugShowCheckedModeBanner: false,
+        title: 'Simple App ',
+        home: Splash_Screen(),
+      ),
     );
   }
 }
