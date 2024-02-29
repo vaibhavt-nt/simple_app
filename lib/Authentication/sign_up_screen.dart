@@ -5,14 +5,14 @@ import '../SQLite/sqlite.dart';
 import '../jsonModels/users.dart';
 import '../onboarding_screen/onboarding_screen1.dart';
 
-class SignUp_Screen extends StatefulWidget {
-  const SignUp_Screen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignUp_Screen> createState() => _SignUp_ScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUp_ScreenState extends State<SignUp_Screen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool _passwordVisible = false;
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/Authentication/login_screen.dart';
 import 'package:simple_app/Home/home_page.dart';
 import 'package:simple_app/Profile/profile_screen.dart';
 import 'package:simple_app/Schedule/schedule_screen.dart';
 
 
-class Navigation_Screen extends StatefulWidget {
-  const Navigation_Screen({super.key});
+class NavigationScreen extends StatefulWidget {
+  const NavigationScreen({super.key});
 
   @override
-  _Navigation_ScreenState createState() => _Navigation_ScreenState();
+  _NavigationScreenState createState() => _NavigationScreenState();
 }
 
-class _Navigation_ScreenState extends State<Navigation_Screen> {
+class _NavigationScreenState extends State<NavigationScreen> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    Home_Page_Screen(),
-    Schedule_Screen(),
-    Profile_Screen()
+    HomePageScreen(),
+    ScheduleScreen(),
+    ProfileScreen()
   ];
 
   void _onItemTapped(int index) {

@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
 
-class Profile_Screen extends StatefulWidget {
-  const Profile_Screen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<Profile_Screen> createState() => _Profile_ScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _Profile_ScreenState extends State<Profile_Screen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text("Profile")),
+        title: const Center(child: Text("Profile")),
       ),
       body: Center(
         child: TextButton(
@@ -31,7 +31,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                       fontSize: 16,
                       fontWeight: FontWeight.w500),
                 )),
-            Icon(Icons.exit_to_app,color: Colors.red,)
+            const Icon(Icons.exit_to_app,color: Colors.red,)
           ],
         ),
 

@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       //If login is correct, then goto notes
       if (!mounted) return;
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) =>  const Navigation_Screen()));
+          context, MaterialPageRoute(builder: (context) =>  const NavigationScreen()));
     } else {
       //If not, true the bool value to show error message
       setState(() {
@@ -249,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SignUp_Screen(),
+                  builder: (context) => const SignUpScreen(),
                 ));
           },
           child: Text("Signup",

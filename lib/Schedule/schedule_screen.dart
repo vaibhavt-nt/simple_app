@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class Schedule_Screen extends StatefulWidget {
-  const Schedule_Screen({super.key});
+class ScheduleScreen extends StatefulWidget {
+  const ScheduleScreen({super.key});
 
   @override
-  State<Schedule_Screen> createState() => _Schedule_ScreenState();
+  State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
-class _Schedule_ScreenState extends State<Schedule_Screen> {
+class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Schedule'),
+        title: const Text('Schedule'),
         centerTitle: true,
       ),
     );

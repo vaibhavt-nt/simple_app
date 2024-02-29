@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_app/colors.dart';
 
 class Frame extends StatefulWidget {
+  const Frame({super.key});
+
   @override
   _FrameState createState() => _FrameState();
 }
@@ -9,10 +11,10 @@ class Frame extends StatefulWidget {
 class _FrameState extends State<Frame> {
 
   PageController controller=PageController();
-  List<Widget> _list=<Widget>[
-    Square(),
-    Vertical(),
-    Horizontal()
+  final List<Widget> _list=<Widget>[
+    const Square(),
+    const Vertical(),
+    const Horizontal()
 
   ];
 
@@ -24,32 +26,32 @@ class _FrameState extends State<Frame> {
     return
          Column(
            children: [
-             Container(
+             SizedBox(
                height: 500,
                width: 400,
                child: PageView(
-                children:
-                _list,
                 scrollDirection: Axis.horizontal,
 
                 // reverse: true,
                 // physics: BouncingScrollPhysics(),
                 controller: controller,
-                onPageChanged: (num){
+                onPageChanged: (number){
                   setState(() {
-                    _curr=num;
+                    _curr=number;
                   });
                 },
+                children:
+                _list,
                    ),
              ),
              Row(
                children: [
-                 IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: (){
-                   controller.animateToPage(--_curr, duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
+                 IconButton(icon: const Icon(Icons.arrow_back_ios), onPressed: (){
+                   controller.animateToPage(--_curr, duration: const Duration(milliseconds: 250), curve: Curves.bounceInOut);
                  }),
                  // CustomText_16_500(text: '${names.elementAt(index)}'),
-                 IconButton(icon: Icon(Icons.arrow_forward_ios), onPressed: (){
-                   controller.animateToPage(++_curr, duration: Duration(milliseconds: 250), curve: Curves.bounceInOut);
+                 IconButton(icon: const Icon(Icons.arrow_forward_ios), onPressed: (){
+                   controller.animateToPage(++_curr, duration: const Duration(milliseconds: 250), curve: Curves.bounceInOut);
 
                  }),
                ],
@@ -62,6 +64,8 @@ class _FrameState extends State<Frame> {
 }
 
 class Square extends StatelessWidget {
+  const Square({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -75,7 +79,7 @@ class Square extends StatelessWidget {
           border: Border.all()
           ),
         ),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Icon(Icons.arrow_back_ios),
@@ -89,6 +93,8 @@ class Square extends StatelessWidget {
   }
 }
 class Vertical extends StatelessWidget {
+  const Vertical({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -102,7 +108,7 @@ class Vertical extends StatelessWidget {
               border: Border.all()
           ),
         ),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Icon(Icons.navigate_before),
@@ -117,6 +123,8 @@ class Vertical extends StatelessWidget {
 }
 
 class Horizontal extends StatelessWidget {
+  const Horizontal({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -133,21 +141,21 @@ class Horizontal extends StatelessWidget {
 }
 
 
-class PageView_Screen extends StatefulWidget {
-  const PageView_Screen({super.key});
+class PageViewScreen extends StatefulWidget {
+  const PageViewScreen({super.key});
 
   @override
-  State<PageView_Screen> createState() => _PageView_ScreenState();
+  State<PageViewScreen> createState() => _PageViewScreenState();
 }
 
-class _PageView_ScreenState extends State<PageView_Screen> {
+class _PageViewScreenState extends State<PageViewScreen> {
   PageController pageController = PageController();
   int pageChanged = 0;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: 100,
           height: 100,
           child: PageView(
@@ -157,7 +165,9 @@ class _PageView_ScreenState extends State<PageView_Screen> {
               setState(() {
                 pageChanged = index;
               });
-              print(pageChanged);
+              if (kDebugMode) {
+                print(pageChanged);
+              }
             },
             children: [
               Container(

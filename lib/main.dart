@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
 
         debugShowCheckedModeBanner: false,
         title: 'Simple App ',
-        home: Splash_Screen(),
+        home: SplashScreen(),
       ),
     );
   }

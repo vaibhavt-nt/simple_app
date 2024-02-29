@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Home/post/post_screen.dart';
 
-class Home_Page_Screen extends StatefulWidget {
-  const Home_Page_Screen({super.key});
+class HomePageScreen extends StatefulWidget {
+  const HomePageScreen({super.key});
 
   @override
-  State<Home_Page_Screen> createState() => _Home_Page_ScreenState();
+  State<HomePageScreen> createState() => _HomePageScreenState();
 }
 
-class _Home_Page_ScreenState extends State<Home_Page_Screen> {
+class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +21,7 @@ class _Home_Page_ScreenState extends State<Home_Page_Screen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Padding(
@@ -36,17 +36,17 @@ class _Home_Page_ScreenState extends State<Home_Page_Screen> {
                               fontSize: 24,
                               fontWeight: FontWeight.w500),
                         )),
-                    CircleAvatar(
+                    const CircleAvatar(
                       child: Image(image: NetworkImage('https://plus.unsplash.com/premium_photo-1708983589793-56673027592e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4N3x8fGVufDB8fHx8fA%3D%3D')),
                     )
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
-              Image(image: AssetImage('assets/home_images/empty_image.png')),
-              SizedBox(
+              const Image(image: AssetImage('assets/home_images/empty_image.png')),
+              const SizedBox(
                 height: 30,
               ),
               Padding(
@@ -61,7 +61,7 @@ class _Home_Page_ScreenState extends State<Home_Page_Screen> {
                           fontWeight: FontWeight.w400),
                     )),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Padding(
@@ -71,9 +71,14 @@ class _Home_Page_ScreenState extends State<Home_Page_Screen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Post_Screen(),
+                          builder: (context) => const PostScreen(),
                         ));
                   },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(const Color(0xFFEE4D86)),
+                      shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5))))),
                   child: Text("Create Post",
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
@@ -81,14 +86,9 @@ class _Home_Page_ScreenState extends State<Home_Page_Screen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
                       )),
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xFFEE4D86)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5))))),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               )
             ],
