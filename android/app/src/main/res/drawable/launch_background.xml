@@ -8,5 +8,11 @@
         <bitmap
             android:gravity="center"
             android:src="@mipmap/launch_image" />
-    </item> -->
+    </item> -->' <!-- You can insert your own image assets here -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/logo" />
+        <!-- bg is asset image for splash screen -->
+    </item>
 </layer-list>

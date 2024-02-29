@@ -1,18 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_app/sign_up_screen.dart';
+import 'package:simple_app/Authentication/sign_up_screen.dart';
 
-class Splash_Screen extends StatefulWidget {
-  const Splash_Screen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<Splash_Screen> createState() => _Splash_ScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _Splash_ScreenState extends State<Splash_Screen> {
+class _SplashScreenState extends State<SplashScreen> {
+  @override
   void initState() {
 
     super.initState();
@@ -20,7 +20,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
             ()=>Navigator.pushReplacement(context,
             MaterialPageRoute(builder:
                 (context) =>
-            const SignUp_Screen()
+            const SignUpScreen()
             )
         )
     );
@@ -50,7 +50,7 @@ class _Splash_ScreenState extends State<Splash_Screen> {
                 ),
                  Text("POST CRAFT",textAlign:TextAlign.center,
                   style: GoogleFonts.montserrat(
-                    textStyle: TextStyle(color: Colors.black,fontSize: 32,fontWeight: FontWeight.w600),
+                    textStyle: const TextStyle(color: Colors.black,fontSize: 32,fontWeight: FontWeight.w600),
                   )
                 ),
               ],

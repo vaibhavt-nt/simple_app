@@ -39,6 +39,10 @@ dependencies:
   shared_preferences: ^2.2.2
   image_picker: ^1.0.7
   google_fonts: ^6.1.0
+  introduction_screen: ^3.1.12
+  sqflite: ^2.3.2
+  path: ^1.9.0
+  linear_progress_bar: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +71,12 @@ flutter:
      - assets/sign_up_images/image_picker.png
      - assets/splash_screen_images/sc.png
      - assets/splash_screen_images/splash_screen.png
+     - assets/onboarding_image/onboarding_image1.png
+     - assets/onboarding_image/onboarding_image2.png
+     - assets/onboarding_image/onboarding_image3.png
+     - assets/home_images/empty_image.png
+     - assets/home_images/stepper_empty.png
+     - assets/home_images/stepper_1.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
