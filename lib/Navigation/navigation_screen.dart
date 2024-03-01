@@ -15,7 +15,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePageScreen(),
     ScheduleScreen(),
-    ProfileScreen()
+    ProfileScreen(
+      profile: null,
+    )
   ];
 
   void _onItemTapped(int index) {

@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:simple_app/Navigation/navigation_screen.dart';
 
-
-
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 

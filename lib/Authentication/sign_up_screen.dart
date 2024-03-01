@@ -30,11 +30,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
   XFile? _image;
 
   bool _passwordVisible = false;
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
+  //for user already exixts
+  bool isUserExist = false;
+
+  final db = DatabaseHelper();
+
+  signUp() async {
+    bool usrExist = await db.checkUserExist(emailController.text);
+    //If user exists, show the message
+    if (usrExist) {
+      setState(() {
+        isUserExist = true;
+      });
+    } else {
+      //otherwise create account
+      var res = await db.signup(Users(
+          userName: usernameController.text,
+          userPassword: passwordController.text,
+          userEmail: emailController.text));
+      if (res > 0) {
+        if (!mounted) return;
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginPage()));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,28 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.only(top: 3, left: 3),
                     child: ElevatedButton(
                       onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          //Login method will be here
-
-                          final db = DatabaseHelper();
-                          db
-                              .signup(Users(
-                                  userName: emailController.text,
-                                  userPassword: passwordController.text))
-                              .whenComplete(() {
-                            //After success user creation go to login screen
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const OnboardingScreen()));
-                          });
-                        }
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => OnboardingScreen(),
-                        //     ));
+                        signUp();
                       },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -284,8 +289,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 fontWeight: FontWeight.w600),
                           )),
                     )),
+                SizedBox(
+                  height: 15,
+                ),
+                //Message when there is a duplicate user
+
+                //By default we hide the message
+                isUserExist
+                    ? Center(
+                        child: const Text(
+                        "User already exists, please enter anothe name",
+                        style: TextStyle(color: Colors.red),
+                      ))
+                    : const SizedBox(),
+
                 Padding(
-                  padding: const EdgeInsets.only(top: 70),
+                  padding: const EdgeInsets.only(top: 40),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

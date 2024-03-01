@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simple_app/Profile/profile_screen.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
-import 'package:simple_app/Navigation/navigation_screen.dart';
 import 'package:simple_app/Authentication/sign_up_screen.dart';
 import 'package:simple_app/jsonModels/users.dart';
 
@@ -24,13 +24,20 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoginTrue = false;
 
   login() async {
+    //for data transfer
+    Users? userDetails = await db.getUser(emailController.text);
+
     var response = await db.login(Users(
-        userName: emailController.text, userPassword: passwordController.text));
+        userPassword: passwordController.text,
+        userEmail: emailController.text,
+        userName: ''));
     if (response == true) {
       //If login is correct, then goto notes
       if (!mounted) return;
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const NavigationScreen()));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProfileScreen(profile: userDetails)));
     } else {
       //If not, true the bool value to show error message
       setState(() {
@@ -52,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
               _header(context),
               isLoginTrue
                   ? const Text(
-                      "Username or passowrd is incorrect",
+                      "Username or password is incorrect",
                       style: TextStyle(color: Colors.red),
                     )
                   : const SizedBox(),
