@@ -43,6 +43,7 @@ dependencies:
   sqflite: ^2.3.2
   path: ^1.9.0
   linear_progress_bar: ^1.1.1
+  percent_indicator: ^4.2.3
 
 dev_dependencies:
   flutter_test:
@@ -68,16 +69,12 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/sign_up_images/image_picker.png
-     - assets/splash_screen_images/sc.png
-     - assets/splash_screen_images/splash_screen.png
-     - assets/onboarding_image/onboarding_image1.png
-     - assets/onboarding_image/onboarding_image2.png
-     - assets/onboarding_image/onboarding_image3.png
-     - assets/home_images/empty_image.png
-     - assets/home_images/stepper_empty.png
-     - assets/home_images/stepper_1.png
-  #   - images/a_dot_ham.jpeg
+     - assets/sign_up_images/
+     - assets/splash_screen_images/
+     - assets/onboarding_image/
+     - assets/home_images/
+     - assets/SelectImagePost/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:simple_app/Navigation/navigation_screen.dart';
 
-import '../Navigation/navigation_screen.dart';
+
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -52,7 +53,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           fontSize: 24,
                           fontWeight: FontWeight.w600),
                     )),
-                Text("Lorem ipsum dolor sit amet consectetur. Purus tempor in in rhoncus quisque viverra amet. Nisl nam ut lobortis quam.",
+                Text(
+                    "Lorem ipsum dolor sit amet consectetur. Purus tempor in in rhoncus quisque viverra amet. Nisl nam ut lobortis quam.",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.montserrat(
                       textStyle: const TextStyle(
@@ -60,7 +62,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           fontSize: 16,
                           fontWeight: FontWeight.w400),
                     )),
-
               ],
             ),
           ),
@@ -82,7 +83,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         fontSize: 24,
                         fontWeight: FontWeight.w600),
                   )),
-              Text("Lorem ipsum dolor sit amet consectetur. Purus tempor in in rhoncus quisque viverra amet. Nisl nam ut lobortis quam.",
+              Text(
+                  "Lorem ipsum dolor sit amet consectetur. Purus tempor in in rhoncus quisque viverra amet. Nisl nam ut lobortis quam.",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.montserrat(
                     textStyle: const TextStyle(
@@ -110,7 +112,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         fontSize: 24,
                         fontWeight: FontWeight.w600),
                   )),
-              Text("Lorem ipsum dolor sit amet consectetur. Purus tempor in in rhoncus quisque viverra amet. Nisl nam ut lobortis quam.",
+              Text(
+                  "Lorem ipsum dolor sit amet consectetur. Purus tempor in in rhoncus quisque viverra amet. Nisl nam ut lobortis quam.",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.montserrat(
                     textStyle: const TextStyle(
@@ -130,9 +133,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           textAlign: TextAlign.center,
           style: GoogleFonts.montserrat(
             textStyle: const TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.w500),
+                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
           )),
       next: const Icon(
         Icons.arrow_forward,
@@ -147,8 +148,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           )),
       onDone: () => _onIntroEnd(context),
       nextStyle: ButtonStyle(
-          foregroundColor:
-              MaterialStateProperty.all(const Color(0xFFEE4D86))),
+          foregroundColor: MaterialStateProperty.all(const Color(0xFFEE4D86))),
       dotsDecorator: const DotsDecorator(
         size: Size.square(7),
         activeColor: Color(0xFFEE4D86),

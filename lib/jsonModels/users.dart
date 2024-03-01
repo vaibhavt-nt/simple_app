@@ -1,24 +1,23 @@
-
 class Users {
   final int? usrId;
-  final String usrName;
-  final String usrPassword;
+  final String userName;
+  final String userPassword;
 
   Users({
     this.usrId,
-    required this.usrName,
-    required this.usrPassword,
+    required this.userName,
+    required this.userPassword,
   });
 
   factory Users.fromMap(Map<String, dynamic> json) => Users(
-    usrId: json["usrId"],
-    usrName: json["usrName"],
-    usrPassword: json["usrPassword"],
-  );
+        usrId: json["usrId"],
+        userName: json["userName"],
+        userPassword: json["userPassword"],
+      );
 
   Map<String, dynamic> toMap() => {
-    "usrId": usrId,
-    "usrName": usrName,
-    "usrPassword": usrPassword,
-  };
+        "usrId": usrId,
+        "userName": userName,
+        "userPassword": userPassword,
+      };
 }

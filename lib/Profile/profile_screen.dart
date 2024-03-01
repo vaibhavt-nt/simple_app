@@ -19,26 +19,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Center(
         child: TextButton(
           onPressed: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage(),));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ));
           },
           child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Log Out",
-                style: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
-                )),
-            const Icon(Icons.exit_to_app,color: Colors.red,)
-          ],
-        ),
-
-
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Log Out",
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  )),
+              const Icon(
+                Icons.exit_to_app,
+                color: Colors.red,
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
-

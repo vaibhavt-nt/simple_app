@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_app/Authentication/sign_up_screen.dart';
+import 'package:simple_app/Authentication/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,17 +14,13 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-
     super.initState();
-    Timer(const Duration(seconds: 2),
-            ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) =>
-            const SignUpScreen()
-            )
-        )
-    );
+    Timer(
+        const Duration(seconds: 2),
+        () => Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginPage())));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-         color: Colors.white,
+          color: Colors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,16 +44,18 @@ class _SplashScreenState extends State<SplashScreen> {
                     width: 300.0,
                   ),
                 ),
-                 Text("POST CRAFT",textAlign:TextAlign.center,
-                  style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(color: Colors.black,fontSize: 32,fontWeight: FontWeight.w600),
-                  )
-                ),
+                Text("POST CRAFT",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600),
+                    )),
               ],
             ),
-
             const CircularProgressIndicator(
-              valueColor:  AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           ],
         ),

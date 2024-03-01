@@ -3,8 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/Navigation/navigation_screen.dart';
 import 'package:simple_app/Authentication/sign_up_screen.dart';
-
-import '../jsonModels/users.dart';
+import 'package:simple_app/jsonModels/users.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,25 +13,24 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController =TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool _passwordVisible = false;
 
-  final formkey =GlobalKey<FormState>();
+  final formkey = GlobalKey<FormState>();
 
   final db = DatabaseHelper();
 
   bool isLoginTrue = false;
 
-
   login() async {
-    var response = await db
-        .login(Users(usrName: emailController.text, usrPassword: passwordController.text));
+    var response = await db.login(Users(
+        userName: emailController.text, userPassword: passwordController.text));
     if (response == true) {
       //If login is correct, then goto notes
       if (!mounted) return;
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) =>  const NavigationScreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const NavigationScreen()));
     } else {
       //If not, true the bool value to show error message
       setState(() {
@@ -40,8 +38,6 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +52,9 @@ class _LoginPageState extends State<LoginPage> {
               _header(context),
               isLoginTrue
                   ? const Text(
-                "Username or passowrd is incorrect",
-                style: TextStyle(color: Colors.red),
-              )
+                      "Username or passowrd is incorrect",
+                      style: TextStyle(color: Colors.red),
+                    )
                   : const SizedBox(),
               _inputField(context),
               _signup(context),
@@ -102,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 70,
                 child: TextFormField(
                   validator: (value) {
-                    if(value!.isEmpty){
+                    if (value!.isEmpty) {
                       return "emil is required";
                     }
                     return null;
@@ -111,14 +107,12 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     hintText: "Enter your email",
                     hintStyle: GoogleFonts.montserrat(
-                      textStyle:
-                          const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      textStyle: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFEE4D86))
-                    ),
-                    border: const OutlineInputBorder(
-                    ),
+                        borderSide: BorderSide(color: Color(0xFFEE4D86))),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -143,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 70,
                 child: TextFormField(
                   validator: (value) {
-                    if(value!.isEmpty){
+                    if (value!.isEmpty) {
                       return "password is required";
                     }
                     return null;
@@ -167,14 +161,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     hintText: "Enter your password",
                     hintStyle: GoogleFonts.montserrat(
-                      textStyle:
-                          const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                      textStyle: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFEE4D86))
-                    ),
-                    border: const OutlineInputBorder(
-                    ),
+                        borderSide: BorderSide(color: Color(0xFFEE4D86))),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -191,19 +183,12 @@ class _LoginPageState extends State<LoginPage> {
                       )),
                 ),
               )
-
-
             ],
-
           ),
-
-
-
           const SizedBox(height: 70),
           ElevatedButton(
             onPressed: () {
-              if(formkey.currentState!.validate()){
-
+              if (formkey.currentState!.validate()) {
                 login();
                 // Navigator.pushReplacement(
                 //     context,
@@ -227,7 +212,6 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.w600),
                 )),
           ),
-
         ],
       ),
     );

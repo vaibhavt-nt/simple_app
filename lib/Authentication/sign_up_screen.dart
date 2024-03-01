@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
-import '../SQLite/sqlite.dart';
-import '../jsonModels/users.dart';
-import '../onboarding_screen/onboarding_screen1.dart';
+import 'package:simple_app/SQLite/sqlite.dart';
+import 'package:simple_app/jsonModels/users.dart';
+import 'package:simple_app/onboarding_screen/onboarding_screen1.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,6 +16,19 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  // For Image Pick From Gallery
+
+  Future getImageFromGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+
   bool _passwordVisible = false;
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -44,12 +60,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               fontWeight: FontWeight.w600),
                         )),
                     const SizedBox(height: 30.0),
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: CircleAvatar(
-                        child: Image.asset(
-                            'assets/sign_up_images/image_picker.png'),
+                    GestureDetector(
+                      onTap: () {
+                        getImageFromGallery();
+                      },
+                      child: Center(
+                        child: _image == null
+                            ? SizedBox(
+                                height: 100,
+                                width: 100,
+                                child: CircleAvatar(
+                                  child: Image.asset(
+                                      'assets/sign_up_images/image_picker.png'),
+                                ),
+                              )
+                            : ClipOval(
+                                child: Image.file(
+                                  File(_image!.path),
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(
@@ -165,45 +197,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       fontWeight: FontWeight.w500),
                                 )),
                           ),
-                             SizedBox(
-                               height: 70,
-                               child: TextFormField(
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return "password is required";
-                                  }
-                                  return null;
-                                },
-                                obscureText: !_passwordVisible,
-                                controller: passwordController,
-                                decoration: InputDecoration(
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _passwordVisible = !_passwordVisible;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      // Based on passwordVisible state choose the icon
-                                      _passwordVisible
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                      color: const Color(0xFFEE4D86),
-                                    ),
+                          SizedBox(
+                            height: 70,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "password is required";
+                                }
+                                return null;
+                              },
+                              obscureText: !_passwordVisible,
+                              controller: passwordController,
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    _passwordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: const Color(0xFFEE4D86),
                                   ),
-                                  hintText: "Enter your password",
-                                  hintStyle: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFEE4D86))),
-                                  border: const OutlineInputBorder(),
                                 ),
-                                                           ),
-                             ),
+                                hintText: "Enter your password",
+                                hintStyle: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFEE4D86))),
+                                border: const OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -220,14 +252,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           final db = DatabaseHelper();
                           db
                               .signup(Users(
-                                  usrName: emailController.text,
-                                  usrPassword: passwordController.text))
+                                  userName: emailController.text,
+                                  userPassword: passwordController.text))
                               .whenComplete(() {
                             //After success user creation go to login screen
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const OnboardingScreen()));
+                                    builder: (context) =>
+                                        const OnboardingScreen()));
                           });
                         }
                         // Navigator.pushReplacement(
