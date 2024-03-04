@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/jsonModels/users.dart';
-import 'package:simple_app/onboarding_screen/onboarding_screen1.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -289,15 +288,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 fontWeight: FontWeight.w600),
                           )),
                     )),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 //Message when there is a duplicate user
 
                 //By default we hide the message
                 isUserExist
-                    ? Center(
-                        child: const Text(
+                    ? const Center(
+                        child: Text(
                         "User already exists, please enter anothe name",
                         style: TextStyle(color: Colors.red),
                       ))

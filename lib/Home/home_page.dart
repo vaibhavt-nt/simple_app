@@ -34,7 +34,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Good Morning! \ ${widget.users?.userName}",
+                    Text("Good Morning!  ${widget.users?.userName}",
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
                               color: Colors.black,
