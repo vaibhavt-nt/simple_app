@@ -41,16 +41,9 @@ class DatabaseHelper {
   Future<int> signup(Users user) async {
     final Database db = await initDB();
 
-    return db.insert('users', user.toMap());
+    return db.insert('users', user.toJson());
   }
 
-  //Get user data
-  Future<Users?> getUser(String username) async {
-    final Database db = await initDB();
-    var res =
-        await db.query("users", where: "userEmail = ?", whereArgs: [username]);
-    return res.isNotEmpty ? Users.fromMap(res.first) : null;
-  }
 // check user exixt to avoid duplicate entry
 
   Future<bool> checkUserExist(String username) async {

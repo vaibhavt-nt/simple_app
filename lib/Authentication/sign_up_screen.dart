@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/jsonModels/users.dart';
+import 'package:simple_app/onboarding_screen/onboarding_screen1.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,6 +18,16 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  // shared preference for store users data and show them to multiple screen
+
+  late SharedPreferences sharedPreferences;
+
+
+  Future<void> _saveUser(Users user) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user', json.encode(user.toJson()));
+  }
+
   // For Image Pick From Gallery
 
   Future getImageFromGallery() async {
@@ -35,12 +48,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final formKey = GlobalKey<FormState>();
 
-  //for user already exixts
+  //for user already exits
   bool isUserExist = false;
 
   final db = DatabaseHelper();
 
   signUp() async {
+    //to check if user exits
     bool usrExist = await db.checkUserExist(emailController.text);
     //If user exists, show the message
     if (usrExist) {
@@ -54,9 +68,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
           userPassword: passwordController.text,
           userEmail: emailController.text));
       if (res > 0) {
+        await _saveUser(Users(
+          userPassword: passwordController.text,
+          userEmail: emailController.text,
+          userName: usernameController.text,
+        ));
         if (!mounted) return;
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const LoginPage()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const OnboardingScreen()));
       }
     }
   }
@@ -287,7 +306,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600),
                           )),
-                    )),
+                    ),
+                ),
                 const SizedBox(
                   height: 15,
                 ),
@@ -297,7 +317,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 isUserExist
                     ? const Center(
                         child: Text(
-                        "User already exists, please enter anothe name",
+                        "User already exists, please enter another name",
                         style: TextStyle(color: Colors.red),
                       ))
                     : const SizedBox(),

@@ -1,13 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/Home/post/select_frame_screen.dart';
 import 'package:simple_app/jsonModels/users.dart';
 
 class HomePageScreen extends StatefulWidget {
-  final Users? users;
   const HomePageScreen({
     super.key,
-    this.users,
   });
 
   @override
@@ -15,6 +16,27 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
+  Users? _user;
+
+  Future<Users?> _loadUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userJson = prefs.getString('user');
+    if (userJson == null) return null;
+    return Users.fromJson(json.decode(userJson));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser().then((user) {
+      if (user != null) {
+        setState(() {
+          _user = user;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +56,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Good Morning!  ${widget.users?.userName}",
+                    Text("Good Morning!\n${_user?.userName ?? ''}",
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
                               color: Colors.black,
