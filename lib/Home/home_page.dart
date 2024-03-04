@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Home/post/select_frame_screen.dart';
+import 'package:simple_app/jsonModels/users.dart';
 
 class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+  final Users? users;
+  const HomePageScreen({
+    super.key,
+    this.users,
+  });
 
   @override
   State<HomePageScreen> createState() => _HomePageScreenState();
@@ -29,7 +34,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Good Morning!\nUsername",
+                    Text("Good Morning!  ${widget.users?.userName}",
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
                               color: Colors.black,

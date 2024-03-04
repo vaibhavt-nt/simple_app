@@ -15,7 +15,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePageScreen(),
     ScheduleScreen(),
-    ProfileScreen()
+    ProfileScreen(
+      profile: null,
+    )
   ];
 
   void _onItemTapped(int index) {
@@ -45,7 +47,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor: Color(0xFFEE4D86),
+        selectedItemColor: const Color(0xFFEE4D86),
         iconSize: 30,
         onTap: _onItemTapped,
       ),

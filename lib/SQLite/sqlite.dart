@@ -2,15 +2,15 @@ import 'package:path/path.dart';
 import 'package:simple_app/jsonModels/users.dart';
 import 'package:sqflite/sqflite.dart';
 
-
-
 class DatabaseHelper {
   final databaseName = "notes.db";
 
   //Now we must create our user table into our sqlite db
-  String users =
-      "create table users (usrId INTEGER PRIMARY KEY AUTOINCREMENT, userName TEXT UNIQUE, userPassword TEXT)";
-
+  String users = "create table users ("
+      "usrId INTEGER PRIMARY KEY AUTOINCREMENT,"
+      " userName TEXT ,"
+      "userEmail TEXT UNIQUE,"
+      "userPassword TEXT)";
 
   Future<Database> initDB() async {
     final databasePath = await getDatabasesPath();
@@ -28,8 +28,8 @@ class DatabaseHelper {
     final Database db = await initDB();
 
     // I forgot the password to check
-    var result = await db.rawQuery(
-        "select * from users where usrName = '${user.userName}' AND usrPassword = '${user.userPassword}'");
+    var result = await db.rawQuery("select * from users where userEmail ="
+        " '${user.userEmail}' AND userPassword = '${user.userPassword}'");
     if (result.isNotEmpty) {
       return true;
     } else {
@@ -44,4 +44,19 @@ class DatabaseHelper {
     return db.insert('users', user.toMap());
   }
 
+  //Get user data
+  Future<Users?> getUser(String username) async {
+    final Database db = await initDB();
+    var res =
+        await db.query("users", where: "userEmail = ?", whereArgs: [username]);
+    return res.isNotEmpty ? Users.fromMap(res.first) : null;
+  }
+// check user exixt to avoid duplicate entry
+
+  Future<bool> checkUserExist(String username) async {
+    final Database db = await initDB();
+    final List<Map<String, dynamic>> res =
+        await db.query("users", where: "userEmail = ?", whereArgs: [username]);
+    return res.isNotEmpty;
+  }
 }
