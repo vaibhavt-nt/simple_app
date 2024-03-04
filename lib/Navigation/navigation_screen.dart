@@ -7,7 +7,7 @@ class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
 
   @override
-  _NavigationScreenState createState() => _NavigationScreenState();
+  createState() => _NavigationScreenState();
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
@@ -15,9 +15,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomePageScreen(),
     ScheduleScreen(),
-    ProfileScreen(
-      profile: null,
-    )
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

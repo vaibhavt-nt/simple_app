@@ -1,29 +1,41 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_app/Authentication/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/jsonModels/users.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     super.key,
-    required this.profile,
   });
-  final Users? profile;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // Users? users;
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  Users? _user;
+
+  Future<Users?> _loadUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userJson = prefs.getString('user');
+    if (userJson == null) return null;
+    return Users.fromJson(json.decode(userJson));
+  }
 
   @override
   void initState() {
     super.initState();
-    usernameController.text = widget.profile?.userName ?? '';
-    passwordController.text = widget.profile?.userPassword ?? '';
+    _loadUser().then((user) {
+      if (user != null) {
+        setState(() {
+          _user = user;
+        });
+      }
+    });
   }
 
   bool _passwordVisible = false;
@@ -65,14 +77,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 'assets/sign_up_images/image_picker.png'),
                           ),
                         ),
-                        //      ClipOval(
-                        //   // child: Image.file(
-                        //   //   File(_image!.path),
-                        //   //   width: 100,
-                        //   //   height: 100,
-                        //   //   fit: BoxFit.cover,
-                        //   // ),
-                        // ),
                       ),
                     ),
                     const SizedBox(
@@ -109,7 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              initialValue: widget.profile?.userName,
+                              // initialValue: '${_user?.userName ??''} ',
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "username is required";
@@ -117,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 return null;
                               },
                               decoration: InputDecoration(
-                                hintText: "Enter your name",
+                                hintText: _user?.userName ?? '',
                                 hintStyle: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
                                       fontSize: 16,
@@ -150,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              initialValue: widget.profile?.userName,
+                              // initialValue: '${_user?.userEmail ??''} ',
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "email is required";
@@ -159,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               // controller: emailController,
                               decoration: InputDecoration(
-                                hintText: "Enter your email",
+                                hintText: _user?.userEmail ?? '',
                                 hintStyle: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
                                       fontSize: 16,
@@ -192,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              initialValue: widget.profile?.userPassword,
+                              // initialValue: '${_user?.userPassword ??''} ',
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "password is required";
@@ -215,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: const Color(0xFFEE4D86),
                                   ),
                                 ),
-                                hintText: "Enter your password",
+                                hintText: _user?.userPassword ?? '',
                                 hintStyle: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
                                       fontSize: 16,
@@ -237,25 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                     padding: const EdgeInsets.only(top: 3, left: 3),
                     child: ElevatedButton(
-                      onPressed: () {
-                        // if (formKey.currentState!.validate()) {
-                        //   //Login method will be here
-                        //
-                        //   final db = DatabaseHelper();
-                        //   db
-                        //       .signup(Users(
-                        //       userName: emailController.text,
-                        //       userPassword: passwordController.text))
-                        //       .whenComplete(() {
-                        //     //After success user creation go to login screen
-                        //     Navigator.pushReplacement(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) =>
-                        //             const OnboardingScreen()));
-                        //   });
-                        // }
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
@@ -271,31 +257,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.w600),
                           )),
                     )),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ));
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Log Out",
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          )),
-                      const Icon(
-                        Icons.exit_to_app,
-                        color: Colors.red,
-                      )
-                    ],
-                  ),
-                ),
+                Consumer<UiProvider>(
+                    builder: (context, UiProvider notifier, child) {
+                  return TextButton(
+                    onPressed: () {
+                      notifier.logout(context);
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Log Out",
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            )),
+                        const Icon(
+                          Icons.exit_to_app,
+                          color: Colors.red,
+                        )
+                      ],
+                    ),
+                  );
+                })
               ],
             ),
           ),

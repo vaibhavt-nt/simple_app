@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_app/Profile/profile_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_app/Navigation/navigation_screen.dart';
+import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/Authentication/sign_up_screen.dart';
 import 'package:simple_app/jsonModels/users.dart';
@@ -23,28 +25,10 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isLoginTrue = false;
 
-  login() async {
-    //for data transfer
-    Users? userDetails = await db.getUser(emailController.text);
-
-    var response = await db.login(Users(
-        userPassword: passwordController.text,
-        userEmail: emailController.text,
-        userName: ''));
-    if (response == true) {
-      //If login is correct, then goto notes
-      if (!mounted) return;
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ProfileScreen(profile: userDetails)));
-    } else {
-      //If not, true the bool value to show error message
-      setState(() {
-        isLoginTrue = true;
-      });
-    }
-  }
+  // Future<void> _saveUser(Users user) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('user', json.encode(user.toJson()));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextFormField(
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "emil is required";
+                      return "email is required";
                     }
                     return null;
                   },
@@ -193,32 +177,47 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           const SizedBox(height: 70),
-          ElevatedButton(
-            onPressed: () {
-              if (formkey.currentState!.validate()) {
-                login();
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => HomeScreen(),
-                //     ));
-              }
-            },
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                backgroundColor: const Color(0xFFEE4D86)),
-            child: Text("Login",
-                textAlign: TextAlign.left,
-                textDirection: TextDirection.ltr,
-                style: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
-                )),
-          ),
+          Consumer<UiProvider>(builder: (context, UiProvider notifier, child) {
+            return ElevatedButton(
+              onPressed: () async {
+                var response = await db.login(Users(
+                  userPassword: passwordController.text,
+                  userEmail: emailController.text,
+                  userName: '',
+                ));
+                if (response == true) {
+                  //if I checked the remember me then setRemember me true,
+                  //Login session become true
+                  notifier.setRememberMe();
+
+                  if (!mounted) return;
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NavigationScreen()));
+                } else {
+                  //other wise show the message
+                  setState(() {
+                    isLoginTrue = true;
+                  });
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  backgroundColor: const Color(0xFFEE4D86)),
+              child: Text("Login",
+                  textAlign: TextAlign.left,
+                  textDirection: TextDirection.ltr,
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  )),
+            );
+          }),
         ],
       ),
     );
