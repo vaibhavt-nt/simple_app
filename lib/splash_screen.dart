@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
 
@@ -38,8 +39,8 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
-                  child: Image.asset(
-                    "assets/splash_screen_images/sc.png",
+                  child: SvgPicture.asset(
+                    "assets/splash_screen_images/splash_screen_image.svg",
                     height: 300.0,
                     width: 300.0,
                   ),

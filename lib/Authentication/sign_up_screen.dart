@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +25,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   late SharedPreferences sharedPreferences;
 
-
   Future<void> _saveUser(Users user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user', json.encode(user.toJson()));
@@ -30,16 +32,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // For Image Pick From Gallery
 
-  Future getImageFromGallery() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  // Future getImageFromGallery() async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  //
+  //   setState(() {
+  //     _image = image;
+  //   });
+  // }
 
-    setState(() {
-      _image = image;
-    });
+  void _pickImageBase64() async {
+    try {
+      // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      // read picked image byte data.
+      Uint8List imagebytes = await image.readAsBytes();
+      // using base64 encoder convert image into base64 string.
+      String base64String = base64.encode(imagebytes);
+      if (kDebugMode) {
+        print(base64String);
+      }
+
+      final imageTemp = File(image.path);
+      setState(() {
+        _image =
+            imageTemp; // setState to image the UI and show picked image on screen.
+      });
+    } on PlatformException {
+      if (kDebugMode) {
+        print('error');
+      }
+    }
   }
 
   final ImagePicker _picker = ImagePicker();
-  XFile? _image;
+  File? _image;
 
   bool _passwordVisible = false;
   final usernameController = TextEditingController();
@@ -66,12 +93,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       var res = await db.signup(Users(
           userName: usernameController.text,
           userPassword: passwordController.text,
-          userEmail: emailController.text));
+          userEmail: emailController.text,
+          userPhoto: _image!.path));
       if (res > 0) {
+        _pickImageBase64();
         await _saveUser(Users(
           userPassword: passwordController.text,
           userEmail: emailController.text,
           userName: usernameController.text,
+          userPhoto: _image!.path,
         ));
         if (!mounted) return;
         Navigator.pushReplacement(context,
@@ -106,7 +136,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 30.0),
                     GestureDetector(
                       onTap: () {
-                        getImageFromGallery();
+                        _pickImageBase64();
                       },
                       child: Center(
                         child: _image == null
@@ -114,8 +144,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 height: 100,
                                 width: 100,
                                 child: CircleAvatar(
-                                  child: Image.asset(
-                                      'assets/sign_up_images/image_picker.png'),
+                                  child: SvgPicture.asset(
+                                      'assets/sign_up_images/image_picker_empty.svg'),
                                 ),
                               )
                             : ClipOval(
@@ -287,26 +317,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 Container(
-                    padding: const EdgeInsets.only(top: 3, left: 3),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        signUp();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          backgroundColor: const Color(0xFFEE4D86)),
-                      child: Text("Signup",
-                          textAlign: TextAlign.left,
-                          textDirection: TextDirection.ltr,
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                          )),
-                    ),
+                  padding: const EdgeInsets.only(top: 3, left: 3),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      signUp();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: const Color(0xFFEE4D86)),
+                    child: Text("Signup",
+                        textAlign: TextAlign.left,
+                        textDirection: TextDirection.ltr,
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        )),
+                  ),
                 ),
                 const SizedBox(
                   height: 15,

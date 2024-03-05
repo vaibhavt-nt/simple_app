@@ -10,6 +10,7 @@ class DatabaseHelper {
       "usrId INTEGER PRIMARY KEY AUTOINCREMENT,"
       " userName TEXT ,"
       "userEmail TEXT UNIQUE,"
+      "userPhoto TEXT ,"
       "userPassword TEXT)";
 
   Future<Database> initDB() async {

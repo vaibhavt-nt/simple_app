@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -19,11 +20,10 @@ class SelectImageScreen extends StatefulWidget {
 
 class _SelectImageScreenState extends State<SelectImageScreen> {
   final List<String> _imageAssets = [
-    'assets/SelectImagePost/image1.png',
-    'assets/SelectImagePost/image2.png',
-    'assets/SelectImagePost/image3.png',
-    'assets/SelectImagePost/image2.png',
-    'assets/SelectImagePost/image4.png'
+    'assets/SelectImagePost/image1.svg',
+    'assets/SelectImagePost/image2.svg',
+    'assets/SelectImagePost/image3.svg',
+    'assets/SelectImagePost/image1.svg',
   ];
   XFile? _image;
 
@@ -96,7 +96,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                             _image = XFile(_imageAssets[index]);
                           });
                         },
-                        child: Image.asset(
+                        child: SvgPicture.asset(
                           _imageAssets[index],
                           fit: BoxFit.fill,
                         ),

@@ -35,7 +35,7 @@ class UiProvider extends ChangeNotifier {
   //Init Secure Storage
   initStorage() async {
     storage = await SharedPreferences.getInstance();
-    _rememberMe = storage.getBool("rememberMe") ?? true;
+    _rememberMe = storage.getBool("rememberMe") ?? false;
     notifyListeners();
   }
 

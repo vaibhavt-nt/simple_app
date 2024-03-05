@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_app/Home/post/select_date_time_screen.dart';
@@ -12,7 +13,29 @@ class SelectCaptionScreen extends StatefulWidget {
 }
 
 class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
+  String text = '';
   final textcontroller = TextEditingController();
+  Widget leftAlign = const Align(
+    alignment: Alignment.topLeft,
+  );
+
+  void leftAlignment() {
+    setState(() {
+      Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          '$text vaibhav',
+          style: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: Color(0xff1C1C1C)),
+          ),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +80,11 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                 ),
               ),
               TextField(
+                onChanged: (value) {
+                  setState(() {
+                    text = value;
+                  });
+                },
                 minLines: 4,
                 maxLines: 4,
                 controller: textcontroller,
@@ -79,16 +107,24 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
               ),
 
               Stack(alignment: Alignment.center, children: [
-                const SizedBox(
+                SizedBox(
                   width: 342,
                   height: 342,
-                  child: Image(
-                      image: AssetImage('assets/SelectImagePost/image4.png')),
+                  child: SvgPicture.asset('assets/SelectImagePost/image1.svg'),
                 ),
                 Container(
                   color: Colors.white,
                   height: 237,
                   width: 237,
+                  child: Text(
+                    text,
+                    style: GoogleFonts.montserrat(
+                      textStyle: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: Color(0xff1C1C1C)),
+                    ),
+                  ),
                 )
               ]),
 
@@ -123,7 +159,9 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                       ),
                       child: InkWell(
                         //borderRadius: BorderRadius.circular(100.0),
-                        onTap: () {},
+                        onTap: () {
+                          leftAlignment();
+                        },
                         child: const Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Icon(
