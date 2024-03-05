@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:simple_app/Navigation/navigation_screen.dart';
@@ -39,9 +40,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Image(
-                    image: AssetImage(
-                        'assets/onboarding_image/onboarding_image1.png')),
+                SvgPicture.asset(
+                    'assets/onboarding_image/onboarding_image_one.svg'),
                 const SizedBox(height: 50),
                 Text("Create Posts",
                     textAlign: TextAlign.center,
@@ -69,9 +69,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           bodyWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Image(
-                  image: AssetImage(
-                      'assets/onboarding_image/onboarding_image2.png')),
+              SvgPicture.asset(
+                  'assets/onboarding_image/onboarding_image_two.svg'),
               const SizedBox(height: 20),
               Text("Schedule Posts",
                   textAlign: TextAlign.center,
@@ -98,9 +97,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           bodyWidget: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Image(
-                  image: AssetImage(
-                      'assets/onboarding_image/onboarding_image3.png')),
+              SvgPicture.asset(
+                  'assets/onboarding_image/onboarding_image_three.svg'),
               const SizedBox(height: 20),
               Text("Share Posts",
                   textAlign: TextAlign.center,

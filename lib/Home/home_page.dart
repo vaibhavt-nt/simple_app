@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/Home/post/select_frame_screen.dart';
@@ -63,10 +64,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               fontSize: 24,
                               fontWeight: FontWeight.w500),
                         )),
-                    const CircleAvatar(
-                      child: Image(
-                          image: NetworkImage(
-                              'https://plus.unsplash.com/premium_photo-1708983589793-56673027592e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4N3x8fGVufDB8fHx8fA%3D%3D')),
+                    CircleAvatar(
+                      child: SvgPicture.asset('assets/home_images/empty.svg'),
                     )
                   ],
                 ),
@@ -74,8 +73,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
               const SizedBox(
                 height: 60,
               ),
-              const Image(
-                  image: AssetImage('assets/home_images/empty_image.png')),
+              SvgPicture.asset('assets/home_images/empty.svg'),
               const SizedBox(
                 height: 30,
               ),

@@ -66,16 +66,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 30.0),
                     GestureDetector(
                       onTap: () {},
-                      child: Center(
+                      child: const Center(
                         child:
                             // _image == null
                             SizedBox(
                           height: 100,
                           width: 100,
                           child: CircleAvatar(
-                            child: Image.asset(
-                                'assets/sign_up_images/image_picker.png'),
-                          ),
+
+                              // child: _user!.userPhoto == null? ClipOval(
+                              // ) :Image.file(
+                              //     _user?.userPhoto as File)
+                              ),
                         ),
                       ),
                     ),

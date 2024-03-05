@@ -184,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                   userPassword: passwordController.text,
                   userEmail: emailController.text,
                   userName: '',
+                  userPhoto: '',
                 ));
                 if (response == true) {
                   //if I checked the remember me then setRemember me true,
