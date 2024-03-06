@@ -56,88 +56,95 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 24.0),
-                child: Text(
-                  'Select your post frame.',
-                  style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: Color(0xff1C1C1C)),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 420,
-              width: 342,
-              child: PageView.builder(
-                itemCount: frames.length,
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _pageIndex = index;
-                    if (kDebugMode) {
-                      print(_pageIndex);
-                    }
-                    if (kDebugMode) {
-                      print(frames[index].frameType);
-                    }
-                    if (kDebugMode) {
-                      print(frames[index].frameContainer.toString());
-                    }
-                  });
-                },
-                itemBuilder: (context, index) => FrameContent(
-                    frameType: frames[index].frameType,
-                    frameContainer: frames[index].frameContainer),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 32, 0, 22),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        _pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Color(0xffED4D86),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text(
-                      frames[idx].frameType,
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: Color(0xff1C1C1C)),
+            Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0),
+                      child: Text(
+                        'Select your post frame.',
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: Color(0xff1C1C1C)),
+                        ),
                       ),
                     ),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
+                  SizedBox(
+                    height: 420,
+                    width: 342,
+                    child: PageView.builder(
+                      itemCount: frames.length,
+                      controller: _pageController,
+                      onPageChanged: (index) {
+                        setState(() {
+                          _pageIndex = index;
+                          if (kDebugMode) {
+                            print(_pageIndex);
+                          }
+                          if (kDebugMode) {
+                            print(frames[index].frameType);
+                          }
+                          if (kDebugMode) {
+                            print(frames[index].frameContainer.toString());
+                          }
+                        });
                       },
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Color(0xffED4D86),
-                      ))
-                ],
-              ),
-            ),
+                      itemBuilder: (context, index) => FrameContent(
+                          frameType: frames[index].frameType,
+                          frameContainer: frames[index].frameContainer),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 32, 0, 22),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              _pageController.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new,
+                              color: Color(0xffED4D86),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Text(
+                            frames[idx].frameType,
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Color(0xff1C1C1C)),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.arrow_forward_ios,
+                              color: Color(0xffED4D86),
+                            ))
+                      ],
+                    ),
+                  ),
+                                ],
+                              ),
+                )),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: GestureDetector(
@@ -183,7 +190,10 @@ class Frame {
   final String frameType;
   final Widget frameContainer;
 
-  Frame({required this.frameType, required this.frameContainer});
+  Frame({
+    required this.frameType,
+    required this.frameContainer,
+  });
 }
 
 final List<Frame> frames = [
@@ -198,6 +208,7 @@ final List<Frame> frames = [
           color: const Color(0xffE6E6E6),
         ),
       ),
+      child: const Image(image: AssetImage('assetName')),
     ),
   ),
   Frame(
