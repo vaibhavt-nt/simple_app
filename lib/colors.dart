@@ -3,7 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CustomColors {
   static const Color pink = Color(0xFFEE4D86);
+  static const Color lightPink = Color(0xFFFCE6EE);
   static const Color grey = Color(0xffb3b3b3);
+  static const Color darkGrey = Color(0xff4e4e4e);
 }
 
 class CustomText16600 extends StatelessWidget {

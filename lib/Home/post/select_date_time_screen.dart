@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -15,8 +16,11 @@ class SelectDateAndTimeScreen extends StatefulWidget {
 }
 
 class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
+  int buttonSelected = 0;
+  bool chipSelected = false;
+
 // For Date Pick Method
-  DateTime? _selectedDate;
+  static DateTime? _selectedDate;
   void _pickDateDialog() {
     showDatePicker(
             context: context,
@@ -85,7 +89,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                   children: [
                     IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.arrow_back_ios)),
+                        icon: const Icon(Icons.arrow_back_ios)),
                     Text(
                       'Step 4',
                       style: GoogleFonts.montserrat(
@@ -101,7 +105,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  OverViewScreenWhenSkipButtonPressed(),
+                                  const OverViewScreenWhenSkipButtonPressed(),
                             ));
                       },
                       child: Text(
@@ -177,7 +181,8 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                               _selectedDate ==
                                       null //ternary expression to check if date is null
                                   ? 'Select Date'
-                                  : '${DateFormat.yMMMMEEEEd().format(_selectedDate!)}',
+                                  : DateFormat.yMMMMEEEEd()
+                                      .format(_selectedDate!),
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -227,7 +232,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                             Text(
                               selectedTime == null
                                   ? 'Select time'
-                                  : '${selectedTime!.format(context)}',
+                                  : selectedTime!.format(context),
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -238,6 +243,69 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                             const Icon(Icons.watch_later_outlined)
                           ],
                         ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Select Platform',
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                                color: Color(0xff1C1C1C)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          FilterChip(
+                            label: const Icon(
+                              Icons.facebook,
+                              color: Colors.blue,
+                              size: 36,
+                            ),
+                            selected: chipSelected,
+                            showCheckmark: false,
+                            selectedColor: CustomColors.lightPink,
+                            side: const BorderSide(color: CustomColors.pink),
+                            onSelected: (value) {
+                              setState(() {
+                                chipSelected = value;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            width: 40,
+                          ),
+                          // Chip(
+                          //   label: SvgPicture.asset('assets/icons_svg/instagram_outline.svg',
+                          //   width: 36,
+                          //   height: 36,)
+                          // )
+                          FilterChip(
+                            label: SvgPicture.asset(
+                              'assets/icons_svg/instagram_outline.svg',
+                              width: 36,
+                              height: 36,
+                            ),
+                            selected: chipSelected,
+                            showCheckmark: false,
+                            selectedColor: CustomColors.lightPink,
+                            side: const BorderSide(color: CustomColors.pink),
+                            onSelected: (value) {
+                              setState(() {
+                                chipSelected = value;
+                              });
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -252,12 +320,12 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                     overlayColor: MaterialStateProperty.all(CustomColors.pink),
                     backgroundColor: MaterialStateProperty.resolveWith<Color>(
                       (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.pressed))
+                        if (states.contains(MaterialState.pressed)) {
                           return Theme.of(context)
                               .colorScheme
                               .primary
                               .withOpacity(0.5);
-                        else if (states.contains(MaterialState.disabled))
+                        } else if (states.contains(MaterialState.disabled))
                           return Colors.grey;
                         return CustomColors
                             .pink; // Use the component's default.
@@ -267,7 +335,11 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                   onPressed: _selectedDate != null && selectedTime != null
                       ? () {
                           // Navigate to the next screen
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => OverViewScreen(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OverViewScreen(),
+                              ));
                         }
                       : null, // Disable the button if either date or time is not selected
                   child: Text('Next',

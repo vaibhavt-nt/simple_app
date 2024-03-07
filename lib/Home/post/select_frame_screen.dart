@@ -58,8 +58,8 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                                children: [
+              child: Column(
+                children: [
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
@@ -142,9 +142,9 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                       ],
                     ),
                   ),
-                                ],
-                              ),
-                )),
+                ],
+              ),
+            )),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
               child: GestureDetector(
@@ -208,7 +208,6 @@ final List<Frame> frames = [
           color: const Color(0xffE6E6E6),
         ),
       ),
-      child: const Image(image: AssetImage('assetName')),
     ),
   ),
   Frame(
