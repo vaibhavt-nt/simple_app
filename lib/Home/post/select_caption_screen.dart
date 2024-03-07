@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_app/Home/post/select_date_time_screen.dart';
@@ -58,7 +57,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                 children: [
                   IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.arrow_back_ios)),
+                      icon: const Icon(Icons.arrow_back_ios)),
                   Padding(
                     padding: const EdgeInsets.only(right: 150),
                     child: Text(
@@ -74,8 +73,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                 ],
               ),
             ),
-
-            Expanded(child: SingleChildScrollView(
+            Expanded(
+                child: SingleChildScrollView(
               child: Column(
                 children: [
                   Align(
@@ -121,10 +120,10 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                   ),
                   Stack(alignment: Alignment.center, children: [
                     SizedBox(
-                      width: 342,
-                      height: 342,
-                      child: SvgPicture.asset('assets/SelectImagePost/image1.svg'),
-                    ),
+                        width: 342,
+                        height: 342,
+                        child:
+                            Image.asset('assets/SelectImagePost/image1.png')),
                     Container(
                       color: Colors.white,
                       height: 237,
@@ -163,7 +162,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                         type: MaterialType.transparency,
                         child: Ink(
                           decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: CustomColors.pink),
+                            border:
+                                Border.all(width: 1, color: CustomColors.pink),
                             color: Colors.white,
                           ),
                           child: InkWell(
@@ -190,7 +190,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                         type: MaterialType.transparency,
                         child: Ink(
                           decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: CustomColors.pink),
+                            border:
+                                Border.all(width: 1, color: CustomColors.pink),
                             color: Colors.white,
                           ),
                           child: InkWell(
@@ -215,7 +216,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                         type: MaterialType.transparency,
                         child: Ink(
                           decoration: BoxDecoration(
-                            border: Border.all(width: 1, color: CustomColors.pink),
+                            border:
+                                Border.all(width: 1, color: CustomColors.pink),
                             color: Colors.white,
                           ),
                           child: InkWell(
@@ -238,9 +240,6 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                 ],
               ),
             )),
-
-
-
             Padding(
               padding: const EdgeInsets.only(top: 50),
               child: GestureDetector(

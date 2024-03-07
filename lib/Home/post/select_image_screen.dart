@@ -1,10 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -20,14 +16,13 @@ class SelectImageScreen extends StatefulWidget {
 }
 
 class _SelectImageScreenState extends State<SelectImageScreen> {
-  List<String> _imageAssets = [
-    'assets/onboarding_image/onboarding_image_one.svg',
-    'assets/SelectImagePost/image1.svg',
-    'assets/SelectImagePost/image2.svg',
-    'assets/SelectImagePost/image3.svg',
-    'assets/SelectImagePost/image1.svg',
+  final List<String> _imageAssets = [
+    'assets/SelectImagePost/image1.png',
+    'assets/SelectImagePost/image1.png',
+    'assets/SelectImagePost/image1.png',
+    'assets/SelectImagePost/image1.png',
+    'assets/SelectImagePost/image1.png',
   ];
-  XFile? _image;
 
   // final FrameContent frame;
   @override
@@ -52,7 +47,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                 children: [
                   IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: Icon(Icons.arrow_back_ios)),
+                      icon: const Icon(Icons.arrow_back_ios)),
                   Padding(
                     padding: const EdgeInsets.only(right: 150),
                     child: Text(
@@ -70,8 +65,8 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                                children: [
+              child: Column(
+                children: [
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
@@ -99,11 +94,9 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
                             onTap: () {
-                              setState(() {
-                                _imageAssets[index] = index as String;
-                              });
+                              setState(() {});
                             },
-                            child: SvgPicture.asset(
+                            child: Image.asset(
                               _imageAssets[index],
                               fit: BoxFit.fill,
                             ),
@@ -112,32 +105,9 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _imageAssets.length,
-                      itemBuilder: (BuildContext context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                _imageAssets[index] = index as String;
-                              });
-                            },
-                            child: SvgPicture.asset(
-                              _imageAssets[index],
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                                ],
-                              ),
-                )),
+                ],
+              ),
+            )),
             GestureDetector(
               onTap: () {
                 Navigator.push(

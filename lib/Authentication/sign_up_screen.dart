@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _pickImageBase64() async {
     try {
       // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
       if (image == null) return;
       // read picked image byte data.
       Uint8List imagebytes = await image.readAsBytes();

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Navigation/navigation_screen.dart';
 import 'package:simple_app/colors.dart';
@@ -19,12 +17,12 @@ class _OverViewScreenWhenSkipButtonPressedState
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        minimum: EdgeInsets.fromLTRB(0, 60, 0, 10),
+        minimum: const EdgeInsets.fromLTRB(0, 60, 0, 10),
         child: Center(
           child: Column(
             children: [
               Stack(alignment: Alignment.center, children: [
-                SizedBox(
+                const SizedBox(
                     height: 342,
                     width: 342,
                     child: Image(
@@ -58,7 +56,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                   ),
                 )
               ]),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -70,7 +68,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                       shadowColor: Colors.white,
                       backgroundColor:
                           Colors.white, //background color of button
-                      side: BorderSide(
+                      side: const BorderSide(
                           width: 2,
                           color: CustomColors.pink), //border width and color
                       shape: RoundedRectangleBorder(
@@ -82,7 +80,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.file_download_outlined,
                             size: 20,
                             color: Colors.black,
@@ -105,7 +103,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                       shadowColor: Colors.white,
                       backgroundColor:
                           Colors.white, //background color of button
-                      side: BorderSide(
+                      side: const BorderSide(
                           width: 2,
                           color: CustomColors.pink), //border width and color
                       shape: RoundedRectangleBorder(
@@ -117,7 +115,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
+                          const Icon(
                             size: 15,
                             Icons.share_outlined,
                             color: Colors.black,
@@ -152,7 +150,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NavigationScreen(),
+                            builder: (context) => const NavigationScreen(),
                           ));
                     },
                     child: Text('Go to home',
