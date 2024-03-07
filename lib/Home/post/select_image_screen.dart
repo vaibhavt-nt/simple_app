@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +20,8 @@ class SelectImageScreen extends StatefulWidget {
 }
 
 class _SelectImageScreenState extends State<SelectImageScreen> {
-  final List<String> _imageAssets = [
+  List<String> _imageAssets = [
+    'assets/onboarding_image/onboarding_image_one.svg',
     'assets/SelectImagePost/image1.svg',
     'assets/SelectImagePost/image2.svg',
     'assets/SelectImagePost/image3.svg',
@@ -31,121 +33,143 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
-          child: Column(
-            children: [
-              LinearPercentIndicator(
-                width: 342.0,
-                lineHeight: 8.0,
-                percent: 0.50,
-                barRadius: const Radius.circular(20),
-                progressColor: const Color(0xffED4D86),
-                backgroundColor: const Color(0xffE6E6E6),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
-                child: Text(
-                  'Step 2',
-                  style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: Color(0xff1C1C1C)),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 24.0),
-                  child: Text(
-                    'Select your post background image.',
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          color: Color(0xff1C1C1C)),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+        child: Column(
+          children: [
+            LinearPercentIndicator(
+              width: 342.0,
+              lineHeight: 8.0,
+              percent: 0.50,
+              barRadius: const Radius.circular(20),
+              progressColor: const Color(0xffED4D86),
+              backgroundColor: const Color(0xffE6E6E6),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.arrow_back_ios)),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 150),
+                    child: Text(
+                      'Step 2',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xff1C1C1C)),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-              Center(
-                child: _image == null
-                    ? widget.selectedFrame.frameContainer
-                    : _image!.path.startsWith('assets/')
-                        ? Image.asset(
-                            _image!.path,
-                            fit: BoxFit.fill,
-                          )
-                        : Image.file(File(_image!.path)),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                height: 100,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _imageAssets.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            _image = XFile(_imageAssets[index]);
-                          });
-                        },
-                        child: SvgPicture.asset(
-                          _imageAssets[index],
-                          fit: BoxFit.fill,
+            ),
+            Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0),
+                      child: Text(
+                        'Select your post background image.',
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: Color(0xff1C1C1C)),
                         ),
                       ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SelectCaptionScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 342,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(6),
-                      ),
-                      color: Color(0xffED4D86),
-                    ),
-                    child: Center(
-                      child: Text('Next',
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: Color(0xffFFFFFC)),
-                          )),
                     ),
                   ),
+                  Center(child: widget.selectedFrame.frameContainer),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _imageAssets.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                _imageAssets[index] = index as String;
+                              });
+                            },
+                            child: SvgPicture.asset(
+                              _imageAssets[index],
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _imageAssets.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                _imageAssets[index] = index as String;
+                              });
+                            },
+                            child: SvgPicture.asset(
+                              _imageAssets[index],
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                                ],
+                              ),
+                )),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SelectCaptionScreen(),
+                  ),
+                );
+              },
+              child: Container(
+                height: 40,
+                width: 342,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
+                  color: Color(0xffED4D86),
+                ),
+                child: Center(
+                  child: Text('Next',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xffFFFFFC)),
+                      )),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _getImage,
-      //   tooltip: 'Pick Image',
-      //   child: const Icon(Icons.add_a_photo),
-      // ),
     );
   }
 }
