@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
+import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/jsonModels/users.dart';
 import 'package:simple_app/onboarding_screen/onboarding_screen1.dart';
@@ -80,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final db = DatabaseHelper();
 
-  signUp() async {
+  void signUp() async {
     //to check if user exits
     bool usrExist = await db.checkUserExist(emailController.text);
     //If user exists, show the message
@@ -316,28 +318,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      signUp();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: const Color(0xFFEE4D86)),
-                    child: Text("Signup",
-                        textAlign: TextAlign.left,
-                        textDirection: TextDirection.ltr,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        )),
-                  ),
-                ),
+                Consumer<UiProvider>(
+                    builder: (context, UiProvider notifier, child) {
+                  return Container(
+                    padding: const EdgeInsets.only(top: 3, left: 3),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        bool usrExist =
+                            await db.checkUserExist(emailController.text);
+                        //If user exists, show the message
+                        if (usrExist) {
+                          setState(() {
+                            isUserExist = true;
+                          });
+                        } else {
+                          //otherwise create account
+                          var res = await db.signup(Users(
+                              userName: usernameController.text,
+                              userPassword: passwordController.text,
+                              userEmail: emailController.text,
+                              userPhoto: _image!.path));
+                          if (res > 0) {
+                            _pickImageBase64();
+                            await _saveUser(Users(
+                              userPassword: passwordController.text,
+                              userEmail: emailController.text,
+                              userName: usernameController.text,
+                              userPhoto: _image!.path,
+                            ));
+                            //Login session become true
+                            notifier.setRememberMe();
+
+                            if (!mounted) return;
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const OnboardingScreen()));
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          backgroundColor: const Color(0xFFEE4D86)),
+                      child: Text("Signup",
+                          textAlign: TextAlign.left,
+                          textDirection: TextDirection.ltr,
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          )),
+                    ),
+                  );
+                }),
+
                 const SizedBox(
                   height: 15,
                 ),
