@@ -17,22 +17,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context)=>UiProvider()..initStorage(),
+      create: (context) => UiProvider()..initStorage(),
       child: Consumer<UiProvider>(
-      builder: (context,UiProvider notifier, child) {
-        return AnnotatedRegion(
-          value: const SystemUiOverlayStyle(
-            systemNavigationBarColor: Colors.transparent,
-            statusBarColor: Colors.transparent,
-          ),
-          child: MaterialApp(
-            color: Colors.white,
-            debugShowCheckedModeBanner: false,
-            title: 'Simple App ',
-            home: notifier.rememberMe? const NavigationScreen() : const SplashScreen(),
-          ),
-        );
-      },
+        builder: (context, UiProvider notifier, child) {
+          return AnnotatedRegion(
+            value: const SystemUiOverlayStyle(
+              systemNavigationBarColor: Colors.transparent,
+              statusBarColor: Colors.transparent,
+            ),
+            child: MaterialApp(
+              color: Colors.white,
+              debugShowCheckedModeBanner: false,
+              title: 'Simple App ',
+              home: notifier.rememberMe
+                  ? const NavigationScreen()
+                  : const SplashScreen(),
+            ),
+          );
+        },
       ),
     );
   }

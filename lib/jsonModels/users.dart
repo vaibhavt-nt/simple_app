@@ -3,7 +3,7 @@ class Users {
   final String userName;
   final String userEmail;
   final String userPassword;
-  final String userPhoto;
+  final  userPhoto;
 
   Users(
       {this.usrId,

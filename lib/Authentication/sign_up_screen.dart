@@ -32,38 +32,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     await prefs.setString('user', json.encode(user.toJson()));
   }
 
-  // For Image Pick From Gallery
-
-  // Future getImageFromGallery() async {
-  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  //
-  //   setState(() {
-  //     _image = image;
-  //   });
-  // }
 
   void _pickImageBase64() async {
-    try {
-      // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
-      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      // read picked image byte data.
-      Uint8List imagebytes = await image.readAsBytes();
-      // using base64 encoder convert image into base64 string.
-      String base64String = base64.encode(imagebytes);
-      if (kDebugMode) {
-        print(base64String);
-      }
+    // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
-      final imageTemp = File(image.path);
+    if (pickedFile != null) {
       setState(() {
-        _image =
-            imageTemp; // setState to image the UI and show picked image on screen.
+        _image = File(pickedFile.path);
       });
-    } on PlatformException {
-      if (kDebugMode) {
-        print('error');
-      }
     }
   }
 
@@ -81,36 +58,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isUserExist = false;
 
   final db = DatabaseHelper();
-
-  void signUp() async {
-    //to check if user exits
-    bool usrExist = await db.checkUserExist(emailController.text);
-    //If user exists, show the message
-    if (usrExist) {
-      setState(() {
-        isUserExist = true;
-      });
-    } else {
-      //otherwise create account
-      var res = await db.signup(Users(
-          userName: usernameController.text,
-          userPassword: passwordController.text,
-          userEmail: emailController.text,
-          userPhoto: _image!.path));
-      if (res > 0) {
-        _pickImageBase64();
-        await _saveUser(Users(
-          userPassword: passwordController.text,
-          userEmail: emailController.text,
-          userName: usernameController.text,
-          userPhoto: _image!.path,
-        ));
-        if (!mounted) return;
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const OnboardingScreen()));
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +286,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               userEmail: emailController.text,
                               userPhoto: _image!.path));
                           if (res > 0) {
-                            _pickImageBase64();
                             await _saveUser(Users(
                               userPassword: passwordController.text,
                               userEmail: emailController.text,

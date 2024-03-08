@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -112,9 +113,15 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               fontSize: 24,
                               fontWeight: FontWeight.w500),
                         )),
-                    CircleAvatar(
-                      child: SvgPicture.asset('assets/home_images/empty.svg'),
-                    )
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: ClipOval(
+                        child: _user?.userPhoto == null
+                            ? const Icon(Icons.account_circle)
+                            : Image.file(File(_user!.userPhoto), fit: BoxFit.cover,),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(
