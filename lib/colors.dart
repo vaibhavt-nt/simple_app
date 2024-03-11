@@ -6,6 +6,7 @@ class CustomColors {
   static const Color lightPink = Color(0xFFFCE6EE);
   static const Color grey = Color(0xffb3b3b3);
   static const Color darkGrey = Color(0xff4e4e4e);
+  static const Color lightBlack = Color(0xff1c1c1c);
 }
 
 class CustomText16600 extends StatelessWidget {

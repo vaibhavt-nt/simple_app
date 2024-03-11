@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,18 +67,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 30.0),
                     GestureDetector(
                       onTap: () {},
-                      child: const Center(
+                      child: Center(
                         child:
-                            // _image == null
-                            SizedBox(
+                        SizedBox(
                           height: 100,
                           width: 100,
-                          child: CircleAvatar(
-
-                              // child: _user!.userPhoto == null? ClipOval(
-                              // ) :Image.file(
-                              //     _user?.userPhoto as File)
-                              ),
+                          child: ClipOval(
+                            child: _user?.userPhoto == null
+                                ? const Icon(Icons.account_circle)
+                                : Image.file(File(_user!.userPhoto), fit: BoxFit.cover,),
+                          ),
                         ),
                       ),
                     ),
