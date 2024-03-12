@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -5,10 +6,12 @@ import 'package:simple_app/Navigation/navigation_screen.dart';
 import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/Authentication/sign_up_screen.dart';
-import 'package:simple_app/jsonModels/users.dart';
+import 'package:simple_app/colors.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({
+    super.key,
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -25,9 +28,15 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isLoginTrue = false;
 
-  // Future<void> _saveUser(Users user) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString('user', json.encode(user.toJson()));
+  // this is for firebase login with email and password
+  // logIn() async {
+  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: emailController.text, password: passwordController.text);
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => NavigationScreen(),
+  //       ));
   // }
 
   @override
@@ -180,28 +189,29 @@ class _LoginPageState extends State<LoginPage> {
           Consumer<UiProvider>(builder: (context, UiProvider notifier, child) {
             return ElevatedButton(
               onPressed: () async {
-                var response = await db.login(Users(
-                  userPassword: passwordController.text,
-                  userEmail: emailController.text,
-                  userName: '',
-                  userPhoto: '',
-                ));
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: CustomColors.pink,
+                        backgroundColor: CustomColors.lightPink,
+                      ),
+                    );
+                  },
+                );
+                var response = await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text);
                 if (response == true) {
-                  //if I checked the remember me then setRemember me true,
                   //Login session become true
                   notifier.setRememberMe();
-
-                  if (!mounted) return;
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NavigationScreen()));
-                } else {
-                  //other wise show the message
-                  setState(() {
-                    isLoginTrue = true;
-                  });
                 }
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NavigationScreen()));
               },
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
