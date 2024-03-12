@@ -1,19 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
+import 'package:simple_app/Firebase/firebase_authentication.dart';
+import 'package:simple_app/Navigation/navigation_screen.dart';
 import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
+import 'package:simple_app/colors.dart';
 import 'package:simple_app/jsonModels/users.dart';
-import 'package:simple_app/onboarding_screen/onboarding_screen1.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,6 +24,56 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  // Future<Users> insertFirestore(Users model) async {
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: emailController.text,
+  //       password: passwordController.text,
+  //     );
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationScreen(),));
+  //     final document = await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .add(model.toJson());
+  //     model.userEmail = document.id;
+  //     return model;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: emailController.text,
+  //       password: passwordController.text,
+  //     );
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationScreen(),));
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'weak-password') {
+  //       print('The password provided is too weak.');
+  //     } else if (e.code == 'email-already-in-use') {
+  //       print('The account already exists for that email.');
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  // Future<void> SignUp() async {
+  //   try {
+  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: emailController.text,
+  //       password: passwordController.text,
+  //     );
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationScreen(),));
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'weak-password') {
+  //       print('The password provided is too weak.');
+  //     } else if (e.code == 'email-already-in-use') {
+  //       print('The account already exists for that email.');
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
   // shared preference for store users data and show them to multiple screen
 
   late SharedPreferences sharedPreferences;
@@ -31,7 +82,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user', json.encode(user.toJson()));
   }
-
 
   void _pickImageBase64() async {
     // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
@@ -271,37 +321,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.only(top: 3, left: 3),
                     child: ElevatedButton(
                       onPressed: () async {
-                        bool usrExist =
-                            await db.checkUserExist(emailController.text);
-                        //If user exists, show the message
-                        if (usrExist) {
-                          setState(() {
-                            isUserExist = true;
-                          });
-                        } else {
-                          //otherwise create account
-                          var res = await db.signup(Users(
-                              userName: usernameController.text,
-                              userPassword: passwordController.text,
-                              userEmail: emailController.text,
-                              userPhoto: _image!.path));
-                          if (res > 0) {
-                            await _saveUser(Users(
-                              userPassword: passwordController.text,
-                              userEmail: emailController.text,
-                              userName: usernameController.text,
-                              userPhoto: _image!.path,
-                            ));
-                            //Login session become true
-                            notifier.setRememberMe();
-
-                            if (!mounted) return;
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const OnboardingScreen()));
-                          }
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: CustomColors.pink,
+                                backgroundColor: CustomColors.lightPink,
+                              ),
+                            );
+                          },
+                        );
+                        User? user = await FireAuth.registerUsingEmailPassword(
+                            name: usernameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            photo: _image!.path);
+                        if (user != null) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const NavigationScreen(),
+                              ));
                         }
                       },
                       style: ElevatedButton.styleFrom(

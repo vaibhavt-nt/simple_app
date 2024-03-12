@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,29 +22,14 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
+// for showing userdata from firebase
+  final user = FirebaseAuth.instance.currentUser;
+
   //for check if post is empty
   final bool isPostEmpty = false;
   //for showing username and image
   Users? _user;
 
-  Future<Users?> _loadUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? userJson = prefs.getString('user');
-    if (userJson == null) return null;
-    return Users.fromJson(json.decode(userJson));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUser().then((user) {
-      if (user != null) {
-        setState(() {
-          _user = user;
-        });
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +52,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Good Morning!\n${_user?.userName ?? ''}",
+                      Text("Good Morning!\n${user!.email}",
                           style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
                                 color: CustomColors.darkGrey,
@@ -106,7 +92,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Good Morning!\n${_user?.userName ?? ''}",
+                    Text("Good Morning!\n${user!.displayName}",
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
                               color: CustomColors.darkGrey,
@@ -119,7 +105,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       child: ClipOval(
                         child: _user?.userPhoto == null
                             ? const Icon(Icons.account_circle)
-                            : Image.file(File(_user!.userPhoto), fit: BoxFit.cover,),
+                            : Image.file(
+                                File(_user!.userPhoto),
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                   ],

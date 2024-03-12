@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
@@ -25,6 +26,7 @@ class UiProvider extends ChangeNotifier {
 
   //Set rememberMe value to false
   logout(context) {
+    FirebaseAuth.instance.signOut();
     _rememberMe = false;
     storage.setBool("rememberMe", _rememberMe);
     Navigator.pushReplacement(

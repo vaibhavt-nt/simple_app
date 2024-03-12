@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/jsonModels/users.dart';
 
@@ -18,26 +17,25 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final user = FirebaseAuth.instance.currentUser;
+
+  signout() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   Users? _user;
 
-  Future<Users?> _loadUser() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? userJson = prefs.getString('user');
-    if (userJson == null) return null;
-    return Users.fromJson(json.decode(userJson));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUser().then((user) {
-      if (user != null) {
-        setState(() {
-          _user = user;
-        });
-      }
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _loadUser().then((user) {
+  //     if (user != null) {
+  //       setState(() {
+  //         _user = user;
+  //       });
+  //     }
+  //   });
+  // }
 
   bool _passwordVisible = false;
 
@@ -68,14 +66,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     GestureDetector(
                       onTap: () {},
                       child: Center(
-                        child:
-                        SizedBox(
+                        child: SizedBox(
                           height: 100,
                           width: 100,
                           child: ClipOval(
                             child: _user?.userPhoto == null
                                 ? const Icon(Icons.account_circle)
-                                : Image.file(File(_user!.userPhoto), fit: BoxFit.cover,),
+                                : Image.file(
+                                    File(_user!.userPhoto),
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                       ),
@@ -114,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              // initialValue: '${_user?.userName ??''} ',
+                              initialValue: '${user!.displayName} ',
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "username is required";
@@ -155,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              // initialValue: '${_user?.userEmail ??''} ',
+                              initialValue: '${user!.email} ',
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "email is required";
@@ -197,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              // initialValue: '${_user?.userPassword ??''} ',
+                              initialValue: '${user!.phoneNumber} ',
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "password is required";
