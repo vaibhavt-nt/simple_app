@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_app/Authentication/forgot_password_screen.dart';
 import 'package:simple_app/Navigation/navigation_screen.dart';
 import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
@@ -173,7 +174,9 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.only(left: 190),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen(),));
+                  },
                   child: Text("Forgot Password?",
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(

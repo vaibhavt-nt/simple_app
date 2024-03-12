@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "210975068995",
+    "project_id": "simple-app-bac60",
+    "storage_bucket": "simple-app-bac60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210975068995:android:68dbdd359f374321d215f6",
+        "android_client_info": {
+          "package_name": "com.example.simple_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4vKJSKAoCHNFDCqOjE1EEEWFOiAQFyII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

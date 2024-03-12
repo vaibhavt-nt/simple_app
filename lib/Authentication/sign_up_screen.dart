@@ -332,7 +332,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           },
                         );
-                        User? user = await FireAuth.registerUsingEmailPassword(
+                        User? user = await FirebaseAuthentication.registerUsingEmailPassword(
                             name: usernameController.text,
                             email: emailController.text,
                             password: passwordController.text,
