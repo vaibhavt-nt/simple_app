@@ -1,13 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_app/Authentication/forgot_password_screen.dart';
 import 'package:simple_app/Navigation/navigation_screen.dart';
-import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/Authentication/sign_up_screen.dart';
-import 'package:simple_app/colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -30,15 +27,15 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoginTrue = false;
 
   // this is for firebase login with email and password
-  // logIn() async {
-  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //       email: emailController.text, password: passwordController.text);
-  //   Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => NavigationScreen(),
-  //       ));
-  // }
+  logIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text, password: passwordController.text);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const NavigationScreen(),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +172,11 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(left: 190),
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen(),));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordScreen(),
+                        ));
                   },
                   child: Text("Forgot Password?",
                       style: GoogleFonts.montserrat(
@@ -189,49 +190,23 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           const SizedBox(height: 70),
-          Consumer<UiProvider>(builder: (context, UiProvider notifier, child) {
-            return ElevatedButton(
-              onPressed: () async {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        color: CustomColors.pink,
-                        backgroundColor: CustomColors.lightPink,
-                      ),
-                    );
-                  },
-                );
-                var response = await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: emailController.text,
-                        password: passwordController.text);
-                if (response == true) {
-                  //Login session become true
-                  notifier.setRememberMe();
-                }
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NavigationScreen()));
-              },
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  backgroundColor: const Color(0xFFEE4D86)),
-              child: Text("Login",
-                  textAlign: TextAlign.left,
-                  textDirection: TextDirection.ltr,
-                  style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
-                  )),
-            );
-          }),
+          ElevatedButton(
+            onPressed: logIn,
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                backgroundColor: const Color(0xFFEE4D86)),
+            child: Text("Login",
+                textAlign: TextAlign.left,
+                textDirection: TextDirection.ltr,
+                style: GoogleFonts.montserrat(
+                  textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                )),
+          )
         ],
       ),
     );

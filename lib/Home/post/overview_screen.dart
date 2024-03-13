@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Navigation/navigation_screen.dart';
@@ -11,6 +13,41 @@ class OverViewScreen extends StatefulWidget {
 }
 
 class _OverViewScreenState extends State<OverViewScreen> {
+//for storing image in firebase storage
+  final firestore = FirebaseFirestore.instance;
+  final userId = FirebaseAuth.instance.currentUser;
+
+  void onSubmitButton() async {
+    // var imageName =
+    // DateTime.now().millisecondsSinceEpoch.toString();
+    // var storageRef = FirebaseStorage.instance
+    //     .ref()
+    //     .child('post_images/$imageName.jpg');
+    // var uploadTask = storageRef.putFile(_image);
+    // var downloadUrl =
+    // await (await uploadTask).ref.getDownloadURL();
+
+    //add users details in  firestore
+    await firestore.collection("Post Data").doc().set({
+      "createdAt": DateTime.now(),
+      "Schedule Date": '31 October 2024',
+      "Schedule Time": '10:00 PM',
+      "Platform": 'Instagram',
+      "Caption": 'This is my caption',
+      "userId": userId?.uid,
+      "userEmail": userId?.email,
+      "userName": userId?.displayName,
+      // Add image reference to document
+      // "Image": downloadUrl.toString()
+    });
+    const CircularProgressIndicator();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const NavigationScreen(),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,11 +277,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
                           borderRadius: BorderRadius.circular(5))),
                     ),
                     onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NavigationScreen(),
-                          ));
+                      onSubmitButton();
                     },
                     child: Text('Go to home',
                         style: GoogleFonts.montserrat(
