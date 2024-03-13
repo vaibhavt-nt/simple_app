@@ -13,7 +13,7 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePageScreen(),
+    HomeScreen(),
     ScheduleScreen(),
     ProfileScreen(),
   ];

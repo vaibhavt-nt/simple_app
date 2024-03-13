@@ -3,7 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/colors.dart';
 
 class ListOfPostScreen extends StatelessWidget {
-  const ListOfPostScreen({super.key});
+  final String scheduleTime, scheduleDate, caption, platform, postImage;
+  const ListOfPostScreen(
+      {super.key,
+      required this.scheduleTime,
+      required this.scheduleDate,
+      required this.caption,
+      required this.platform,
+      required this.postImage});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +35,7 @@ class ListOfPostScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Text('Schedule: 31 October 2021',
+                      Text(scheduleDate,
                           textAlign: TextAlign.left,
                           style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
@@ -38,7 +45,7 @@ class ListOfPostScreen extends StatelessWidget {
                           )),
                       Padding(
                         padding: const EdgeInsets.only(right: 110),
-                        child: Text('Instagram',
+                        child: Text(platform,
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                   fontWeight: FontWeight.w400,
@@ -49,7 +56,7 @@ class ListOfPostScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text('01:08 PM',
+                Text(scheduleTime,
                     textAlign: TextAlign.left,
                     style: GoogleFonts.montserrat(
                       textStyle: const TextStyle(
@@ -66,7 +73,7 @@ class ListOfPostScreen extends StatelessWidget {
           child: SizedBox(
             width: 322,
             height: 322,
-            child: Image.asset('assets/SelectImagePost/image1.png'),
+            child: Image.asset(postImage),
           ),
         ),
         Padding(
@@ -79,16 +86,7 @@ class ListOfPostScreen extends StatelessWidget {
               height: 220,
               width: 237,
               child: Center(
-                child: Text(
-                    'Lorem ipsum dolor sit\n'
-                    'amet consectetur.\n'
-                    'Senectus eleifend purus\n'
-                    'viverra placerat\n'
-                    'pellentesque ac et\n'
-                    'commodo. Viverra tellus\n'
-                    'risus arcu integer justo\n'
-                    'malesuada in urna\n'
-                    'enim.',
+                child: Text(caption,
                     textAlign: TextAlign.left,
                     style: GoogleFonts.montserrat(
                       textStyle: const TextStyle(

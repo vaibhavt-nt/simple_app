@@ -80,6 +80,16 @@ class FirebaseAuthentication {
     return refreshedUser;
   }
 
+  //SIGN OUT METHOD
+  static Future signOut() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.signOut();
+
+    if (kDebugMode) {
+      print('sign out');
+    }
+  }
+
   Future<void> sendVerificationEmail(emailAddress) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     try {

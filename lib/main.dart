@@ -16,7 +16,7 @@ void main() async {
   );
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const MyApp());
+  runApp(const Wrapper());
 }
 
 class MyApp extends StatelessWidget {
@@ -53,16 +53,25 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const NavigationScreen();
-          } else {
-            return const SplashScreen();
-          }
-        },
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return const NavigationScreen();
+              } else {
+                return const SplashScreen();
+              }
+            },
+          ),
+        ),
       ),
     );
   }

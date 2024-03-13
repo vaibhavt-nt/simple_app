@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:simple_app/Provider/provider.dart';
+import 'package:simple_app/Authentication/login_screen.dart';
+import 'package:simple_app/Firebase/firebase_authentication.dart';
 import 'package:simple_app/jsonModels/users.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,28 +20,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser;
-
-  signout() async {
-    await FirebaseAuth.instance.signOut();
-  }
+  final userName = TextEditingController();
+  final userEmail = TextEditingController();
 
   Users? _user;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loadUser().then((user) {
-  //     if (user != null) {
-  //       setState(() {
-  //         _user = user;
-  //       });
-  //     }
-  //   });
-  // }
-
-  bool _passwordVisible = false;
-
-  // _ProfileScreenState(Users? profile);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              initialValue: '${user!.displayName} ',
+                              controller: userName,
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "username is required";
@@ -122,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 return null;
                               },
                               decoration: InputDecoration(
-                                hintText: _user?.userName ?? '',
+                                hintText: '${user!.displayName}',
                                 hintStyle: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
                                       fontSize: 16,
@@ -155,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(
                             height: 70,
                             child: TextFormField(
-                              initialValue: '${user!.email} ',
+                              controller: userEmail,
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "email is required";
@@ -164,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               // controller: emailController,
                               decoration: InputDecoration(
-                                hintText: _user?.userEmail ?? '',
+                                hintText: '${user!.email}',
                                 hintStyle: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
                                       fontSize: 16,
@@ -180,61 +165,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 270),
-                            child: Text("Password",
-                                textAlign: TextAlign.left,
-                                textDirection: TextDirection.ltr,
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
-                          SizedBox(
-                            height: 70,
-                            child: TextFormField(
-                              initialValue: '${user!.phoneNumber} ',
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "password is required";
-                                }
-                                return null;
-                              },
-                              obscureText: !_passwordVisible,
-                              decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _passwordVisible = !_passwordVisible;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    // Based on passwordVisible state choose the icon
-                                    _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color: const Color(0xFFEE4D86),
-                                  ),
-                                ),
-                                hintText: _user?.userPassword ?? '',
-                                hintStyle: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFEE4D86))),
-                                border: const OutlineInputBorder(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -258,30 +188,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.w600),
                           )),
                     )),
-                Consumer<UiProvider>(
-                    builder: (context, UiProvider notifier, child) {
-                  return TextButton(
-                    onPressed: () {
-                      notifier.logout(context);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Log Out",
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                            )),
-                        const Icon(
-                          Icons.exit_to_app,
-                          color: Colors.red,
-                        )
-                      ],
-                    ),
-                  );
-                })
+                TextButton(
+                  onPressed: () {
+                    FirebaseAuthentication.signOut();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Log Out",
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          )),
+                      const Icon(
+                        Icons.exit_to_app,
+                        color: Colors.red,
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -290,29 +222,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-//  TextButton(
-// onPressed: () {
-// Navigator.pushReplacement(
-// context,
-// MaterialPageRoute(
-// builder: (context) => const LoginPage(),
-// ));
-// },
-// child: Row(
-// mainAxisAlignment: MainAxisAlignment.center,
-// children: [
-// Text("Log Out",
-// style: GoogleFonts.montserrat(
-// textStyle: const TextStyle(
-// color: Colors.red,
-// fontSize: 16,
-// fontWeight: FontWeight.w500),
-// )),
-// const Icon(
-// Icons.exit_to_app,
-// color: Colors.red,
-// )
-// ],
-// ),
-// ),
