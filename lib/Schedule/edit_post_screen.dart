@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:simple_app/colors.dart';
 
 class EditPostScreen extends StatefulWidget {
@@ -11,7 +14,11 @@ class EditPostScreen extends StatefulWidget {
 }
 
 class _EditPostScreenState extends State<EditPostScreen> {
-  // For Date Pick Method
+  //textfield for update caption
+  final captionText = TextEditingController();
+
+// For Date Pick Method
+  static DateTime? _selectedDate;
   void _pickDateDialog() {
     showDatePicker(
             context: context,
@@ -29,6 +36,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
       }
       setState(() {
         //for rebuilding the ui
+        _selectedDate = pickedDate;
       });
     });
   }
@@ -60,7 +68,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: const EdgeInsets.fromLTRB(0, 60, 0, 10),
+          minimum: const EdgeInsets.fromLTRB(15, 60, 10, 15),
           child: Center(
             child: Column(
               children: [
@@ -105,16 +113,10 @@ class _EditPostScreenState extends State<EditPostScreen> {
                     height: 237,
                     width: 237,
                     child: Center(
-                      child: Text(
-                          'Lorem ipsum dolor sit\n'
-                          'amet consectetur.\n'
-                          'Senectus eleifend purus\n'
-                          'viverra placerat\n'
-                          'pellentesque ac et\n'
-                          'commodo. Viverra tellus\n'
-                          'risus arcu integer justo\n'
-                          'malesuada in urna\n'
-                          'enim.',
+                      child: TextField(
+                          controller: captionText
+                            ..text = Get.arguments['Caption'].toString(),
+                          // Get.arguments['Caption'].toString(),
                           textAlign: TextAlign.left,
                           style: GoogleFonts.montserrat(
                             textStyle: const TextStyle(
@@ -128,18 +130,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 35),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text('Post Schedule',
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Colors.black),
-                        )),
-                  ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text('Post Schedule',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: Colors.black),
+                      )),
                 ),
                 const SizedBox(
                   height: 10,
@@ -160,13 +159,26 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('31 October 2001',
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Colors.black),
-                              )),
+                          Text(
+                            _selectedDate ==
+                                    null //ternary expression to check if date is null
+                                ? Get.arguments['ScheduleDate'].toString()
+                                : DateFormat.yMMMMEEEEd()
+                                    .format(_selectedDate!),
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: Color(0xff1C1C1C)),
+                            ),
+                          ),
+                          // Text(Get.arguments['ScheduleDate'].toString(),
+                          //     style: GoogleFonts.montserrat(
+                          //       textStyle: const TextStyle(
+                          //           fontWeight: FontWeight.w400,
+                          //           fontSize: 16,
+                          //           color: Colors.black),
+                          //     )),
                           const Icon(Icons.date_range_outlined)
                         ],
                       ),
@@ -192,13 +204,25 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('01 : 08 PM',
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Colors.black),
-                              )),
+                          Text(
+                            selectedTime == null
+                                ? Get.arguments['ScheduleTime'].toString()
+                                : selectedTime!.format(context),
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  color: Color(0xff1C1C1C)),
+                            ),
+                          ),
+                          // Text(
+                          //     // Get.arguments['ScheduleTime'].toString(),
+                          //     style: GoogleFonts.montserrat(
+                          //       textStyle: const TextStyle(
+                          //           fontWeight: FontWeight.w400,
+                          //           fontSize: 16,
+                          //           color: Colors.black),
+                          //     )),
                           const Icon(Icons.watch_later_outlined)
                         ],
                       ),
@@ -216,7 +240,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       builder: (context) {
                         return AlertDialog(
                           alignment: Alignment.center,
-                          title: Text('Select Plateform',
+                          title: Text('Facebook',
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -258,6 +282,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                     side: const BorderSide(
                                         color: CustomColors.pink),
                                     onSelected: (value) {
+
                                       Navigator.pop(context);
                                     },
                                   ),
@@ -280,7 +305,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Facebook',
+                          Text(Get.arguments['Platform'].toString(),
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -297,6 +322,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 const SizedBox(
                   height: 130,
                 ),
+                //for update data in firestore
                 SizedBox(
                   width: 342,
                   child: ElevatedButton(
@@ -307,9 +333,44 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           borderRadius: BorderRadius.circular(5))),
                     ),
                     onPressed: () {
+                      FirebaseFirestore.instance
+                          .collection('Post Data')
+                          .doc(Get.arguments['docId'].toString())
+                          .update({
+                        'Caption': captionText.text.trim(),
+                        'Schedule Date':
+                            DateFormat.yMMMMEEEEd().format(_selectedDate!),
+                        'Schedule Time':selectedTime!.format(context),
+                      });
                       Navigator.pop(context);
                     },
                     child: Text('Save',
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Color(0xffFFFFFC)),
+                        )),
+                  ),
+                ),
+
+                SizedBox(
+                  width: 342,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all(Colors.red),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                    ),
+                    onPressed: () {
+                      FirebaseFirestore.instance
+                          .collection('Post Data')
+                          .doc(Get.arguments['docId'].toString())
+                          .delete();
+                      Navigator.pop(context);
+                    },
+                    child: Text('Delete',
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
                               fontWeight: FontWeight.w600,

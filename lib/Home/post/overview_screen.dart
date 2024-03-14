@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_app/Navigation/navigation_screen.dart';
+import 'package:simple_app/Navigation/bnb_screen.dart';
 import 'package:simple_app/colors.dart';
 
 class OverViewScreen extends StatefulWidget {
@@ -40,11 +42,10 @@ class _OverViewScreenState extends State<OverViewScreen> {
       // Add image reference to document
       // "Image": downloadUrl.toString()
     });
-    const CircularProgressIndicator();
-    Navigator.push(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const NavigationScreen(),
+          builder: (context) => const BNBScreen(),
         ));
   }
 
@@ -53,7 +54,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          minimum: const EdgeInsets.fromLTRB(0, 60, 0, 10),
+          minimum: const EdgeInsets.fromLTRB(20, 60, 20, 10),
           child: Center(
             child: Column(
               children: [
@@ -96,173 +97,189 @@ class _OverViewScreenState extends State<OverViewScreen> {
                   height: 20,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 35),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text('Post Schedule',
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Colors.black),
-                        )),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 40,
-                  width: 342,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: CustomColors.pink)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('31 October 2001',
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text('Post Schedule',
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 16,
                                   color: Colors.black),
                             )),
-                        const Icon(Icons.date_range_outlined)
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 40,
-                  width: 342,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: CustomColors.pink)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('01 : 08 PM',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Colors.black),
-                            )),
-                        const Icon(Icons.watch_later_outlined)
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 40,
-                  width: 342,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: CustomColors.pink)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Facebook',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Colors.black),
-                            )),
-                        const Icon(Icons.facebook)
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        surfaceTintColor: Colors.white,
-                        shadowColor: Colors.white,
-                        backgroundColor:
-                            Colors.white, //background color of button
-                        side: const BorderSide(
-                            width: 2,
-                            color: CustomColors.pink), //border width and color
-                        shape: RoundedRectangleBorder(
-                            //to set border radius to button
-                            borderRadius: BorderRadius.circular(5)),
                       ),
-                      onPressed: () {},
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Icon(
-                              Icons.file_download_outlined,
-                              size: 20,
-                              color: Colors.black,
-                            ),
-                            Text('Download',
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                )),
-                            // Icon(Icons.file_download_outlined),
-                          ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 40,
+                        width: 342,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: CustomColors.pink)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('31 October 2001',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        color: Colors.black),
+                                  )),
+                              const Icon(Icons.date_range_outlined)
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        surfaceTintColor: Colors.white,
-                        shadowColor: Colors.white,
-                        backgroundColor:
-                            Colors.white, //background color of button
-                        side: const BorderSide(
-                            width: 2,
-                            color: CustomColors.pink), //border width and color
-                        shape: RoundedRectangleBorder(
-                            //to set border radius to button
-                            borderRadius: BorderRadius.circular(5)),
+                      const SizedBox(
+                        height: 10,
                       ),
-                      onPressed: () {},
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Icon(
-                              size: 15,
-                              Icons.share_outlined,
-                              color: Colors.black,
-                            ),
-                            Text('    Share',
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 16,
-                                      color: Colors.black),
-                                )),
-                            // Icon(Icons.file_download_outlined),
-                          ],
+                      Container(
+                        height: 40,
+                        width: 342,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: CustomColors.pink)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('01 : 08 PM',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        color: Colors.black),
+                                  )),
+                              const Icon(Icons.watch_later_outlined)
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 40,
+                        width: 342,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: CustomColors.pink)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Facebook',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        color: Colors.black),
+                                  )),
+                              const Icon(Icons.facebook)
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                surfaceTintColor: Colors.white,
+                                shadowColor: Colors.white,
+                                backgroundColor:
+                                    Colors.white, //background color of button
+                                side: const BorderSide(
+                                    width: 2,
+                                    color: CustomColors
+                                        .pink), //border width and color
+                                shape: RoundedRectangleBorder(
+                                    //to set border radius to button
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                              onPressed: () {},
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Icon(
+                                      Icons.file_download_outlined,
+                                      size: 20,
+                                      color: Colors.black,
+                                    ),
+                                    Text('Download',
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )),
+                                    // Icon(Icons.file_download_outlined),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                surfaceTintColor: Colors.white,
+                                shadowColor: Colors.white,
+                                backgroundColor:
+                                    Colors.white, //background color of button
+                                side: const BorderSide(
+                                    width: 2,
+                                    color: CustomColors
+                                        .pink), //border width and color
+                                shape: RoundedRectangleBorder(
+                                    //to set border radius to button
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                              onPressed: () {},
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Icon(
+                                      size: 15,
+                                      Icons.share_outlined,
+                                      color: Colors.black,
+                                    ),
+                                    Text('    Share',
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )),
+                                    // Icon(Icons.file_download_outlined),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   height: 100,

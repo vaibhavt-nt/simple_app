@@ -120,19 +120,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     children: <Widget>[
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 300),
-                            child: Text("Name",
-                                textAlign: TextAlign.left,
-                                textDirection: TextDirection.ltr,
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
+                          Text("Name",
+                              textAlign: TextAlign.left,
+                              textDirection: TextDirection.ltr,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              )),
                           SizedBox(
                             height: 70,
                             child: TextFormField(
@@ -161,19 +159,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 10),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 305),
-                            child: Text("Email",
-                                textAlign: TextAlign.left,
-                                textDirection: TextDirection.ltr,
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
+                          Text("Email",
+                              textAlign: TextAlign.left,
+                              textDirection: TextDirection.ltr,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              )),
                           SizedBox(
                             height: 70,
                             child: TextFormField(
@@ -202,19 +198,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 10),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 270),
-                            child: Text("Password",
-                                textAlign: TextAlign.left,
-                                textDirection: TextDirection.ltr,
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
+                          Text("Password",
+                              textAlign: TextAlign.left,
+                              textDirection: TextDirection.ltr,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              )),
                           SizedBox(
                             height: 70,
                             child: TextFormField(
@@ -261,8 +255,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () async {
                       showDialog(

@@ -1,9 +1,9 @@
 class Users {
-  late final int? usrId;
-  late final String userName;
-  late final String userEmail;
+  final int? usrId;
+  final String userName;
+  final String userEmail;
   final String userPassword;
-  final userPhoto;
+  final String userPhoto;
 
   Users(
       {this.usrId,

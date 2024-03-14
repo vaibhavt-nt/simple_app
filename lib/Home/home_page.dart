@@ -8,6 +8,7 @@ import 'package:simple_app/Home/empty_home_page_screen.dart';
 import 'package:simple_app/Home/list_of_post_screen.dart';
 import 'package:simple_app/Home/post/select_frame_screen.dart';
 import 'package:simple_app/colors.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -48,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(
                           height: 50,
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const EmptyHomeScreen(
                           imagePath: 'assets/home_images/empty.svg',
                           subtitle: "You don’t have create any posts. Please\n"
-                              "                     create new post.",
+                              " create new post.",
                           buttonText: "Create Post",
                         ),
                       ],
@@ -95,9 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const SizedBox(
-                          height: 50,
-                        ),
+                      const Gap(height: 50,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -153,6 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             var postImageLocal =
                                 'assets/SelectImagePost/image1.png';
+
+                            //thi is a post id
+                            var docIdFirestore = snapshot.data!.docs[index].id;
 
                             return ListOfPostScreen(
                                 scheduleTime: scheduleTimeFirestore,

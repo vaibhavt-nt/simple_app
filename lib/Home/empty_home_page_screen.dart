@@ -26,42 +26,47 @@ class EmptyHomeScreen extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Text(subtitle,
-              // "You don’t have create any posts. Please\n"
-              //     "                     create new post.",
-              style: GoogleFonts.montserrat(
-                textStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-              )),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(subtitle,
+               textAlign:TextAlign.center,
+                style: GoogleFonts.montserrat(
+                  textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                )),
+          ),
         ),
         const SizedBox(
           height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SelectFrameScreen(),
-                  ));
-            },
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFFEE4D86)),
-                shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5))))),
-            child: Text(buttonText,
-                // "Create Post",
-                style: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
-                )),
+          padding: const EdgeInsets.all(10.0),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SelectFrameScreen(),
+                    ));
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(const Color(0xFFEE4D86)),
+                  shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5))))),
+              child: Text(buttonText,
+                  // "Create Post",
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  )),
+            ),
           ),
         ),
       ],
