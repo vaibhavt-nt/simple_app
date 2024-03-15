@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class FirebaseAuthentication {
   // For registering a new user
@@ -11,6 +15,7 @@ class FirebaseAuthentication {
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
+    Completer<User?> completer = Completer<User?>();
 
     try {
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
@@ -23,6 +28,7 @@ class FirebaseAuthentication {
       await user.updatePhotoURL(photo);
       await user.reload();
       user = auth.currentUser;
+      completer.complete(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         if (kDebugMode) {
@@ -30,16 +36,27 @@ class FirebaseAuthentication {
         }
       } else if (e.code == 'email-already-in-use') {
         if (kDebugMode) {
-          print('The account already exists for that email.');
+          print('The email address is already in use by another account.');
         }
+        Fluttertoast.showToast(
+            msg: "The account already exists for that email.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+        completer.completeError(e);
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
+      completer.completeError(e);
     }
 
-    return user;
+    return completer.future;
   }
 
   // For signing in an user (have already registered)
@@ -58,13 +75,11 @@ class FirebaseAuthentication {
       user = userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        if (kDebugMode) {
+
           print('No user found for that email.');
-        }
       } else if (e.code == 'wrong-password') {
-        if (kDebugMode) {
+
           print('Wrong password provided.');
-        }
       }
     }
 
@@ -101,3 +116,4 @@ class FirebaseAuthentication {
     }
   }
 }
+

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Home/empty_home_page_screen.dart';
 import 'package:simple_app/Home/list_of_post_screen.dart';
 import 'package:simple_app/Home/post/select_frame_screen.dart';
+import 'package:simple_app/Home/username_image_home_row.dart';
 import 'package:simple_app/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 
@@ -53,25 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(
                           height: 50,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Good Morning!\n${user!.displayName}",
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
-                                        color: CustomColors.darkGrey,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w500),
-                                  )),
-                              CircleAvatar(
-                                child: SvgPicture.asset(
-                                    'assets/home_images/empty.svg'),
-                              )
-                            ],
-                          ),
-                        ),
+                        //username and image
+                        UsernameImageDisplayInHomeScreen(),
                         const EmptyHomeScreen(
                           imagePath: 'assets/home_images/empty.svg',
                           subtitle: "You don’t have create any posts. Please\n"
@@ -98,26 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Gap(
                           height: 50,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Good Morning!\n${user!.displayName}",
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: CustomColors.darkGrey,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                            const SizedBox(
-                              height: 60,
-                              width: 60,
-                              child: ClipOval(
-                                  child: CircleAvatar(
-                                backgroundColor: Colors.pink,
-                              )),
-                            ),
-                          ],
-                        ),
+                        //username and image
+                        UsernameImageDisplayInHomeScreen(),
                         const SizedBox(
                           height: 20,
                         ),

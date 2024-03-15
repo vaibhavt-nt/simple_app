@@ -17,9 +17,14 @@ void main() async {
   );
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const GetMaterialApp(home: Wrapper(),
-  debugShowCheckedModeBanner: false,
-  ),);
+  runApp(
+    const ScaffoldMessenger(
+      child: GetMaterialApp(
+        home: Wrapper(),
+        debugShowCheckedModeBanner: false,
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +46,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: 'Simple App ',
               home: notifier.rememberMe
-                  ? const BNBScreen()
+                  ? const BottomNavigationBarScreen()
                   : const SplashScreen(),
             ),
           );
@@ -68,7 +73,7 @@ class Wrapper extends StatelessWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return const BNBScreen();
+                return const BottomNavigationBarScreen();
               } else {
                 return const SplashScreen();
               }

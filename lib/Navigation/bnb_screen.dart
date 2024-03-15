@@ -3,14 +3,14 @@ import 'package:simple_app/Home/home_page.dart';
 import 'package:simple_app/Profile/profile_screen.dart';
 import 'package:simple_app/Schedule/schedule_screen.dart';
 
-class BNBScreen extends StatefulWidget {
-  const BNBScreen({super.key});
+class BottomNavigationBarScreen extends StatefulWidget {
+  const BottomNavigationBarScreen({super.key});
 
   @override
-  createState() => _BNBScreenState();
+  createState() => _BottomNavigationBarScreenState();
 }
 
-class _BNBScreenState extends State<BNBScreen> {
+class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),

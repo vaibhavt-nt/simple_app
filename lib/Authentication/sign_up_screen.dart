@@ -2,15 +2,20 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_app/Authentication/image_picker_service.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
+import 'package:simple_app/Authentication/validations.dart';
 import 'package:simple_app/Firebase/firebase_authentication.dart';
+import 'package:simple_app/Navigation/bnb_screen.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/colors.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/onboarding_screen/onboarding_screen1.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -28,18 +33,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   late SharedPreferences sharedPreferences;
 
-  void pickImage() async {
-    // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
-  final ImagePicker _picker = ImagePicker();
   File? _image;
 
   bool _passwordVisible = false;
@@ -47,10 +40,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   //for user already exits
   bool isUserExist = false;
+  bool _isLoading = false;
 
   final db = DatabaseHelper();
 
@@ -60,88 +54,92 @@ class _SignUpScreenState extends State<SignUpScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    const SizedBox(height: 60.0),
-                    Text("Signup",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w600),
-                        )),
-                    const SizedBox(height: 30.0),
-                    GestureDetector(
-                      onTap: () {
-                        pickImage();
-                      },
-                      child: Center(
-                        child: _image == null
-                            ? SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: CircleAvatar(
-                                  child: SvgPicture.asset(
-                                      'assets/sign_up_images/image_picker_empty.svg'),
-                                ),
-                              )
-                            : ClipOval(
-                                child: Image.file(
-                                  File(_image!.path),
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text("Add your profile photo",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                        )),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Column(
                     children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Name",
-                              textAlign: TextAlign.left,
-                              textDirection: TextDirection.ltr,
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                          SizedBox(
-                            height: 70,
-                            child: TextFormField(
+                      const SizedBox(height: 60.0),
+                      Text("Signup",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w600),
+                          )),
+                      const SizedBox(height: 30.0),
+                      GestureDetector(
+                        onTap: () {
+                          PickImage.pickImage((image) {
+                            if (image != null) {
+                              setState(() {
+                                _image = image;
+                              });
+                            }
+                          });
+                        },
+                        child: Center(
+                          child: _image == null
+                              ? SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: CircleAvatar(
+                                    child: SvgPicture.asset(
+                                        'assets/sign_up_images/image_picker_empty.svg'),
+                                  ),
+                                )
+                              : ClipOval(
+                                  child: Image.file(
+                                    File(_image!.path),
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text("Add your profile photo",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.montserrat(
+                            textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          )),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Name",
+                                textAlign: TextAlign.left,
+                                textDirection: TextDirection.ltr,
+                                style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            const Gap(),
+                            TextFormField(
                               controller: usernameController,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "username is required";
-                                }
-                                return null;
-                              },
+                              validator: Validation.validateName,
                               decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 10.0),
                                 hintText: "Enter your name",
                                 hintStyle: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
@@ -154,33 +152,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 border: const OutlineInputBorder(),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Email",
-                              textAlign: TextAlign.left,
-                              textDirection: TextDirection.ltr,
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                          SizedBox(
-                            height: 70,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "email is required";
-                                }
-                                return null;
-                              },
+                          ],
+                        ),
+                        const Gap(
+                          height: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Email",
+                                textAlign: TextAlign.left,
+                                textDirection: TextDirection.ltr,
+                                style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            const Gap(),
+                            TextFormField(
+                              validator: Validation.validateEmail,
                               controller: emailController,
                               decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 10.0),
                                 hintText: "Enter your email",
                                 hintStyle: GoogleFonts.montserrat(
                                   textStyle: const TextStyle(
@@ -193,34 +188,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 border: const OutlineInputBorder(),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Password",
-                              textAlign: TextAlign.left,
-                              textDirection: TextDirection.ltr,
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                          SizedBox(
-                            height: 70,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "password is required";
-                                }
-                                return null;
-                              },
+                          ],
+                        ),
+                        const Gap(
+                          height: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Password",
+                                textAlign: TextAlign.left,
+                                textDirection: TextDirection.ltr,
+                                style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                            const Gap(),
+                            TextFormField(
+                              validator: Validation.validatePassword,
                               obscureText: !_passwordVisible,
                               controller: passwordController,
                               decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 10.0),
                                 suffixIcon: IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -230,8 +222,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   icon: Icon(
                                     // Based on passwordVisible state choose the icon
                                     _passwordVisible
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
                                     color: const Color(0xFFEE4D86),
                                   ),
                                 ),
@@ -247,110 +239,201 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 border: const OutlineInputBorder(),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 43.5,
+                      child: ElevatedButton(
+                        onPressed: _isLoading
+                            ? null
+                            : () async {
+                                if (_formKey.currentState!.validate() &&
+                                    _image != null) {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+
+                                  // Show a loading indicator while the image is being uploaded and the user is being registered
+
+                                  var imageName = DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString();
+                                  var storageRef = FirebaseStorage.instance
+                                      .ref()
+                                      .child('post_images/$imageName.jpg');
+                                  var uploadTask = storageRef.putFile(_image!);
+                                  var downloadUrl = await (await uploadTask)
+                                      .ref
+                                      .getDownloadURL();
+                                  try {
+                                    User? user = await FirebaseAuthentication
+                                        .registerUsingEmailPassword(
+                                            name: usernameController.text,
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                            photo: downloadUrl);
+                                    if (user != null) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text(
+                                                'Registration successful'),
+                                            content: const Text(
+                                                'User registered successfully'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BottomNavigationBarScreen(),
+                                          ));
+                                    }
+                                  } on FirebaseAuthException catch (e) {
+                                    if (e.code == 'email-already-in-use') {
+                                      // Show an AlertDialog instead of a SnackBar
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Error'),
+                                            content: const Text(
+                                                'The email address is already in use by another account.'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  }
+
+                                  // Dismiss the loading indicator and show the AlertDialog
+
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                } else if (_image == null) {
+                                  // Show an AlertDialog instead of a SnackBar
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Error'),
+                                        content: const Text(
+                                            'Please select a profile photo'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            backgroundColor: _isLoading
+                                ? Colors.grey
+                                : const Color(0xFFEE4D86)),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text("Signup",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                )),
                       ),
-                      const SizedBox(height: 20),
-                    ],
+                    ),
                   ),
-                ),
 
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              color: CustomColors.pink,
-                              backgroundColor: CustomColors.lightPink,
-                            ),
-                          );
-                        },
-                      );
-
-                      User? user = await FirebaseAuthentication
-                          .registerUsingEmailPassword(
-                              name: usernameController.text,
-                              email: emailController.text,
-                              password: passwordController.text,
-                              photo: _image!.path);
-                      if (user != null) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const OnboardingScreen(),
-                            ));
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        backgroundColor: const Color(0xFFEE4D86)),
-                    child: Text("Signup",
-                        textAlign: TextAlign.left,
-                        textDirection: TextDirection.ltr,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        )),
+                  const SizedBox(
+                    height: 40,
                   ),
-                ),
+                  //Message when there is a duplicate user
 
-                const SizedBox(
-                  height: 15,
-                ),
-                //Message when there is a duplicate user
+                  //By default we hide the message
+                  isUserExist
+                      ? const Center(
+                          child: Text(
+                          "User already exists, please enter another name",
+                          style: TextStyle(color: Colors.red),
+                        ))
+                      : const SizedBox(),
 
-                //By default we hide the message
-                isUserExist
-                    ? const Center(
-                        child: Text(
-                        "User already exists, please enter another name",
-                        style: TextStyle(color: Colors.red),
-                      ))
-                    : const SizedBox(),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Already have an account?",
-                          textAlign: TextAlign.left,
-                          textDirection: TextDirection.ltr,
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400),
-                          )),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginPage(),
-                              ));
-                        },
-                        child: Text("Login",
-                            textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Already have an account?",
+                            textAlign: TextAlign.left,
+                            textDirection: TextDirection.ltr,
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
-                                  color: Color(0xFFEE4D86),
+                                  color: Colors.black,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600),
+                                  fontWeight: FontWeight.w400),
                             )),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ));
+                          },
+                          child: Text("Login",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    color: Color(0xFFEE4D86),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              )),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

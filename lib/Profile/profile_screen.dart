@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -95,28 +96,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 100,
                           width: 100,
                           child: GestureDetector(
-                            onTap: () {
-                              pickImage();
-                            },
-                            child: Center(
-                              child: _image == null
-                                  ? SizedBox(
-                                      height: 100,
-                                      width: 100,
-                                      child: CircleAvatar(
-                                        child: SvgPicture.asset(
-                                            'assets/sign_up_images/image_picker_empty.svg'),
-                                      ),
-                                    )
-                                  : ClipOval(
-                                      child: Image.file(
-                                        File(_image!.path),
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                      ),
+                              onTap: () {
+                                pickImage();
+                              },
+                              child: Center(
+                                  child:SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage("${user!.photoURL}"),
                                     ),
-                            ),
+                                  ))
                           ),
                         ),
                       ),

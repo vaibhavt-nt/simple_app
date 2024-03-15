@@ -43,7 +43,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const BNBScreen(),
+          builder: (context) => const BottomNavigationBarScreen(),
         ));
   }
 

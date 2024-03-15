@@ -160,7 +160,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const BNBScreen(),
+                              builder: (context) => const BottomNavigationBarScreen(),
                             ));
                       },
                       child: Text('Go to home',
