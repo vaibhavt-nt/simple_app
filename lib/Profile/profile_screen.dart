@@ -2,12 +2,15 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
 import 'package:simple_app/Firebase/firebase_authentication.dart';
-import 'package:simple_app/jsonModels/users.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -19,11 +22,48 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final user = FirebaseAuth.instance.currentUser;
   final userName = TextEditingController();
   final userEmail = TextEditingController();
 
-  Users? _user;
+  void pickImage() async {
+    // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+
+  //for storing image in firebase storage
+  final user = FirebaseAuth.instance.currentUser;
+  final firestore = FirebaseFirestore.instance;
+  void onSubmitButton() async {
+    // var imageName =
+    // DateTime.now().millisecondsSinceEpoch.toString();
+    // var storageRef = FirebaseStorage.instance
+    //     .ref()
+    //     .child('post_images/$imageName.jpg');
+    // var uploadTask = storageRef.putFile(_image);
+    // var downloadUrl =
+    // await (await uploadTask).ref.getDownloadURL();
+
+    //add users details in  firestore
+    await firestore.collection("Post Data").doc().update({
+      "createdAt": DateTime.now(),
+      "userId": user?.uid,
+      "userName": user?.displayName,
+      // Add image reference to document
+      // "Image": downloadUrl.toString()
+    });
+    Get.showSnackbar(const GetSnackBar(
+      title: 'Updated Successfully',
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +94,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: SizedBox(
                           height: 100,
                           width: 100,
-                          child: ClipOval(
-                            child: _user?.userPhoto == null
-                                ? const Icon(Icons.account_circle)
-                                : Image.file(
-                                    File(_user!.userPhoto),
-                                    fit: BoxFit.cover,
-                                  ),
+                          child: GestureDetector(
+                            onTap: () {
+                              pickImage();
+                            },
+                            child: Center(
+                              child: _image == null
+                                  ? SizedBox(
+                                      height: 100,
+                                      width: 100,
+                                      child: CircleAvatar(
+                                        child: SvgPicture.asset(
+                                            'assets/sign_up_images/image_picker_empty.svg'),
+                                      ),
+                                    )
+                                  : ClipOval(
+                                      child: Image.file(
+                                        File(_image!.path),
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            ),
                           ),
                         ),
                       ),
@@ -83,19 +139,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     children: <Widget>[
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 300),
-                            child: Text("Name",
-                                textAlign: TextAlign.left,
-                                textDirection: TextDirection.ltr,
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
+                          Text("Name",
+                              textAlign: TextAlign.left,
+                              textDirection: TextDirection.ltr,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              )),
                           SizedBox(
                             height: 70,
                             child: TextFormField(
@@ -124,19 +178,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 10),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 305),
-                            child: Text("Email",
-                                textAlign: TextAlign.left,
-                                textDirection: TextDirection.ltr,
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                )),
-                          ),
+                          Text("Email",
+                              textAlign: TextAlign.left,
+                              textDirection: TextDirection.ltr,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              )),
                           SizedBox(
                             height: 70,
                             child: TextFormField(
@@ -170,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Container(
-                    padding: const EdgeInsets.only(top: 3, left: 3),
+                    padding: const EdgeInsets.only(top: 70, left: 3),
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(

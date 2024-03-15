@@ -18,6 +18,29 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
     alignment: Alignment.topLeft,
   );
 
+  void containerImage() {
+    Stack(alignment: Alignment.center, children: [
+      SizedBox(
+          width: 342,
+          height: 342,
+          child: Image.asset('assets/SelectImagePost/image1.png')),
+      Container(
+        color: Colors.white,
+        height: 237,
+        width: 237,
+        child: Text(
+          text,
+          style: GoogleFonts.montserrat(
+            textStyle: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: Color(0xff1C1C1C)),
+          ),
+        ),
+      )
+    ]);
+  }
+
   void leftAlignment() {
     setState(() {
       Align(
@@ -43,7 +66,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
         child: Column(
           children: [
             LinearPercentIndicator(
-              width: 342.0,
+              width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
               percent: 0.75,
               barRadius: const Radius.circular(20),

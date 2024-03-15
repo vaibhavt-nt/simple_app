@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/colors.dart';
@@ -25,36 +26,31 @@ class ListOfPostScreen extends StatelessWidget {
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5)),
           child: Padding(
-            padding: const EdgeInsets.only(top: 300, left: 15, right: 15),
+            padding: const EdgeInsets.all(10.0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 40,
-                  ),
-                  child: Column(
-                    children: [
-                      Text(scheduleDate,
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                                color: Colors.black),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 110),
-                        child: Text(platform,
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                  color: Colors.black),
-                            )),
-                      ),
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(scheduleDate,
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.black),
+                        )),
+                    Text(platform,
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Colors.black),
+                        )),
+                  ],
                 ),
                 Text(scheduleTime,
                     textAlign: TextAlign.left,
@@ -70,10 +66,13 @@ class ListOfPostScreen extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: 322,
-            height: 322,
-            child: Image.asset(postImage),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              width: 322,
+              height: 322,
+              child: Image.asset(postImage),
+            ),
           ),
         ),
         Padding(

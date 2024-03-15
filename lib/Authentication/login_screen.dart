@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simple_app/services/firebase_service.dart';
 import 'package:simple_app/Authentication/forgot_password_screen.dart';
-import 'package:simple_app/Navigation/navigation_screen.dart';
+import 'package:simple_app/Navigation/bnb_screen.dart';
 import 'package:simple_app/SQLite/sqlite.dart';
 import 'package:simple_app/Authentication/sign_up_screen.dart';
 
@@ -27,36 +27,41 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoginTrue = false;
 
   // this is for firebase login with email and password
-  logIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text);
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const NavigationScreen(),
-        ));
-  }
+  // logIn() async {
+  //   await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: emailController.text, password: passwordController.text);
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => const NavigationScreen(),
+  //       ));
+  // }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Container(
-          margin: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _header(context),
-              isLoginTrue
-                  ? const Text(
-                      "Username or password is incorrect",
-                      style: TextStyle(color: Colors.red),
-                    )
-                  : const SizedBox(),
-              _inputField(context),
-              _signup(context),
-            ],
+        body: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  height: 100,
+                ),
+                _header(context),
+                isLoginTrue
+                    ? const Text(
+                        "Username or password is incorrect",
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : const SizedBox(),
+                _inputField(context),
+                _signup(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -79,19 +84,17 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 290),
-                child: Text("Email",
-                    textAlign: TextAlign.left,
-                    textDirection: TextDirection.ltr,
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    )),
-              ),
+              Text("Email",
+                  textAlign: TextAlign.left,
+                  textDirection: TextDirection.ltr,
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  )),
               SizedBox(
                 height: 70,
                 child: TextFormField(
@@ -118,19 +121,17 @@ class _LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 10),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 260),
-                child: Text("Password",
-                    textAlign: TextAlign.left,
-                    textDirection: TextDirection.ltr,
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                    )),
-              ),
+              Text("Password",
+                  textAlign: TextAlign.left,
+                  textDirection: TextDirection.ltr,
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                  )),
               SizedBox(
                 height: 70,
                 child: TextFormField(
@@ -168,30 +169,39 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 190),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen(),
-                        ));
-                  },
-                  child: Text("Forgot Password?",
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      )),
-                ),
-              )
             ],
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ForgotPasswordScreen(),
+                    ));
+              },
+              child: Text("Forgot Password?",
+                  style: GoogleFonts.montserrat(
+                    textStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  )),
+            ),
           ),
           const SizedBox(height: 70),
           ElevatedButton(
-            onPressed: logIn,
+            onPressed: () async {
+              final result = await FireBaseHelper.signInWithEmailPassword(
+                  emailController.text, passwordController.text);
+              if (result == 'Success') {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const BNBScreen()));
+              } else {
+                debugPrint('Fail to login');
+              }
+            },
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -213,34 +223,37 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _signup(context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Don't have an account?",
-            style: GoogleFonts.montserrat(
-              textStyle: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
-            )),
-        TextButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignUpScreen(),
-                ));
-          },
-          child: Text("Signup",
-              textAlign: TextAlign.center,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Don't have an account?",
               style: GoogleFonts.montserrat(
                 textStyle: const TextStyle(
-                    color: Color(0xFFEE4D86),
+                    color: Colors.black,
                     fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w400),
               )),
-        )
-      ],
+          TextButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpScreen(),
+                  ));
+            },
+            child: Text("Signup",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.montserrat(
+                  textStyle: const TextStyle(
+                      color: Color(0xFFEE4D86),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                )),
+          )
+        ],
+      ),
     );
   }
 }

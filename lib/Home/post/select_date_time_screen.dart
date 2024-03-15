@@ -75,7 +75,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
           child: Column(
             children: [
               LinearPercentIndicator(
-                width: 342.0,
+                width: MediaQuery.of(context).size.width/1.2,
                 lineHeight: 8.0,
                 percent: 1,
                 barRadius: const Radius.circular(20),
@@ -154,44 +154,50 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                           ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _pickDateDialog();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                          shadowColor: MaterialStateProperty.all(Colors.white),
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          // overlayColor: MaterialStateProperty.all(Colors.white),
-                          surfaceTintColor:
-                              MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                              side: BorderSide(width: 1, color: Colors.black12),
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              _selectedDate ==
-                                      null //ternary expression to check if date is null
-                                  ? 'Select Date'
-                                  : DateFormat.yMMMMEEEEd()
-                                      .format(_selectedDate!),
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Color(0xff1C1C1C)),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: SingleChildScrollView(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _pickDateDialog();
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              shadowColor: MaterialStateProperty.all(Colors.white),
+                              foregroundColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              // overlayColor: MaterialStateProperty.all(Colors.white),
+                              surfaceTintColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all(
+                                const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero,
+                                  side: BorderSide(width: 1, color: Colors.black12),
+                                ),
                               ),
                             ),
-                            const Icon(Icons.date_range_outlined)
-                          ],
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _selectedDate ==
+                                          null //ternary expression to check if date is null
+                                      ? 'Select Date'
+                                      : DateFormat.yMMMMEEEEd()
+                                          .format(_selectedDate!),
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        color: Color(0xff1C1C1C)),
+                                  ),
+                                ),
+                                const SizedBox(width: 35,),
+                                const Icon(Icons.date_range_outlined)
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                       Align(

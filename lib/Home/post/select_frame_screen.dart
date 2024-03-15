@@ -37,7 +37,7 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
         child: Column(
           children: [
             LinearPercentIndicator(
-              width: 342.0,
+              width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
               percent: 0.25,
               barRadius: const Radius.circular(20),
