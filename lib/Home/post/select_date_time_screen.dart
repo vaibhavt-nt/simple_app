@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -194,7 +193,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                                         color: Color(0xff1C1C1C)),
                                   ),
                                 ),
-                                SizedBox(width: 35,),
+                                const SizedBox(width: 35,),
                                 const Icon(Icons.date_range_outlined)
                               ],
                             ),

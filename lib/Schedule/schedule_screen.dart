@@ -104,8 +104,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                           var scheduleDateFirestore =
                               snapshot.data!.docs[index]['Schedule Date'];
 
-                          var postImageLocal =
-                              'assets/SelectImagePost/image1.png';
 
                           var docIdFirestore = snapshot.data!.docs[index].id;
 

@@ -18,13 +18,12 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
     alignment: Alignment.topLeft,
   );
 
-  void containerImage(){
+  void containerImage() {
     Stack(alignment: Alignment.center, children: [
       SizedBox(
           width: 342,
           height: 342,
-          child:
-          Image.asset('assets/SelectImagePost/image1.png')),
+          child: Image.asset('assets/SelectImagePost/image1.png')),
       Container(
         color: Colors.white,
         height: 237,
@@ -67,7 +66,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
         child: Column(
           children: [
             LinearPercentIndicator(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
               percent: 0.75,
               barRadius: const Radius.circular(20),

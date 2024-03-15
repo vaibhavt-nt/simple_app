@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/services/firebase_service.dart';
@@ -50,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
                 _header(context),
@@ -201,7 +199,8 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const BNBScreen()));
               } else {
-              debugPrint('Fail to login');}
+                debugPrint('Fail to login');
+              }
             },
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

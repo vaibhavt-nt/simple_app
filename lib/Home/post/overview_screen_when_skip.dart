@@ -64,7 +64,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width/2.5,
+                      width: MediaQuery.of(context).size.width / 2.5,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           surfaceTintColor: Colors.white,
@@ -73,7 +73,8 @@ class _OverViewScreenWhenSkipButtonPressedState
                               Colors.white, //background color of button
                           side: const BorderSide(
                               width: 2,
-                              color: CustomColors.pink), //border width and color
+                              color:
+                                  CustomColors.pink), //border width and color
                           shape: RoundedRectangleBorder(
                               //to set border radius to button
                               borderRadius: BorderRadius.circular(5)),
@@ -103,7 +104,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                       ),
                     ),
                     SizedBox(
-                      width:MediaQuery.of(context).size.width/2.5,
+                      width: MediaQuery.of(context).size.width / 2.5,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           surfaceTintColor: Colors.white,
@@ -112,7 +113,8 @@ class _OverViewScreenWhenSkipButtonPressedState
                               Colors.white, //background color of button
                           side: const BorderSide(
                               width: 2,
-                              color: CustomColors.pink), //border width and color
+                              color:
+                                  CustomColors.pink), //border width and color
                           shape: RoundedRectangleBorder(
                               //to set border radius to button
                               borderRadius: BorderRadius.circular(5)),

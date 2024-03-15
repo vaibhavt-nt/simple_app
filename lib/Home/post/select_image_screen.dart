@@ -33,7 +33,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
         child: Column(
           children: [
             LinearPercentIndicator(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
               percent: 0.50,
               barRadius: const Radius.circular(20),

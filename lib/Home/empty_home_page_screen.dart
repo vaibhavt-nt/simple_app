@@ -29,7 +29,7 @@ class EmptyHomeScreen extends StatelessWidget {
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(subtitle,
-               textAlign:TextAlign.center,
+                textAlign: TextAlign.center,
                 style: GoogleFonts.montserrat(
                   textStyle: const TextStyle(
                       color: Colors.black,

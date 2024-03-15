@@ -11,8 +11,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_app/Authentication/login_screen.dart';
 import 'package:simple_app/Firebase/firebase_authentication.dart';
-import 'package:simple_app/colors.dart';
-import 'package:simple_app/jsonModels/users.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -37,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     }
   }
+
   final ImagePicker _picker = ImagePicker();
   File? _image;
 
@@ -61,7 +60,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // Add image reference to document
       // "Image": downloadUrl.toString()
     });
-    Get.showSnackbar(GetSnackBar(title: 'Updated Successfully',));
+    Get.showSnackbar(const GetSnackBar(
+      title: 'Updated Successfully',
+    ));
   }
 
   @override
@@ -100,21 +101,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Center(
                               child: _image == null
                                   ? SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: CircleAvatar(
-                                  child: SvgPicture.asset(
-                                      'assets/sign_up_images/image_picker_empty.svg'),
-                                ),
-                              )
+                                      height: 100,
+                                      width: 100,
+                                      child: CircleAvatar(
+                                        child: SvgPicture.asset(
+                                            'assets/sign_up_images/image_picker_empty.svg'),
+                                      ),
+                                    )
                                   : ClipOval(
-                                child: Image.file(
-                                  File(_image!.path),
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                                      child: Image.file(
+                                        File(_image!.path),
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
