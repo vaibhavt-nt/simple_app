@@ -2,12 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_app/Navigation/bnb_screen.dart';
 import 'package:simple_app/Provider/provider.dart';
-import 'package:simple_app/Firebase/firebase_options.dart';
-import 'package:simple_app/splash_screen.dart';
+import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
+import 'package:simple_app/screens/splash_screen/splash_screen.dart';
+import 'package:simple_app/services/firebase_service/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,12 +17,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(
-    const ScaffoldMessenger(
-      child: GetMaterialApp(
-        home: Wrapper(),
-        debugShowCheckedModeBanner: false,
-      ),
-    ),
+    const Wrapper(),
   );
 }
 
@@ -68,16 +62,18 @@ class Wrapper extends StatelessWidget {
       ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return const BottomNavigationBarScreen();
-              } else {
-                return const SplashScreen();
-              }
-            },
+        home: ScaffoldMessenger(
+          child: Scaffold(
+            body: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return const BottomNavigationBarScreen();
+                } else {
+                  return const SplashScreen();
+                }
+              },
+            ),
           ),
         ),
       ),
