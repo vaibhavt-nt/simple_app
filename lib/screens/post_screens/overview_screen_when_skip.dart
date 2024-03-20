@@ -3,54 +3,83 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path/path.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 
-class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
+class OverViewScreenWhenSkipButtonPressed extends StatefulWidget {
   final double containerHeight;
   final double containerWidth;
   final String imageUrl;
   final String enteredText;
-  OverViewScreenWhenSkipButtonPressed(
+  const OverViewScreenWhenSkipButtonPressed(
       {super.key,
       required this.containerHeight,
       required this.containerWidth,
       required this.imageUrl,
       required this.enteredText});
 
+  @override
+  State<OverViewScreenWhenSkipButtonPressed> createState() =>
+      _OverViewScreenWhenSkipButtonPressedState();
+}
+
+class _OverViewScreenWhenSkipButtonPressedState
+    extends State<OverViewScreenWhenSkipButtonPressed> {
+  bool _isLoading = false;
+
   //for storing image in firebase storage
   final firestore = FirebaseFirestore.instance;
   final userId = FirebaseAuth.instance.currentUser;
 
   void onSubmitButton() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     var imageName = DateTime.now().millisecondsSinceEpoch.toString();
     var storageRef =
         FirebaseStorage.instance.ref().child('post_images/$imageName.jpg');
-    var uploadTask = storageRef.putFile(imageUrl as File);
+    var uploadTask = storageRef.putFile(File(widget.imageUrl));
     var downloadUrl = await (await uploadTask).ref.getDownloadURL();
 
     //add users details in  firestore
-    await firestore.collection("Post Data").doc().set({
-      "createdAt": DateTime.now(),
-      "Schedule Date": '',
-      "Schedule Time": '',
-      "Platform": '',
-      "Caption": enteredText,
-      "userId": userId?.uid,
-      "userEmail": userId?.email,
-      "userName": userId?.displayName,
-      // Add image reference to document
-      "Image": downloadUrl.toString()
-    });
-    Navigator.pushReplacement(
-        context as BuildContext,
+    try {
+      await firestore.collection("Post Data").doc().set({
+        "createdAt": DateTime.now(),
+        "Schedule Date": '',
+        "Schedule Time": '',
+        "Platform": '',
+        "Caption": widget.enteredText,
+        "userId": userId?.uid,
+        "userEmail": userId?.email,
+        "userName": userId?.displayName,
+        //Add image reference to document
+        "Image": downloadUrl.toString()
+      });
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.pushReplacement(
+        context,
         MaterialPageRoute(
           builder: (context) => const BottomNavigationBarScreen(),
-        ));
+        ),
+      );
+    } catch (e) {
+      // Handle error
+      if (kDebugMode) {
+        print(e);
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -71,11 +100,11 @@ class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
                       Stack(alignment: Alignment.center, children: [
                         // Display the container image
                         SizedBox(
-                          height: containerHeight,
-                          width: containerWidth,
-                          child: imageUrl.isNotEmpty
-                              ? Image.asset(
-                                  imageUrl,
+                          height: widget.containerHeight,
+                          width: widget.containerWidth,
+                          child: widget.imageUrl.isNotEmpty
+                              ? Image.file(
+                                  File(widget.imageUrl),
                                   fit: BoxFit.cover,
                                 )
                               : const Text(
@@ -91,7 +120,7 @@ class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
                               child: Container(
                                 color: Colors.white,
                                 child: Text(
-                                  enteredText,
+                                  widget.enteredText,
                                   style: const TextStyle(fontSize: 20),
                                 ),
                               ),
@@ -111,14 +140,10 @@ class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
                               style: ElevatedButton.styleFrom(
                                 surfaceTintColor: Colors.white,
                                 shadowColor: Colors.white,
-                                backgroundColor:
-                                    Colors.white, //background color of button
+                                backgroundColor: Colors.white,
                                 side: const BorderSide(
-                                    width: 2,
-                                    color: CustomColors
-                                        .pink), //border width and color
+                                    width: 2, color: Colors.black),
                                 shape: RoundedRectangleBorder(
-                                    //to set border radius to button
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               onPressed: () {},
@@ -133,13 +158,15 @@ class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
                                       size: 20,
                                       color: Colors.black,
                                     ),
-                                    Text('Download',
-                                        style: GoogleFonts.montserrat(
-                                          textStyle: const TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16,
-                                              color: Colors.black),
-                                        )),
+                                    Text(
+                                      'Download',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
                                     // Icon(Icons.file_download_outlined),
                                   ],
                                 ),
@@ -152,14 +179,10 @@ class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
                               style: ElevatedButton.styleFrom(
                                 surfaceTintColor: Colors.white,
                                 shadowColor: Colors.white,
-                                backgroundColor:
-                                    Colors.white, //background color of button
+                                backgroundColor: Colors.white,
                                 side: const BorderSide(
-                                    width: 2,
-                                    color: CustomColors
-                                        .pink), //border width and color
+                                    width: 2, color: Colors.black),
                                 shape: RoundedRectangleBorder(
-                                    //to set border radius to button
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               onPressed: () {},
@@ -173,13 +196,15 @@ class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
                                       Icons.share_outlined,
                                       color: Colors.black,
                                     ),
-                                    Text('    Share',
-                                        style: GoogleFonts.montserrat(
-                                          textStyle: const TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16,
-                                              color: Colors.black),
-                                        )),
+                                    Text(
+                                      '    Share',
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
                                     // Icon(Icons.file_download_outlined),
                                   ],
                                 ),
@@ -204,16 +229,22 @@ class OverViewScreenWhenSkipButtonPressed extends StatelessWidget {
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5))),
                 ),
-                onPressed: () {
-                  onSubmitButton();
-                },
-                child: Text('Go to home',
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xffFFFFFC)),
-                    )),
+                onPressed: _isLoading
+                    ? null
+                    : () {
+                        onSubmitButton();
+                      },
+                child: _isLoading
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : Text('Go to home',
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Color(0xffFFFFFC)),
+                        )),
               ),
             ),
           ],

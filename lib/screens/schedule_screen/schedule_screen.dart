@@ -84,23 +84,30 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
+                          final int reversedIndex =
+                              snapshot.data!.docs.length - index - 1;
                           // this will fetch caption from firestore
                           var captionFirestore =
-                              snapshot.data!.docs[index]['Caption'];
+                              snapshot.data!.docs[reversedIndex]['Caption'];
 
                           // this will fetch platform from firestore
                           var platformFirestore =
-                              snapshot.data!.docs[index]['Platform'];
+                              snapshot.data!.docs[reversedIndex]['Platform'];
 
                           // this will fetch Schedule Time from firestore
-                          var scheduleTimeFirestore =
-                              snapshot.data!.docs[index]['Schedule Time'];
+                          var scheduleTimeFirestore = snapshot
+                              .data!.docs[reversedIndex]['Schedule Time'];
 
                           // this will fetch Schedule Date from firestore
-                          var scheduleDateFirestore =
-                              snapshot.data!.docs[index]['Schedule Date'];
+                          var scheduleDateFirestore = snapshot
+                              .data!.docs[reversedIndex]['Schedule Date'];
 
-                          var docIdFirestore = snapshot.data!.docs[index].id;
+                          // this will fetch post image from firestore
+                          var postImageFirestore =
+                              snapshot.data!.docs[reversedIndex]['Image'];
+
+                          var docIdFirestore =
+                              snapshot.data!.docs[reversedIndex].id;
 
                           return GestureDetector(
                             onTap: () {
@@ -112,6 +119,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                     enteredText: captionFirestore,
                                     selectedDate: scheduleDateFirestore,
                                     selectedTime: scheduleTimeFirestore,
+                                    postImage: postImageFirestore,
                                     docID: docIdFirestore,
                                   ),
                                 ),
@@ -156,9 +164,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               color: Colors.black,
-                                              image: const DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/SelectImagePost/image1.png'))),
+                                              image: DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: NetworkImage(
+                                                      postImageFirestore))),
                                           height: 110,
                                           width: 110,
                                         ),

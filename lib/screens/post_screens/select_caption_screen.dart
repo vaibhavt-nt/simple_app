@@ -1,18 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_app/constants/colors.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/post_screens/select_date_time_screen.dart';
 
 class SelectCaptionScreen extends StatefulWidget {
   final double containerHeight;
   final double containerWidth;
   final String imageUrl;
-  const SelectCaptionScreen(
-      {super.key,
-      required this.containerHeight,
-      required this.containerWidth,
-      required this.imageUrl});
+  const SelectCaptionScreen({
+    super.key,
+    required this.containerHeight,
+    required this.containerWidth,
+    required this.imageUrl,
+  });
 
   @override
   State<SelectCaptionScreen> createState() => _SelectCaptionScreenState();
@@ -21,30 +25,7 @@ class SelectCaptionScreen extends StatefulWidget {
 class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
   final textFieldController = TextEditingController();
   String enteredText = '';
-
-  void containerImage() {
-    Stack(alignment: Alignment.center, children: [
-      SizedBox(
-          width: 342,
-          height: 342,
-          child: Image.asset('assets/SelectImagePost/image1.png')),
-      Container(
-        color: Colors.white,
-        height: 237,
-        width: 237,
-        child: Text(
-          enteredText,
-          style: GoogleFonts.montserrat(
-            textStyle: const TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: Color(0xff1C1C1C)),
-          ),
-        ),
-      )
-    ]);
-  }
-
+  TextAlign? _textAlign;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,8 +112,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                   Stack(alignment: Alignment.center, children: [
                     Center(
                       child: widget.imageUrl.isNotEmpty
-                          ? Image.asset(
-                              widget.imageUrl,
+                          ? Image.file(
+                              File(widget.imageUrl),
                               fit: BoxFit.cover,
                               height: widget.containerHeight,
                               width: widget.containerWidth,
@@ -150,6 +131,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                             color: Colors.white,
                             child: Text(
                               enteredText,
+                              textAlign: _textAlign,
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -192,7 +174,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                           child: InkWell(
                             //borderRadius: BorderRadius.circular(100.0),
                             onTap: () {
-                              // leftAlignment();
+                              setState(() => _textAlign = TextAlign.left);
                             },
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
@@ -219,7 +201,9 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                           ),
                           child: InkWell(
                             //borderRadius: BorderRadius.circular(100.0),
-                            onTap: () {},
+                            onTap: () {
+                              setState(() => _textAlign = TextAlign.center);
+                            },
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Icon(
@@ -245,7 +229,9 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                           ),
                           child: InkWell(
                             //borderRadius: BorderRadius.circular(100.0),
-                            onTap: () {},
+                            onTap: () {
+                              setState(() => _textAlign = TextAlign.right);
+                            },
                             child: const Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Icon(
@@ -260,43 +246,43 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                       ),
                     ],
                   ),
+                  Gap(
+                    height: 30,
+                  )
                 ],
               ),
             )),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SelectDateAndTimeScreen(
-                        containerHeight: widget.containerHeight,
-                        containerWidth: widget.containerWidth,
-                        imageUrl: widget.imageUrl,
-                        enteredText: enteredText,
-                      ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SelectDateAndTimeScreen(
+                      containerHeight: widget.containerHeight,
+                      containerWidth: widget.containerWidth,
+                      imageUrl: widget.imageUrl,
+                      enteredText: enteredText,
                     ),
-                  );
-                },
-                child: Container(
-                  height: 40,
-                  width: 342,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(6),
-                    ),
-                    color: Color(0xffED4D86),
                   ),
-                  child: Center(
-                    child: Text('Next',
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color(0xffFFFFFC)),
-                        )),
+                );
+              },
+              child: Container(
+                height: 40,
+                width: 342,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
                   ),
+                  color: Color(0xffED4D86),
+                ),
+                child: Center(
+                  child: Text('Next',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xffFFFFFC)),
+                      )),
                 ),
               ),
             ),

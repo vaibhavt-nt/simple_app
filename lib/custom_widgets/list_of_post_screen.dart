@@ -34,7 +34,7 @@ class ListOfPostScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(scheduleDate,
+                    Text("Schedule: $scheduleDate",
                         textAlign: TextAlign.left,
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
@@ -70,30 +70,24 @@ class ListOfPostScreen extends StatelessWidget {
             child: SizedBox(
               width: 322,
               height: 322,
-              child: Image.asset(postImage),
+              child: Image.network(postImage),
             ),
           ),
         ),
-        Padding(
-            padding: const EdgeInsets.only(top: 60),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+        Positioned.fill(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
                 color: Colors.white,
+                child: Text(
+                  caption,
+                  style: const TextStyle(fontSize: 20),
+                ),
               ),
-              height: 220,
-              width: 237,
-              child: Center(
-                child: Text(caption,
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: Colors.black),
-                    )),
-              ),
-            ))
+            ),
+          ),
+        )
       ]),
     );
   }

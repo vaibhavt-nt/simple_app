@@ -2,10 +2,8 @@
 
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_app/screens/authentication_screens/login_screen.dart';
@@ -40,30 +38,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   //for storing image in firebase storage
   final user = FirebaseAuth.instance.currentUser;
-  final firestore = FirebaseFirestore.instance;
-  void onSubmitButton() async {
-    // var imageName =
-    // DateTime.now().millisecondsSinceEpoch.toString();
-    // var storageRef = FirebaseStorage.instance
-    //     .ref()
-    //     .child('post_images/$imageName.jpg');
-    // var uploadTask = storageRef.putFile(_image);
-    // var downloadUrl =
-    // await (await uploadTask).ref.getDownloadURL();
-
-    //add users details in  firestore
-    await firestore.collection("Post Data").doc().update({
-      "createdAt": DateTime.now(),
-      "userId": user?.uid,
-      "userName": user?.displayName,
-      // Add image reference to document
-      // "Image": downloadUrl.toString()
-    });
-    Get.showSnackbar(const GetSnackBar(
-      title: 'Updated Successfully',
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

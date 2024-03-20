@@ -1,54 +1,85 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 
-class OverViewScreen extends StatelessWidget {
+class OverViewScreen extends StatefulWidget {
   final double containerHeight;
   final double containerWidth;
   final String imageUrl;
   final String enteredText;
   final String selectedDate;
   final String selectedTime;
-  OverViewScreen(
+  final String selectedPlatform;
+  const OverViewScreen(
       {super.key,
       required this.containerHeight,
       required this.containerWidth,
       required this.imageUrl,
       required this.enteredText,
       required this.selectedDate,
-      required this.selectedTime});
+      required this.selectedTime,
+      required this.selectedPlatform});
 
+  @override
+  State<OverViewScreen> createState() => _OverViewScreenState();
+}
+
+class _OverViewScreenState extends State<OverViewScreen> {
+  bool _isLoading = false;
 //for storing image in firebase storage
   final firestore = FirebaseFirestore.instance;
 
   final userId = FirebaseAuth.instance.currentUser;
 
   void onSubmitButton() async {
-    // var imageName =
-    // DateTime.now().millisecondsSinceEpoch.toString();
-    // var storageRef = FirebaseStorage.instance
-    //     .ref()
-    //     .child('post_images/$imageName.jpg');
-    // var uploadTask = storageRef.putFile(_image);
-    // var downloadUrl =
-    // await (await uploadTask).ref.getDownloadURL();
+    setState(() {
+      _isLoading = true;
+    });
+
+    var imageName = DateTime.now().millisecondsSinceEpoch.toString();
+    var storageRef =
+        FirebaseStorage.instance.ref().child('post_images/$imageName.jpg');
+    var uploadTask = storageRef.putFile(File(widget.imageUrl));
+    var downloadUrl = await (await uploadTask).ref.getDownloadURL();
 
     //add users details in  firestore
-    await firestore.collection("Post Data").doc().set({
-      "createdAt": DateTime.now(),
-      "Schedule Date": selectedDate,
-      "Schedule Time": selectedTime,
-      "Platform": 'Instagram',
-      "Caption": enteredText,
-      "userId": userId?.uid,
-      "userEmail": userId?.email,
-      "userName": userId?.displayName,
-      // Add image reference to document
-      // "Image": downloadUrl.toString()
-    });
+    try {
+      await firestore.collection("Post Data").doc().set({
+        "createdAt": DateTime.now(),
+        "Schedule Date": widget.selectedDate,
+        "Schedule Time": widget.selectedTime,
+        "Platform": widget.selectedPlatform,
+        "Caption": widget.enteredText,
+        "userId": userId?.uid,
+        "userEmail": userId?.email,
+        "userName": userId?.displayName,
+        // Add image reference to document
+        "Image": downloadUrl.toString()
+      });
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const BottomNavigationBarScreen(),
+          ));
+    } catch (e) {
+      // Handle error
+      if (kDebugMode) {
+        print(e);
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -63,11 +94,11 @@ class OverViewScreen extends StatelessWidget {
                 Stack(alignment: Alignment.center, children: [
                   // Display the container image
                   SizedBox(
-                    height: containerHeight,
-                    width: containerWidth,
-                    child: imageUrl.isNotEmpty
-                        ? Image.asset(
-                            imageUrl,
+                    height: widget.containerHeight,
+                    width: widget.containerWidth,
+                    child: widget.imageUrl.isNotEmpty
+                        ? Image.file(
+                            File(widget.imageUrl),
                             fit: BoxFit.cover,
                           )
                         : const Text(
@@ -83,7 +114,7 @@ class OverViewScreen extends StatelessWidget {
                         child: Container(
                           color: Colors.white,
                           child: Text(
-                            enteredText,
+                            widget.enteredText,
                             style: const TextStyle(fontSize: 20),
                           ),
                         ),
@@ -123,7 +154,7 @@ class OverViewScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(selectedDate,
+                              Text(widget.selectedDate,
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.w400,
@@ -149,7 +180,7 @@ class OverViewScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(selectedTime,
+                              Text(widget.selectedTime,
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.w400,
@@ -175,7 +206,7 @@ class OverViewScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Facebook',
+                              Text(widget.selectedPlatform,
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
                                         fontWeight: FontWeight.w400,
@@ -291,22 +322,22 @@ class OverViewScreen extends StatelessWidget {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5))),
                     ),
-                    onPressed: () {
-                      onSubmitButton();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const BottomNavigationBarScreen(),
-                          ));
-                    },
-                    child: Text('Go to home',
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color(0xffFFFFFC)),
-                        )),
+                    onPressed: _isLoading
+                        ? null
+                        : () {
+                            onSubmitButton();
+                          },
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : Text('Go to home',
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  color: Color(0xffFFFFFC)),
+                            )),
                   ),
                 ),
               ],

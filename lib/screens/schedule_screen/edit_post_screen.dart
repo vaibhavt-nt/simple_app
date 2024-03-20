@@ -10,6 +10,7 @@ class EditPostScreen extends StatefulWidget {
   final String enteredText;
   final String selectedDate;
   final String selectedTime;
+  final String postImage;
   final String docID;
 
   const EditPostScreen(
@@ -18,7 +19,8 @@ class EditPostScreen extends StatefulWidget {
       required this.enteredText,
       required this.selectedDate,
       required this.selectedTime,
-      required this.docID});
+      required this.docID,
+      required this.postImage});
 
   @override
   State<EditPostScreen> createState() => _EditPostScreenState();
@@ -27,6 +29,8 @@ class EditPostScreen extends StatefulWidget {
 class _EditPostScreenState extends State<EditPostScreen> {
   //textfield for update caption
   final captionText = TextEditingController();
+//for platform select
+  String? selectedPlatform;
 
 // For Date Pick Method
   static DateTime? _selectedDate;
@@ -110,30 +114,31 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 ),
 
                 Stack(alignment: Alignment.center, children: [
-                  const SizedBox(
+                  SizedBox(
                       height: 342,
                       width: 342,
-                      child: Image(
-                          image:
-                              AssetImage('assets/SelectImagePost/image1.png'))),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                    ),
-                    height: 237,
-                    width: 237,
+                      child: Image(image: NetworkImage(widget.postImage))),
+                  Positioned.fill(
+                    left: 40,
+                    right: 40,
                     child: Center(
-                      child: TextField(
-                          controller: captionText..text = widget.enteredText,
-                          // Get.arguments['Caption'].toString(),
-                          textAlign: TextAlign.left,
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: Colors.black),
-                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          color: Colors.white,
+                          child: TextField(
+                              controller: captionText
+                                ..text = widget.enteredText,
+                              // Get.arguments['Caption'].toString(),
+                              textAlign: TextAlign.left,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              )),
+                        ),
+                      ),
                     ),
                   )
                 ]),
@@ -173,8 +178,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                             _selectedDate ==
                                     null //ternary expression to check if date is null
                                 ? widget.selectedDate
-                                : DateFormat.yMMMMEEEEd()
-                                    .format(_selectedDate!),
+                                : DateFormat.yMMMMd().format(_selectedDate!),
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                   fontWeight: FontWeight.w400,
@@ -182,13 +186,6 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                   color: Color(0xff1C1C1C)),
                             ),
                           ),
-                          // Text(Get.arguments['ScheduleDate'].toString(),
-                          //     style: GoogleFonts.montserrat(
-                          //       textStyle: const TextStyle(
-                          //           fontWeight: FontWeight.w400,
-                          //           fontSize: 16,
-                          //           color: Colors.black),
-                          //     )),
                           const Icon(Icons.date_range_outlined)
                         ],
                       ),
@@ -225,14 +222,6 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                   color: Color(0xff1C1C1C)),
                             ),
                           ),
-                          // Text(
-                          //     // Get.arguments['ScheduleTime'].toString(),
-                          //     style: GoogleFonts.montserrat(
-                          //       textStyle: const TextStyle(
-                          //           fontWeight: FontWeight.w400,
-                          //           fontSize: 16,
-                          //           color: Colors.black),
-                          //     )),
                           const Icon(Icons.watch_later_outlined)
                         ],
                       ),
@@ -242,6 +231,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 const SizedBox(
                   height: 10,
                 ),
+
                 // this is to change platform
                 GestureDetector(
                   onTap: () {
@@ -250,7 +240,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       builder: (context) {
                         return AlertDialog(
                           alignment: Alignment.center,
-                          title: Text('Facebook',
+                          title: Text('Select Platform',
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -268,12 +258,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                       color: Colors.blue,
                                       size: 36,
                                     ),
-                                    selected: false,
+                                    selected: selectedPlatform == 'Facebook',
                                     showCheckmark: false,
                                     selectedColor: CustomColors.lightPink,
                                     side: const BorderSide(
                                         color: CustomColors.pink),
                                     onSelected: (value) {
+                                      setState(() {
+                                        selectedPlatform = 'Facebook';
+                                      });
                                       Navigator.pop(context);
                                     },
                                   ),
@@ -286,12 +279,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                       width: 36,
                                       height: 36,
                                     ),
-                                    selected: false,
+                                    selected: selectedPlatform == 'Instagram',
                                     showCheckmark: false,
                                     selectedColor: CustomColors.lightPink,
                                     side: const BorderSide(
                                         color: CustomColors.pink),
                                     onSelected: (value) {
+                                      setState(() {
+                                        selectedPlatform = 'Instagram';
+                                      });
                                       Navigator.pop(context);
                                     },
                                   ),
@@ -314,7 +310,10 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.platform,
+                          Text(
+                              selectedPlatform == null
+                                  ? widget.platform
+                                  : selectedPlatform.toString(),
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -348,8 +347,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           .update({
                         'Caption': captionText.text.trim(),
                         'Schedule Date':
-                            DateFormat.yMMMMEEEEd().format(_selectedDate!),
+                            DateFormat.yMMMMd().format(_selectedDate!),
                         'Schedule Time': selectedTime!.format(context),
+                        'Platform': selectedPlatform
                       });
                       Navigator.pop(context);
                     },

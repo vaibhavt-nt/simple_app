@@ -12,12 +12,13 @@ class SelectDateAndTimeScreen extends StatefulWidget {
   final double containerWidth;
   final String imageUrl;
   final String enteredText;
-  const SelectDateAndTimeScreen(
-      {super.key,
-      required this.containerHeight,
-      required this.containerWidth,
-      required this.imageUrl,
-      required this.enteredText});
+  const SelectDateAndTimeScreen({
+    super.key,
+    required this.containerHeight,
+    required this.containerWidth,
+    required this.imageUrl,
+    required this.enteredText,
+  });
 
   @override
   State<SelectDateAndTimeScreen> createState() =>
@@ -27,9 +28,10 @@ class SelectDateAndTimeScreen extends StatefulWidget {
 class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
   int buttonSelected = 0;
   bool chipSelected = false;
+  String? selectedPlatform;
 
 // For Date Pick Method
-  static DateTime? _selectedDate;
+  DateTime? _selectedDate;
   void _pickDateDialog() {
     showDatePicker(
             context: context,
@@ -201,7 +203,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                                   _selectedDate ==
                                           null //ternary expression to check if date is null
                                       ? 'Select Date'
-                                      : DateFormat.yMMMMEEEEd()
+                                      : DateFormat.yMMMMd()
                                           .format(_selectedDate!),
                                   style: GoogleFonts.montserrat(
                                     textStyle: const TextStyle(
@@ -296,37 +298,32 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                               color: Colors.blue,
                               size: 36,
                             ),
-                            selected: chipSelected,
+                            selected: selectedPlatform == 'Facebook',
                             showCheckmark: false,
                             selectedColor: CustomColors.lightPink,
                             side: const BorderSide(color: CustomColors.pink),
                             onSelected: (value) {
                               setState(() {
-                                chipSelected = value;
+                                selectedPlatform = 'Facebook';
                               });
                             },
                           ),
                           const SizedBox(
                             width: 40,
                           ),
-                          // Chip(
-                          //   label: SvgPicture.asset('assets/icons_svg/instagram_outline.svg',
-                          //   width: 36,
-                          //   height: 36,)
-                          // )
                           FilterChip(
                             label: SvgPicture.asset(
                               'assets/icons_svg/instagram_outline.svg',
                               width: 36,
                               height: 36,
                             ),
-                            selected: chipSelected,
+                            selected: selectedPlatform == 'Instagram',
                             showCheckmark: false,
                             selectedColor: CustomColors.lightPink,
                             side: const BorderSide(color: CustomColors.pink),
                             onSelected: (value) {
                               setState(() {
-                                chipSelected = value;
+                                selectedPlatform = 'Instagram';
                               });
                             },
                           ),
@@ -351,16 +348,19 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                               .primary
                               .withOpacity(0.5);
                         } else if (states.contains(MaterialState.disabled))
+                          // ignore: curly_braces_in_flow_control_structures
                           return Colors.grey;
                         return CustomColors
                             .pink; // Use the component's default.
                       },
                     ),
                   ),
-                  onPressed: _selectedDate != null && selectedTime != null
+                  onPressed: _selectedDate != null &&
+                          selectedTime != null &&
+                          selectedPlatform != null
                       ? () {
                           final selectedDateString =
-                              DateFormat.yMMMMEEEEd().format(_selectedDate!);
+                              DateFormat.yMMMMd().format(_selectedDate!);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -371,11 +371,18 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                                 enteredText: widget.enteredText,
                                 selectedDate: selectedDateString,
                                 selectedTime: selectedTime!.format(context),
+                                selectedPlatform: selectedPlatform.toString(),
                               ),
                             ),
                           );
                         }
-                      : null, // Disable the button if either date or time is not selected
+                      : null,
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(
+                  //     content: Text('Please select a date, time, and platform.'),
+                  //     duration: Duration(seconds: 3),
+                  //   ),
+                  // );// Disable the button if either date or time is not selected
                   child: Text('Next',
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(

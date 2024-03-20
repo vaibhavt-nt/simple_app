@@ -100,35 +100,36 @@ class _HomeScreenState extends State<HomeScreen> {
                           shrinkWrap: true,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
+                            final int reversedIndex =
+                                snapshot.data!.docs.length - index - 1;
                             // this will fetch caption from firestore
                             var captionFirestore =
-                                snapshot.data!.docs[index]['Caption'];
+                                snapshot.data!.docs[reversedIndex]['Caption'];
 
                             // this will fetch platform from firestore
                             var platformFirestore =
-                                snapshot.data!.docs[index]['Platform'];
+                                snapshot.data!.docs[reversedIndex]['Platform'];
 
                             // this will fetch Schedule Time from firestore
-                            var scheduleTimeFirestore =
-                                snapshot.data!.docs[index]['Schedule Time'];
+                            var scheduleTimeFirestore = snapshot
+                                .data!.docs[reversedIndex]['Schedule Time'];
 
                             // this will fetch Schedule Date from firestore
-                            var scheduleDateFirestore =
-                                snapshot.data!.docs[index]['Schedule Date'];
+                            var scheduleDateFirestore = snapshot
+                                .data!.docs[reversedIndex]['Schedule Date'];
 
-                            var postImageLocal =
-                                'assets/SelectImagePost/image1.png';
+                            var postImageFirestore =
+                                snapshot.data!.docs[reversedIndex]['Image'];
 
                             //thi is a post id
                             // var docIdFirestore = snapshot.data!.docs[index].id;
 
                             return ListOfPostScreen(
                                 scheduleTime: scheduleTimeFirestore,
-                                scheduleDate:
-                                    'Schedule: $scheduleDateFirestore',
+                                scheduleDate: scheduleDateFirestore,
                                 caption: captionFirestore,
                                 platform: platformFirestore,
-                                postImage: postImageLocal);
+                                postImage: postImageFirestore);
                           },
                         ),
                       ],
