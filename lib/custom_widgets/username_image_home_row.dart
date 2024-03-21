@@ -21,28 +21,25 @@ class UsernameImageDisplayInHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("Good ${greeting().toString()}!\n${user!.displayName}",
-              style: GoogleFonts.montserrat(
-                textStyle: const TextStyle(
-                    color: CustomColors.darkGrey,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500),
-              )),
-          Center(
-              child: SizedBox(
-            height: 50,
-            width: 50,
-            child: CircleAvatar(
-              backgroundImage: NetworkImage("${user!.photoURL}"),
-            ),
-          ))
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text("Good ${greeting().toString()}!\n${user!.displayName}",
+            style: GoogleFonts.montserrat(
+              textStyle: const TextStyle(
+                  color: CustomColors.darkGrey,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500),
+            )),
+        Center(
+            child: SizedBox(
+          height: 50,
+          width: 50,
+          child: CircleAvatar(
+            backgroundImage: NetworkImage("${user!.photoURL}"),
+          ),
+        ))
+      ],
     );
   }
 }

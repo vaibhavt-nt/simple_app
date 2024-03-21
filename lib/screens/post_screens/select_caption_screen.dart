@@ -33,6 +33,9 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
         padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
         child: Column(
           children: [
+            const Gap(
+              height: 20,
+            ),
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
@@ -246,7 +249,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                       ),
                     ],
                   ),
-                  Gap(
+                  const Gap(
                     height: 30,
                   )
                 ],

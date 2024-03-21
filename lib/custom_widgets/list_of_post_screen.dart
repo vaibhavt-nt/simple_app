@@ -77,12 +77,21 @@ class ListOfPostScreen extends StatelessWidget {
         Positioned.fill(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(60.0),
               child: Container(
-                color: Colors.white,
-                child: Text(
-                  caption,
-                  style: const TextStyle(fontSize: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(caption,
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: Colors.black),
+                      )),
                 ),
               ),
             ),

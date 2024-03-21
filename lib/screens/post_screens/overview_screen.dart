@@ -112,10 +112,20 @@ class _OverViewScreenState extends State<OverViewScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
-                          color: Colors.white,
-                          child: Text(
-                            widget.enteredText,
-                            style: const TextStyle(fontSize: 20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                              widget.enteredText,
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: CustomColors.darkGrey),
+                              ),
+                            ),
                           ),
                         ),
                       ),

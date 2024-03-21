@@ -118,10 +118,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ? SizedBox(
                                   height: 100,
                                   width: 100,
-                                  child: CircleAvatar(
-                                    child: SvgPicture.asset(
-                                        'assets/sign_up_images/image_picker_empty.svg'),
-                                  ),
+                                  child: SvgPicture.asset(
+                                      'assets/sign_up_images/empty_signup_image.svg'),
                                 )
                               : ClipOval(
                                   child: Image.file(
@@ -274,7 +272,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ],
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
@@ -412,21 +409,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(
                     height: 40,
                   ),
-                  //Message when there is a duplicate user
-
-                  //By default we hide the message
-                  isUserExist
-                      ? const Center(
-                          child: Text(
-                          "User already exists, please enter another name",
-                          style: TextStyle(color: Colors.red),
-                        ))
-                      : const SizedBox(),
-
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
                     child: Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/post_screens/select_image_screen.dart';
 
 class SelectFrameScreen extends StatefulWidget {
@@ -31,12 +32,14 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var idx;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
         child: Column(
           children: [
+            const Gap(
+              height: 20,
+            ),
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,

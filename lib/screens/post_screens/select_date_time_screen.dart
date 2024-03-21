@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_app/constants/colors.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/post_screens/overview_screen.dart';
 import 'package:simple_app/screens/post_screens/overview_screen_when_skip.dart';
 
@@ -85,6 +86,9 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              const Gap(
+                height: 20,
+              ),
               LinearPercentIndicator(
                 width: MediaQuery.of(context).size.width / 1.2,
                 lineHeight: 8.0,

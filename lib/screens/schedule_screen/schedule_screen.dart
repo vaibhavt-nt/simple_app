@@ -133,7 +133,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               // });
                             },
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                  top: 8.0, bottom: 8, right: 20, left: 20),
                               child: Container(
                                 height: 130,
                                 width: MediaQuery.of(context).size.width,
