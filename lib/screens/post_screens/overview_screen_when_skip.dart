@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -95,7 +94,7 @@ class _OverViewScreenWhenSkipButtonPressedState
                   child: Column(
                     children: [
                       const Gap(
-                        height: 50,
+                        height: 70,
                       ),
                       Stack(alignment: Alignment.center, children: [
                         // Display the container image
@@ -116,12 +115,22 @@ class _OverViewScreenWhenSkipButtonPressedState
                         Positioned.fill(
                           child: Center(
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(30.0),
                               child: Container(
-                                color: Colors.white,
-                                child: Text(
-                                  widget.enteredText,
-                                  style: const TextStyle(fontSize: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text(
+                                    widget.enteredText,
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: CustomColors.darkGrey),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -131,87 +140,94 @@ class _OverViewScreenWhenSkipButtonPressedState
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 2.5,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                surfaceTintColor: Colors.white,
-                                shadowColor: Colors.white,
-                                backgroundColor: Colors.white,
-                                side: const BorderSide(
-                                    width: 2, color: Colors.black),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)),
-                              ),
-                              onPressed: () {},
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Icon(
-                                      Icons.file_download_outlined,
-                                      size: 20,
-                                      color: Colors.black,
-                                    ),
-                                    Text(
-                                      'Download',
-                                      style: GoogleFonts.montserrat(
-                                        textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16,
+                      SafeArea(
+                        right: true,
+                        left: true,
+                        bottom: false,
+                        top: false,
+                        minimum: const EdgeInsets.all(20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  surfaceTintColor: Colors.white,
+                                  shadowColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(
+                                      width: 2, color: CustomColors.pink),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                ),
+                                onPressed: () {},
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Icon(
+                                        Icons.file_download_outlined,
+                                        size: 20,
+                                        color: Colors.black,
+                                      ),
+                                      Text(
+                                        'Download',
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              color: CustomColors.darkGrey),
                                         ),
                                       ),
-                                    ),
-                                    // Icon(Icons.file_download_outlined),
-                                  ],
+                                      // Icon(Icons.file_download_outlined),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 2.5,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                surfaceTintColor: Colors.white,
-                                shadowColor: Colors.white,
-                                backgroundColor: Colors.white,
-                                side: const BorderSide(
-                                    width: 2, color: Colors.black),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5)),
-                              ),
-                              onPressed: () {},
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Icon(
-                                      size: 15,
-                                      Icons.share_outlined,
-                                      color: Colors.black,
-                                    ),
-                                    Text(
-                                      '    Share',
-                                      style: GoogleFonts.montserrat(
-                                        textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  surfaceTintColor: Colors.white,
+                                  shadowColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                  side: const BorderSide(
+                                      width: 2, color: CustomColors.pink),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                ),
+                                onPressed: () {},
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Icon(
+                                        size: 15,
+                                        Icons.share_outlined,
+                                        color: Colors.black,
+                                      ),
+                                      Text(
+                                        'Share',
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              color: CustomColors.darkGrey),
                                         ),
                                       ),
-                                    ),
-                                    // Icon(Icons.file_download_outlined),
-                                  ],
+                                      // Icon(Icons.file_download_outlined),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 100,
@@ -247,6 +263,9 @@ class _OverViewScreenWhenSkipButtonPressedState
                         )),
               ),
             ),
+            const Gap(
+              height: 20,
+            )
           ],
         ),
       ),

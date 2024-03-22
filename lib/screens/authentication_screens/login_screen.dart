@@ -46,12 +46,16 @@ class _LoginPageState extends State<LoginPage> {
       });
       try {
         final result = await FirebaseAuthentication.signInUsingEmailPassword(
-            email: emailController.text, password: passwordController.text);
+          email: emailController.text,
+          password: passwordController.text,
+        );
         if (result != null) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => const BottomNavigationBarScreen()));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const BottomNavigationBarScreen(),
+            ),
+          );
           showDialog(
             context: context,
             builder: (context) {
@@ -69,12 +73,11 @@ class _LoginPageState extends State<LoginPage> {
             },
           );
         } else {
-          debugPrint('Fail to login');
           showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: const Text('Email or Password is not correct'),
+                content: const Text('username or password is wrong'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -88,12 +91,15 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
+        if (e.code == 'invalid-credential') {
+          // Show an AlertDialog instead of a SnackBar
           showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: const Text('No user found for that email.'),
+                title: const Text('Error'),
+                content: const Text(
+                    'The email address is already in use by another account.'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -105,31 +111,14 @@ class _LoginPageState extends State<LoginPage> {
               );
             },
           );
-        } else if (e.code == 'wrong-password') {
+        } else if (e.code == 'too-many-requests') {
           showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: const Text('Wrong password provided.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
-        } else {
-          debugPrint('FirebaseAuthException: ${e.code} ${e.message}');
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Login failed'),
-                content: Text('${e.code} ${e.message}'),
+                title: const Text('Error'),
+                content: const Text(
+                    'We have blocked all requests from this device due to unusual activity. Try again later.'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -142,30 +131,40 @@ class _LoginPageState extends State<LoginPage> {
             },
           );
         }
-      } catch (e) {
-        debugPrint('Exception: $e');
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Login failed'),
-              content: Text('$e'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
       }
+      // on FirebaseAuthException catch (e) {
+      //   debugPrint('FirebaseAuthException: ${e.code} ${e.message}');
+      //   String errorMessage = '';
+      //   if (e.code == 'user-not-found') {
+      //     errorMessage = 'No user found for that email.';
+      //   } else if (e.code == 'wrong-password') {
+      //     errorMessage = 'Wrong password provided.';
+      //   } else if (e.code == 'too-many-requests') {
+      //     errorMessage = 'Access to this account has been temporarily disabled. Please try again later.';
+      //   } else {
+      //     errorMessage = 'Login failed. Please check your email and password.';
+      //   }
+      //   showDialog(
+      //     context: context,
+      //     builder: (context) {
+      //       return AlertDialog(
+      //         title: const Text('Login failed'),
+      //         content: Text(errorMessage),
+      //         actions: [
+      //           TextButton(
+      //             onPressed: () {
+      //               Navigator.pop(context);
+      //             },
+      //             child: const Text('OK'),
+      //           ),
+      //         ],
+      //       );
+      //     },
+      //   );
+      // }
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -327,15 +326,19 @@ class _LoginPageState extends State<LoginPage> {
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _login,
                 style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  backgroundColor: const Color(0xFFEE4D86),
-                ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor:
+                        _isLoading ? Colors.grey : const Color(0xFFEE4D86)),
                 child: _isLoading
-                    ? const CircularProgressIndicator(
-                        color: Colors.white,
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
                       )
                     : Text(
                         "Login",

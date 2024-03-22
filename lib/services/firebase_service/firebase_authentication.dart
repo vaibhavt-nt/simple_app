@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,14 @@ class FirebaseAuthentication {
       await user!.updateDisplayName(name);
       await user.updatePhotoURL(photo);
       await user.reload();
+
       user = auth.currentUser;
+      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+        'name': name,
+        'email': email,
+        'photo': photo,
+      });
+
       completer.complete(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -111,5 +119,44 @@ class FirebaseAuthentication {
         print(e);
       }
     }
+  }
+
+  static Future<User?> updateUser({
+    required String name,
+    required String photo,
+  }) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+
+    if (user != null) {
+      try {
+        // Update user information in Firebase Authentication
+        await user.updateDisplayName(name);
+        await user.updatePhotoURL(photo);
+
+        // Update user information in Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({
+          'name': name,
+          'photo': photo,
+        });
+
+        return user;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          debugPrint('No user found for that email.');
+        } else if (e.code == 'email-already-in-use') {
+          debugPrint('The email address is already in use by another account.');
+        } else {
+          debugPrint('FirebaseAuthException: ${e.code} ${e.message}');
+        }
+      } catch (e) {
+        debugPrint('Exception: $e');
+      }
+    }
+
+    return null;
   }
 }

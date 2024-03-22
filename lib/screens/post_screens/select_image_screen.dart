@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:simple_app/constants/colors.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/post_screens/select_caption_screen.dart';
 import 'package:simple_app/services/image_picker_service.dart';
 
@@ -60,6 +62,9 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
         padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
         child: Column(
           children: [
+            const Gap(
+              height: 20,
+            ),
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
@@ -156,9 +161,8 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                 child: Container(
                                   width: 100,
                                   height: 100,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black, width: 2),
+                                  decoration: const BoxDecoration(
+                                    color: CustomColors.lightGrey,
                                   ),
                                   child: const Icon(
                                     Icons.add,

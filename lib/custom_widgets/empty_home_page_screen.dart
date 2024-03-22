@@ -39,7 +39,7 @@ class EmptyHomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 20,
+          height: 40,
         ),
         Padding(
           padding: const EdgeInsets.all(10.0),

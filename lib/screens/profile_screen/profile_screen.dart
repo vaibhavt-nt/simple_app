@@ -5,9 +5,12 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:simple_app/constants/colors.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
+import 'package:simple_app/custom_widgets/snack_bar.dart';
 import 'package:simple_app/screens/authentication_screens/login_screen.dart';
 import 'package:simple_app/services/firebase_service/firebase_authentication.dart';
+import 'package:simple_app/services/image_picker_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -22,27 +25,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final userName = TextEditingController();
   final userEmail = TextEditingController();
 
-  void pickImage() async {
-    // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  bool isUpdating = false;
 
-    if (pickedFile != null) {
+  //for validation
+  final _formKey = GlobalKey<FormState>();
+
+  File? _image;
+
+  //for storing image in firebase storage
+  var user = FirebaseAuth.instance.currentUser;
+
+  void _onImagePicked(File? pickedImage) {
+    if (pickedImage != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _image = pickedImage;
       });
     }
   }
 
-  final ImagePicker _picker = ImagePicker();
-  File? _image;
-
-  //for storing image in firebase storage
-  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
+          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -69,15 +75,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: 100,
                           child: GestureDetector(
                               onTap: () {
-                                pickImage();
+                                PickImage.pickImageFromGallery(_onImagePicked);
                               },
                               child: Center(
                                   child: SizedBox(
                                 height: 100,
                                 width: 100,
                                 child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage("${user!.photoURL}"),
+                                  backgroundImage: _image != null
+                                      ? FileImage(_image!) as ImageProvider
+                                      : NetworkImage(user!.photoURL ?? ''),
                                 ),
                               ))),
                         ),
@@ -112,28 +119,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
                               )),
-                          SizedBox(
-                            height: 70,
-                            child: TextFormField(
-                              controller: userName,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "username is required";
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                hintText: '${user!.displayName}',
-                                hintStyle: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFEE4D86))),
-                                border: const OutlineInputBorder(),
+                          TextFormField(
+                            controller: userName,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "username is required";
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 10.0),
+                              hintText: user!.displayName,
+                              hintStyle: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
                               ),
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xFFEE4D86))),
+                              border: const OutlineInputBorder(),
                             ),
                           ),
                         ],
@@ -151,48 +156,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
                               )),
-                          SizedBox(
-                            height: 70,
-                            child: TextFormField(
-                              controller: userEmail,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "email is required";
-                                }
-                                return null;
-                              },
-                              // controller: emailController,
-                              decoration: InputDecoration(
-                                hintText: '${user!.email}',
-                                hintStyle: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFEE4D86))),
-                                border: const OutlineInputBorder(),
+                          TextFormField(
+                            initialValue: '${user?.email}',
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 4.0, horizontal: 10.0),
+                              hintText: '${user!.email}',
+                              hintStyle: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
                               ),
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xFFEE4D86))),
+                              border: const OutlineInputBorder(),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
-                Container(
-                    padding: const EdgeInsets.only(top: 70, left: 3),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          backgroundColor: const Color(0xFFEE4D86)),
-                      child: Text("Update",
+                const Gap(
+                  height: 110,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+
+                      setState(() {
+                        isUpdating = true;
+                      });
+
+                      // Get the updated name and photo from the form
+                      String updatedName = userName.text;
+                      String? updatedPhoto = _image != null
+                          ? await PickImage.uploadProfileImage(_image!)
+                          : user!.photoURL;
+
+                      // Call the updateUser method from FirebaseAuthentication
+                      User? updatedUser =
+                          await FirebaseAuthentication.updateUser(
+                              name: updatedName, photo: updatedPhoto!);
+
+                      if (updatedUser != null) {
+                        // Update the state to reflect the changes
+                        setState(() {
+                          user = updatedUser;
+                          isUpdating = false;
+                        });
+
+                        CustomSnackBar.showSuccessSnackBar(
+                          context,
+                          'Profile updated successfully',
+                        );
+                      }
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      backgroundColor: isUpdating
+                          ? CustomColors.lightGrey
+                          : const Color(0xFFEE4D86)),
+                  child: isUpdating
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: Colors.white),
+                        )
+                      : Text("Update",
                           textAlign: TextAlign.left,
                           textDirection: TextDirection.ltr,
                           style: GoogleFonts.montserrat(
@@ -201,9 +237,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600),
                           )),
-                    )),
-                TextButton(
+                ),
+                const Gap(
+                  height: 25,
+                ),
+                ElevatedButton(
                   onPressed: () {
+                    CustomSnackBar.showSuccessSnackBar(
+                        context, 'Logout Successfully');
                     FirebaseAuthentication.signOut();
                     Navigator.pushReplacement(
                         context,
@@ -211,22 +252,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           builder: (context) => const LoginPage(),
                         ));
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Log Out",
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          )),
-                      const Icon(
-                        Icons.exit_to_app,
-                        color: Colors.red,
-                      )
-                    ],
-                  ),
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          side: const BorderSide(color: CustomColors.pink),
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: const EdgeInsets.symmetric(vertical: 12)),
+                  child: Text("Logout",
+                      textAlign: TextAlign.left,
+                      textDirection: TextDirection.ltr,
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            color: CustomColors.darkGrey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      )),
                 ),
               ],
             ),

@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 resizeToAvoidBottomInset: true,
                 body: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -55,11 +55,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         //username and image
                         UsernameImageDisplayInHomeScreen(),
-                        const EmptyHomeScreen(
-                          imagePath: 'assets/home_images/empty.svg',
-                          subtitle: "You don’t have create any posts. Please\n"
-                              " create new post.",
-                          buttonText: "Create Post",
+                        const Gap(
+                          height: 30,
+                        ),
+                        const Center(
+                          child: EmptyHomeScreen(
+                            imagePath: 'assets/home_images/empty.svg',
+                            subtitle:
+                                "You don’t have create any posts. Please\n"
+                                " create new post.",
+                            buttonText: "Create Post",
+                          ),
                         ),
                       ],
                     ),
@@ -73,10 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(25.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Gap(
                           height: 50,

@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_app/constants/colors.dart';
+import 'package:simple_app/custom_widgets/snack_bar.dart';
+import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 
 class EditPostScreen extends StatefulWidget {
   final String platform;
@@ -81,266 +83,284 @@ class _EditPostScreenState extends State<EditPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          minimum: const EdgeInsets.fromLTRB(15, 60, 10, 15),
-          child: Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.arrow_back)),
-                      Text("Edit Post",
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                color: CustomColors.darkGrey,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500),
-                          )),
-                      const SizedBox(
-                        width: 50,
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+      body: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(15, 60, 10, 15),
+        child: Center(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back)),
+                  Text("Edit Post",
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            color: CustomColors.darkGrey,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500),
+                      )),
+                  const SizedBox(
+                    width: 50,
+                  )
+                ],
+              ),
 
-                Stack(alignment: Alignment.center, children: [
-                  SizedBox(
-                      height: 342,
-                      width: 342,
-                      child: Image(image: NetworkImage(widget.postImage))),
-                  Positioned.fill(
-                    left: 40,
-                    right: 40,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Container(
-                          color: Colors.white,
-                          child: TextField(
-                              controller: captionText
-                                ..text = widget.enteredText,
-                              // Get.arguments['Caption'].toString(),
-                              textAlign: TextAlign.left,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      Stack(alignment: Alignment.center, children: [
+                        SizedBox(
+                            height: 342,
+                            width: 342,
+                            child:
+                                Image(image: NetworkImage(widget.postImage))),
+                        Positioned.fill(
+                          left: 40,
+                          right: 40,
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Container(
+                                color: Colors.white,
+                                child: TextField(
+                                    controller: captionText
+                                      ..text = widget.enteredText,
+                                    // Get.arguments['Caption'].toString(),
+                                    textAlign: TextAlign.left,
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: Colors.black),
+                                    )),
+                              ),
+                            ),
+                          ),
+                        )
+                      ]),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 20,
+                        width: 342,
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text('Edit Post Schedule',
                               style: GoogleFonts.montserrat(
                                 textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w400,
                                     fontSize: 16,
                                     color: Colors.black),
                               )),
                         ),
                       ),
-                    ),
-                  )
-                ]),
-                const SizedBox(
-                  height: 20,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text('Post Schedule',
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Colors.black),
-                      )),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                // this is to change date
-                GestureDetector(
-                  onTap: () {
-                    _pickDateDialog();
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 342,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: CustomColors.pink)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            _selectedDate ==
-                                    null //ternary expression to check if date is null
-                                ? widget.selectedDate
-                                : DateFormat.yMMMMd().format(_selectedDate!),
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Color(0xff1C1C1C)),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      // this is to change date
+                      GestureDetector(
+                        onTap: () {
+                          _pickDateDialog();
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 342,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: CustomColors.pink)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _selectedDate ==
+                                          null //ternary expression to check if date is null
+                                      ? widget.selectedDate
+                                      : DateFormat.yMMMMd()
+                                          .format(_selectedDate!),
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        color: Color(0xff1C1C1C)),
+                                  ),
+                                ),
+                                const Icon(Icons.date_range_outlined)
+                              ],
                             ),
                           ),
-                          const Icon(Icons.date_range_outlined)
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                // this is to change time
-                GestureDetector(
-                  onTap: () {
-                    _pickTimeDialog();
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 342,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: CustomColors.pink)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            selectedTime == null
-                                ? widget.selectedTime
-                                : selectedTime!.format(context),
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Color(0xff1C1C1C)),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      // this is to change time
+                      GestureDetector(
+                        onTap: () {
+                          _pickTimeDialog();
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 342,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: CustomColors.pink)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  selectedTime == null
+                                      ? widget.selectedTime
+                                      : selectedTime!.format(context),
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        color: Color(0xff1C1C1C)),
+                                  ),
+                                ),
+                                const Icon(Icons.watch_later_outlined)
+                              ],
                             ),
                           ),
-                          const Icon(Icons.watch_later_outlined)
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                      const SizedBox(
+                        height: 10,
+                      ),
 
-                // this is to change platform
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          alignment: Alignment.center,
-                          title: Text('Select Platform',
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Colors.black),
-                              )),
-                          actions: [
-                            Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  FilterChip(
-                                    label: const Icon(
-                                      Icons.facebook,
-                                      color: Colors.blue,
-                                      size: 36,
+                      // this is to change platform
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                alignment: Alignment.center,
+                                title: Text('Select Platform',
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                          color: Colors.black),
+                                    )),
+                                actions: [
+                                  Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        FilterChip(
+                                          label: const Icon(
+                                            Icons.facebook,
+                                            color: Colors.blue,
+                                            size: 36,
+                                          ),
+                                          selected:
+                                              selectedPlatform == 'Facebook',
+                                          showCheckmark: false,
+                                          selectedColor: CustomColors.lightPink,
+                                          side: const BorderSide(
+                                              color: CustomColors.pink),
+                                          onSelected: (value) {
+                                            setState(() {
+                                              selectedPlatform = 'Facebook';
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        const SizedBox(
+                                          width: 40,
+                                        ),
+                                        FilterChip(
+                                          label: SvgPicture.asset(
+                                            'assets/icons_svg/instagram_outline.svg',
+                                            width: 36,
+                                            height: 36,
+                                          ),
+                                          selected:
+                                              selectedPlatform == 'Instagram',
+                                          showCheckmark: false,
+                                          selectedColor: CustomColors.lightPink,
+                                          side: const BorderSide(
+                                              color: CustomColors.pink),
+                                          onSelected: (value) {
+                                            setState(() {
+                                              selectedPlatform = 'Instagram';
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    selected: selectedPlatform == 'Facebook',
-                                    showCheckmark: false,
-                                    selectedColor: CustomColors.lightPink,
-                                    side: const BorderSide(
-                                        color: CustomColors.pink),
-                                    onSelected: (value) {
-                                      setState(() {
-                                        selectedPlatform = 'Facebook';
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  const SizedBox(
-                                    width: 40,
-                                  ),
-                                  FilterChip(
-                                    label: SvgPicture.asset(
-                                      'assets/icons_svg/instagram_outline.svg',
-                                      width: 36,
-                                      height: 36,
-                                    ),
-                                    selected: selectedPlatform == 'Instagram',
-                                    showCheckmark: false,
-                                    selectedColor: CustomColors.lightPink,
-                                    side: const BorderSide(
-                                        color: CustomColors.pink),
-                                    onSelected: (value) {
-                                      setState(() {
-                                        selectedPlatform = 'Instagram';
-                                      });
-                                      Navigator.pop(context);
-                                    },
                                   ),
                                 ],
-                              ),
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 342,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: CustomColors.pink)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    selectedPlatform == null
+                                        ? widget.platform
+                                        : selectedPlatform.toString(),
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: const TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                          color: Colors.black),
+                                    )),
+                                const Icon(Icons.facebook)
+                              ],
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 342,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: CustomColors.pink)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              selectedPlatform == null
-                                  ? widget.platform
-                                  : selectedPlatform.toString(),
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Colors.black),
-                              )),
-                          const Icon(Icons.facebook)
-                        ],
+                          ),
+                        ),
                       ),
-                    ),
+
+                      const SizedBox(
+                        height: 130,
+                      ),
+                    ],
                   ),
                 ),
-
-                const SizedBox(
-                  height: 130,
-                ),
-                //for update data in firestore
-                SizedBox(
-                  width: 342,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(CustomColors.pink),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                    ),
-                    onPressed: () {
+              ),
+              //for update data in firestore
+              SizedBox(
+                width: 342,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(CustomColors.pink),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
+                  ),
+                  onPressed: () {
+                    if (captionText.text.isNotEmpty &&
+                        _selectedDate != null &&
+                        selectedTime != null &&
+                        selectedPlatform != null) {
                       FirebaseFirestore.instance
                           .collection('Post Data')
                           .doc(widget.docID)
@@ -352,43 +372,76 @@ class _EditPostScreenState extends State<EditPostScreen> {
                         'Platform': selectedPlatform
                       });
                       Navigator.pop(context);
-                    },
-                    child: Text('Save',
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color(0xffFFFFFC)),
-                        )),
-                  ),
+                    } else {
+                      CustomSnackBar.showErrorSnackBar(
+                          context, 'Please fill in all the required fields');
+                    }
+                  },
+                  child: Text('Save',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xffFFFFFC)),
+                      )),
                 ),
-
-                SizedBox(
-                  width: 342,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                    ),
-                    onPressed: () {
-                      FirebaseFirestore.instance
-                          .collection('Post Data')
-                          .doc(widget.docID)
-                          .delete();
-                      Navigator.pop(context);
-                    },
-                    child: Text('Delete',
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color(0xffFFFFFC)),
-                        )),
+              ),
+              // for delete data from firestore and ui
+              SizedBox(
+                width: 342,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5))),
                   ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Are you sure you want to delete?',
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              )),
+                          content: TextButton(
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('Post Data')
+                                  .doc(widget.docID)
+                                  .delete();
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BottomNavigationBarScreen(),
+                                  ));
+                            },
+                            child: Text('Delete',
+                                style: GoogleFonts.montserrat(
+                                  textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      color: Colors.red),
+                                )),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Text('Delete',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xffFFFFFC)),
+                      )),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
