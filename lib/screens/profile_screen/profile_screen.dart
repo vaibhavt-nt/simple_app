@@ -35,14 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //for storing image in firebase storage
   var user = FirebaseAuth.instance.currentUser;
 
-  void _onImagePicked(File? pickedImage) {
-    if (pickedImage != null) {
-      setState(() {
-        _image = pickedImage;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +67,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: 100,
                           child: GestureDetector(
                               onTap: () {
-                                PickImage.pickImageFromGallery(_onImagePicked);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Select Image'),
+                                      content: const Text('Choose an option'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('Gallery'),
+                                          onPressed: () {
+                                            PickImage.pickImageFromGallery(
+                                                (image) {
+                                              if (image != null) {
+                                                setState(() {
+                                                  _image = image;
+                                                });
+                                              }
+                                              Navigator.of(context).pop();
+                                            });
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text('Camera'),
+                                          onPressed: () {
+                                            PickImage.pickImageFromCamera(
+                                                (image) {
+                                              if (image != null) {
+                                                setState(() {
+                                                  _image = image;
+                                                });
+                                              }
+                                              Navigator.of(context).pop();
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                               child: Center(
                                   child: SizedBox(
@@ -180,92 +210,101 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Gap(
                   height: 110,
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
 
-                      setState(() {
-                        isUpdating = true;
-                      });
-
-                      // Get the updated name and photo from the form
-                      String updatedName = userName.text;
-                      String? updatedPhoto = _image != null
-                          ? await PickImage.uploadProfileImage(_image!)
-                          : user!.photoURL;
-
-                      // Call the updateUser method from FirebaseAuthentication
-                      User? updatedUser =
-                          await FirebaseAuthentication.updateUser(
-                              name: updatedName, photo: updatedPhoto!);
-
-                      if (updatedUser != null) {
-                        // Update the state to reflect the changes
                         setState(() {
-                          user = updatedUser;
-                          isUpdating = false;
+                          isUpdating = true;
                         });
 
-                        CustomSnackBar.showSuccessSnackBar(
-                          context,
-                          'Profile updated successfully',
-                        );
+                        // Get the updated name and photo from the form
+                        String updatedName = userName.text;
+                        String? updatedPhoto = _image != null
+                            ? await PickImage.uploadProfileImage(_image!)
+                            : user!.photoURL;
+
+                        // Call the updateUser method from FirebaseAuthentication
+                        User? updatedUser =
+                            await FirebaseAuthentication.updateUser(
+                                name: updatedName, photo: updatedPhoto!);
+
+                        if (updatedUser != null) {
+                          // Update the state to reflect the changes
+                          setState(() {
+                            user = updatedUser;
+                            isUpdating = false;
+                          });
+
+                          CustomSnackBar.showSuccessSnackBar(
+                            context,
+                            'Profile updated successfully',
+                          );
+                        }
                       }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: isUpdating
-                          ? CustomColors.lightGrey
-                          : const Color(0xFFEE4D86)),
-                  child: isUpdating
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2, color: Colors.white),
-                        )
-                      : Text("Update",
-                          textAlign: TextAlign.left,
-                          textDirection: TextDirection.ltr,
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                          )),
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 16),
+                        backgroundColor: isUpdating
+                            ? CustomColors.lightGrey
+                            : const Color(0xFFEE4D86)),
+                    child: isUpdating
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white),
+                          )
+                        : Text("Update",
+                            textAlign: TextAlign.left,
+                            textDirection: TextDirection.ltr,
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            )),
+                  ),
                 ),
                 const Gap(
-                  height: 25,
+                  height: 15,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    CustomSnackBar.showSuccessSnackBar(
-                        context, 'Logout Successfully');
-                    FirebaseAuthentication.signOut();
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ));
-                  },
-                  style: ElevatedButton.styleFrom(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      CustomSnackBar.showSuccessSnackBar(
+                          context, 'Logout Successfully');
+                      FirebaseAuthentication.signOut();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ));
+                    },
+                    style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           side: const BorderSide(color: CustomColors.pink),
                           borderRadius: BorderRadius.circular(10)),
-                      padding: const EdgeInsets.symmetric(vertical: 12)),
-                  child: Text("Logout",
-                      textAlign: TextAlign.left,
-                      textDirection: TextDirection.ltr,
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            color: CustomColors.darkGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
-                      )),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 16),
+                    ),
+                    child: Text("Logout",
+                        textAlign: TextAlign.left,
+                        textDirection: TextDirection.ltr,
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              color: CustomColors.darkGrey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        )),
+                  ),
                 ),
               ],
             ),

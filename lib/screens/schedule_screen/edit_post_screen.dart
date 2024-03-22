@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/snack_bar.dart';
@@ -14,6 +15,9 @@ class EditPostScreen extends StatefulWidget {
   final String selectedTime;
   final String postImage;
   final String docID;
+  final double imageHeight, imageWidth;
+  final Color frameColor1;
+  final Color frameColor2;
 
   const EditPostScreen(
       {super.key,
@@ -22,7 +26,11 @@ class EditPostScreen extends StatefulWidget {
       required this.selectedDate,
       required this.selectedTime,
       required this.docID,
-      required this.postImage});
+      required this.postImage,
+      required this.imageHeight,
+      required this.imageWidth,
+      required this.frameColor1,
+      required this.frameColor2});
 
   @override
   State<EditPostScreen> createState() => _EditPostScreenState();
@@ -117,11 +125,26 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       ),
 
                       Stack(alignment: Alignment.center, children: [
-                        SizedBox(
-                            height: 342,
-                            width: 342,
-                            child:
-                                Image(image: NetworkImage(widget.postImage))),
+                        Container(
+                            height: widget.imageHeight,
+                            width: widget.imageWidth,
+                            decoration: BoxDecoration(
+                              border: GradientBoxBorder(
+                                  width: 8,
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        widget.frameColor1,
+                                        widget.frameColor2
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter)),
+                            ),
+                            child: Image(
+                              image: NetworkImage(widget.postImage),
+                              fit: BoxFit.cover,
+                              width: widget.imageWidth,
+                              height: widget.imageHeight,
+                            )),
                         Positioned.fill(
                           left: 40,
                           right: 40,
@@ -362,14 +385,14 @@ class _EditPostScreenState extends State<EditPostScreen> {
                         selectedTime != null &&
                         selectedPlatform != null) {
                       FirebaseFirestore.instance
-                          .collection('Post Data')
+                          .collection('post_data')
                           .doc(widget.docID)
                           .update({
-                        'Caption': captionText.text.trim(),
-                        'Schedule Date':
+                        'caption': captionText.text.trim(),
+                        'schedule_date':
                             DateFormat.yMMMMd().format(_selectedDate!),
-                        'Schedule Time': selectedTime!.format(context),
-                        'Platform': selectedPlatform
+                        'schedule_time': selectedTime!.format(context),
+                        'platform': selectedPlatform
                       });
                       Navigator.pop(context);
                     } else {
@@ -410,7 +433,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           content: TextButton(
                             onPressed: () {
                               FirebaseFirestore.instance
-                                  .collection('Post Data')
+                                  .collection('post_data')
                                   .doc(widget.docID)
                                   .delete();
                               Navigator.pushReplacement(

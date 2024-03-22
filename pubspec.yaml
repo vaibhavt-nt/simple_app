@@ -54,6 +54,8 @@ dependencies:
   permission_handler: ^11.3.0
   get: ^4.6.6
   fluttertoast: ^8.2.4
+  gradient_borders: ^1.0.0
+  color: ^3.0.0
 
 dev_dependencies:
   flutter_test:
