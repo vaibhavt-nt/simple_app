@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
+import 'package:simple_app/services/download_share_service.dart';
 
 class OverViewScreenWhenSkipButtonPressed extends StatefulWidget {
   final double containerHeight;
@@ -35,6 +36,8 @@ class OverViewScreenWhenSkipButtonPressed extends StatefulWidget {
 
 class _OverViewScreenWhenSkipButtonPressedState
     extends State<OverViewScreenWhenSkipButtonPressed> {
+  ScreenshotController screenshotController = ScreenshotController();
+
   bool _isLoading = false;
 
   //for storing image in firebase storage
@@ -94,16 +97,15 @@ class _OverViewScreenWhenSkipButtonPressedState
         "image_width": widget.containerWidth,
         "frame_color1": frameColor1Hex,
         "frame_color2": frameColor2Hex,
-      });
+      }).then((value) => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BottomNavigationBarScreen(),
+            ),
+          ));
       setState(() {
         _isLoading = false;
       });
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const BottomNavigationBarScreen(),
-        ),
-      );
       // Create an instance of MyNewClass and pass the containerHeight and containerWidth values to it
     } catch (e) {
       // Handle error
@@ -132,58 +134,61 @@ class _OverViewScreenWhenSkipButtonPressedState
                       const Gap(
                         height: 70,
                       ),
-                      Stack(alignment: Alignment.center, children: [
-                        // Display the container image
-                        Container(
-                          height: widget.containerHeight,
-                          width: widget.containerWidth,
-                          decoration: BoxDecoration(
-                            border: GradientBoxBorder(
-                                width: 8,
-                                gradient: LinearGradient(
-                                    colors: [
-                                      widget.frameColor1,
-                                      widget.frameColor2
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter)),
+                      Screenshot(
+                        controller: screenshotController,
+                        child: Stack(alignment: Alignment.center, children: [
+                          // Display the container image
+                          Container(
+                            height: widget.containerHeight,
+                            width: widget.containerWidth,
+                            decoration: BoxDecoration(
+                              border: GradientBoxBorder(
+                                  width: 8,
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        widget.frameColor1,
+                                        widget.frameColor2
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter)),
+                            ),
+                            child: widget.imageUrl.isNotEmpty
+                                ? Image.file(
+                                    File(widget.imageUrl),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Text(
+                                    'Container',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
                           ),
-                          child: widget.imageUrl.isNotEmpty
-                              ? Image.file(
-                                  File(widget.imageUrl),
-                                  fit: BoxFit.cover,
-                                )
-                              : const Text(
-                                  'Container',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                        ),
-                        // Display the entered text
-                        Positioned.fill(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(30.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Text(
-                                    widget.enteredText,
-                                    style: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          color: CustomColors.darkGrey),
+                          // Display the entered text
+                          Positioned.fill(
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(30.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      widget.enteredText,
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            color: CustomColors.darkGrey),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ]),
+                        ]),
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -208,7 +213,10 @@ class _OverViewScreenWhenSkipButtonPressedState
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5)),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  DownloadShareService.saveToGallery(
+                                      context, screenshotController);
+                                },
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
@@ -247,7 +255,10 @@ class _OverViewScreenWhenSkipButtonPressedState
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5)),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  DownloadShareService.shareImage(
+                                      context, screenshotController);
+                                },
                                 child: Center(
                                   child: Row(
                                     mainAxisAlignment:
@@ -287,26 +298,34 @@ class _OverViewScreenWhenSkipButtonPressedState
             SizedBox(
               width: 342,
               child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(CustomColors.pink),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5))),
-                ),
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 16),
+                    backgroundColor: _isLoading
+                        ? CustomColors.lightGrey
+                        : const Color(0xFFEE4D86)),
                 onPressed: _isLoading
                     ? null
                     : () {
                         onSubmitButton();
                       },
                 child: _isLoading
-                    ? const CircularProgressIndicator(
-                        color: Colors.white,
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                            strokeWidth: 2, color: Colors.white),
                       )
-                    : Text('Go to home',
+                    : Text("Go to home",
+                        textAlign: TextAlign.left,
+                        textDirection: TextDirection.ltr,
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
-                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
                               fontSize: 16,
-                              color: Color(0xffFFFFFC)),
+                              fontWeight: FontWeight.w600),
                         )),
               ),
             ),

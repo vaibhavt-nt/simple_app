@@ -30,12 +30,6 @@ class ListOfPostScreen extends StatelessWidget {
           height: containerHeight + 70,
           width: containerWidth,
           decoration: BoxDecoration(
-              border: GradientBoxBorder(
-                  width: 8,
-                  gradient: LinearGradient(
-                      colors: [frameColor1, frameColor2],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter)),
               color: CustomColors.lightPink,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5)),
@@ -82,9 +76,19 @@ class ListOfPostScreen extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Align(
             alignment: Alignment.topCenter,
-            child: SizedBox(
+            child: Container(
               width: containerWidth,
               height: containerHeight,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(5),
+                border: GradientBoxBorder(
+                    width: 8,
+                    gradient: LinearGradient(
+                        colors: [frameColor1, frameColor2],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter)),
+              ),
               child: Image.network(
                 postImage,
                 fit: BoxFit.cover,

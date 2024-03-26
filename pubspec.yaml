@@ -56,6 +56,11 @@ dependencies:
   fluttertoast: ^8.2.4
   gradient_borders: ^1.0.0
   color: ^3.0.0
+  firebase_database: ^10.4.10
+  screenshot: ^2.3.0
+  image_gallery_saver: ^2.0.3
+  path_provider: ^2.1.2
+  share_plus: ^8.0.2
 
 dev_dependencies:
   flutter_test:
