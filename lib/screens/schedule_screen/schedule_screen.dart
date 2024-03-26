@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/screens/schedule_screen/edit_post_screen.dart';
 
@@ -24,8 +25,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         child: StreamBuilder(
           //this is for getting data from firestore with userId found
           stream: FirebaseFirestore.instance
-              .collection("Post Data")
-              .where("userId", isEqualTo: user?.uid)
+              .collection("post_data")
+              .where("user_id", isEqualTo: user?.uid)
               .snapshots(),
 
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -88,23 +89,45 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               snapshot.data!.docs.length - index - 1;
                           // this will fetch caption from firestore
                           var captionFirestore =
-                              snapshot.data!.docs[reversedIndex]['Caption'];
+                              snapshot.data!.docs[reversedIndex]['caption'];
 
                           // this will fetch platform from firestore
                           var platformFirestore =
-                              snapshot.data!.docs[reversedIndex]['Platform'];
+                              snapshot.data!.docs[reversedIndex]['platform'];
 
                           // this will fetch Schedule Time from firestore
                           var scheduleTimeFirestore = snapshot
-                              .data!.docs[reversedIndex]['Schedule Time'];
+                              .data!.docs[reversedIndex]['schedule_time'];
 
                           // this will fetch Schedule Date from firestore
                           var scheduleDateFirestore = snapshot
-                              .data!.docs[reversedIndex]['Schedule Date'];
+                              .data!.docs[reversedIndex]['schedule_date'];
 
                           // this will fetch post image from firestore
                           var postImageFirestore =
-                              snapshot.data!.docs[reversedIndex]['Image'];
+                              snapshot.data!.docs[reversedIndex]['image'];
+
+                          var imageHeightFirestore = snapshot
+                              .data!.docs[reversedIndex]['image_height'];
+
+                          var imageWidthFirestore =
+                              snapshot.data!.docs[reversedIndex]['image_width'];
+
+                          //for converting firestore string to color
+                          Color hexToColor(String hexString) {
+                            int colorValue = int.parse(
+                                hexString.replaceFirst('#', ''),
+                                radix: 16);
+                            return Color(colorValue);
+                          }
+
+                          var frameColor1Firestore = snapshot
+                              .data!.docs[reversedIndex]['frame_color1'];
+                          var frameColor2Firestore = snapshot
+                              .data!.docs[reversedIndex]['frame_color2'];
+
+                          Color frameColor1 = hexToColor(frameColor1Firestore);
+                          Color frameColor2 = hexToColor(frameColor2Firestore);
 
                           var docIdFirestore =
                               snapshot.data!.docs[reversedIndex].id;
@@ -115,22 +138,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => EditPostScreen(
+                                    imageHeight: imageHeightFirestore,
+                                    imageWidth: imageWidthFirestore,
                                     platform: platformFirestore,
                                     enteredText: captionFirestore,
                                     selectedDate: scheduleDateFirestore,
                                     selectedTime: scheduleTimeFirestore,
                                     postImage: postImageFirestore,
                                     docID: docIdFirestore,
+                                    frameColor1: frameColor1,
+                                    frameColor2: frameColor2,
                                   ),
                                 ),
                               );
-                              // Get.to(() => const EditPostScreen(), arguments: {
-                              //   'Caption': captionFirestore,
-                              //   'ScheduleDate': scheduleDateFirestore,
-                              //   'ScheduleTime': scheduleTimeFirestore,
-                              //   'Platform': platformFirestore,
-                              //   'docId': docIdFirestore,
-                              // });
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -162,6 +182,17 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                         //this is show image
                                         Container(
                                           decoration: BoxDecoration(
+                                              border: GradientBoxBorder(
+                                                  width: 8,
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        frameColor1,
+                                                        frameColor2,
+                                                      ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter)),
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               color: Colors.black,

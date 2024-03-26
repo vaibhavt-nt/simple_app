@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
@@ -15,12 +17,16 @@ class OverViewScreenWhenSkipButtonPressed extends StatefulWidget {
   final double containerWidth;
   final String imageUrl;
   final String enteredText;
+  final Color frameColor1;
+  final Color frameColor2;
   const OverViewScreenWhenSkipButtonPressed(
       {super.key,
       required this.containerHeight,
       required this.containerWidth,
       required this.imageUrl,
-      required this.enteredText});
+      required this.enteredText,
+      required this.frameColor1,
+      required this.frameColor2});
 
   @override
   State<OverViewScreenWhenSkipButtonPressed> createState() =>
@@ -35,6 +41,31 @@ class _OverViewScreenWhenSkipButtonPressedState
   final firestore = FirebaseFirestore.instance;
   final userId = FirebaseAuth.instance.currentUser;
 
+  //for converting color to string
+  String colorToHex(int colorValue, {bool includeHash = false}) {
+    Color color = Color(colorValue);
+    String hex = color.value.toRadixString(16);
+    if (includeHash) {
+      return '#$hex';
+    } else {
+      return hex;
+    }
+  }
+
+  String frameColor1Hex = '';
+  String frameColor2Hex = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _convertColorsToHex();
+  }
+
+  void _convertColorsToHex() {
+    frameColor1Hex = colorToHex(widget.frameColor1.value);
+    frameColor2Hex = colorToHex(widget.frameColor2.value);
+  }
+
   void onSubmitButton() async {
     setState(() {
       _isLoading = true;
@@ -48,17 +79,21 @@ class _OverViewScreenWhenSkipButtonPressedState
 
     //add users details in  firestore
     try {
-      await firestore.collection("Post Data").doc().set({
-        "createdAt": DateTime.now(),
-        "Schedule Date": '',
-        "Schedule Time": '',
-        "Platform": '',
-        "Caption": widget.enteredText,
-        "userId": userId?.uid,
-        "userEmail": userId?.email,
-        "userName": userId?.displayName,
-        //Add image reference to document
-        "Image": downloadUrl.toString()
+      await firestore.collection("post_data").doc().set({
+        "created_at": DateTime.now(),
+        "schedule_date": '',
+        "schedule_time": '',
+        "platform": '',
+        "caption": widget.enteredText,
+        "user_id": userId?.uid,
+        "user_email": userId?.email,
+        "user_name": userId?.displayName,
+        // Add image reference to document
+        "image": downloadUrl.toString(),
+        "image_height": widget.containerHeight,
+        "image_width": widget.containerWidth,
+        "frame_color1": frameColor1Hex,
+        "frame_color2": frameColor2Hex,
       });
       setState(() {
         _isLoading = false;
@@ -69,6 +104,7 @@ class _OverViewScreenWhenSkipButtonPressedState
           builder: (context) => const BottomNavigationBarScreen(),
         ),
       );
+      // Create an instance of MyNewClass and pass the containerHeight and containerWidth values to it
     } catch (e) {
       // Handle error
       if (kDebugMode) {
@@ -98,9 +134,20 @@ class _OverViewScreenWhenSkipButtonPressedState
                       ),
                       Stack(alignment: Alignment.center, children: [
                         // Display the container image
-                        SizedBox(
+                        Container(
                           height: widget.containerHeight,
                           width: widget.containerWidth,
+                          decoration: BoxDecoration(
+                            border: GradientBoxBorder(
+                                width: 8,
+                                gradient: LinearGradient(
+                                    colors: [
+                                      widget.frameColor1,
+                                      widget.frameColor2
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter)),
+                          ),
                           child: widget.imageUrl.isNotEmpty
                               ? Image.file(
                                   File(widget.imageUrl),

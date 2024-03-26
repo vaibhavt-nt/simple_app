@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
@@ -11,11 +12,15 @@ class SelectCaptionScreen extends StatefulWidget {
   final double containerHeight;
   final double containerWidth;
   final String imageUrl;
+  final Color frameColor1;
+  final Color frameColor2;
   const SelectCaptionScreen({
     super.key,
     required this.containerHeight,
     required this.containerWidth,
     required this.imageUrl,
+    required this.frameColor1,
+    required this.frameColor2,
   });
 
   @override
@@ -39,7 +44,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
-              percent: 0.75,
+              percent: 0.80,
               barRadius: const Radius.circular(20),
               progressColor: const Color(0xffED4D86),
               backgroundColor: const Color(0xffE6E6E6),
@@ -55,7 +60,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 150),
                     child: Text(
-                      'Step 3',
+                      'Step 4',
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
                             fontWeight: FontWeight.w600,
@@ -113,18 +118,33 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                     height: 20,
                   ),
                   Stack(alignment: Alignment.center, children: [
-                    Center(
-                      child: widget.imageUrl.isNotEmpty
-                          ? Image.file(
-                              File(widget.imageUrl),
-                              fit: BoxFit.cover,
-                              height: widget.containerHeight,
-                              width: widget.containerWidth,
-                            )
-                          : const Text(
-                              'Container',
-                              style: TextStyle(fontSize: 20),
-                            ),
+                    Container(
+                      height: widget.containerHeight,
+                      width: widget.containerWidth,
+                      decoration: BoxDecoration(
+                        border: GradientBoxBorder(
+                            width: 8,
+                            gradient: LinearGradient(
+                                colors: [
+                                  widget.frameColor1,
+                                  widget.frameColor2
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter)),
+                      ),
+                      child: Center(
+                        child: widget.imageUrl!.isNotEmpty
+                            ? Image.file(
+                                File(widget.imageUrl!),
+                                fit: BoxFit.cover,
+                                width: widget.containerWidth,
+                                height: widget.containerHeight,
+                              )
+                            : const Text(
+                                'Select Image',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                      ),
                     ),
                     Positioned.fill(
                       child: Center(
@@ -265,6 +285,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                       containerWidth: widget.containerWidth,
                       imageUrl: widget.imageUrl,
                       enteredText: enteredText,
+                      frameColor1: widget.frameColor1,
+                      frameColor2: widget.frameColor2,
                     ),
                   ),
                 );

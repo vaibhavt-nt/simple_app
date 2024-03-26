@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:simple_app/constants/colors.dart';
 
 class ListOfPostScreen extends StatelessWidget {
   final String scheduleTime, scheduleDate, caption, platform, postImage;
+  final double containerHeight;
+  final double containerWidth;
+  final Color frameColor1;
+  final Color frameColor2;
   const ListOfPostScreen(
       {super.key,
       required this.scheduleTime,
       required this.scheduleDate,
       required this.caption,
       required this.platform,
-      required this.postImage});
+      required this.postImage,
+      required this.containerHeight,
+      required this.containerWidth,
+      required this.frameColor1,
+      required this.frameColor2});
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +27,15 @@ class ListOfPostScreen extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Stack(alignment: Alignment.topCenter, children: [
         Container(
-          height: 390,
-          width: 342,
+          height: containerHeight + 70,
+          width: containerWidth,
           decoration: BoxDecoration(
+              border: GradientBoxBorder(
+                  width: 8,
+                  gradient: LinearGradient(
+                      colors: [frameColor1, frameColor2],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter)),
               color: CustomColors.lightPink,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5)),
@@ -64,13 +79,18 @@ class ListOfPostScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Align(
             alignment: Alignment.topCenter,
             child: SizedBox(
-              width: 322,
-              height: 322,
-              child: Image.network(postImage),
+              width: containerWidth,
+              height: containerHeight,
+              child: Image.network(
+                postImage,
+                fit: BoxFit.cover,
+                width: containerWidth,
+                height: containerHeight,
+              ),
             ),
           ),
         ),

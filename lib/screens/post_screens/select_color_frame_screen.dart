@@ -1,27 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
-import 'package:simple_app/screens/post_screens/select_color_frame_screen.dart';
+import 'package:simple_app/screens/post_screens/select_image_screen.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 
-class SelectFrameScreen extends StatefulWidget {
-  const SelectFrameScreen({
-    super.key,
-  });
+class SelectColorFrameScreen extends StatefulWidget {
+  final double height;
+  final double width;
+  SelectColorFrameScreen(
+      {super.key, required this.height, required this.width});
+
+  final List<Color> _frameColors = [
+    CustomColors.teal,
+    CustomColors.lightPurple,
+    CustomColors.yellow,
+    CustomColors.green,
+    CustomColors.lightRed,
+    CustomColors.lightYellow,
+    CustomColors.purple,
+    CustomColors.lightOrange,
+    CustomColors.rose,
+    CustomColors.levender,
+  ];
 
   @override
-  State<SelectFrameScreen> createState() => _SelectFrameScreenState();
+  State<SelectColorFrameScreen> createState() => _SelectColorFrameScreenState();
 }
 
-class _SelectFrameScreenState extends State<SelectFrameScreen> {
+class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
   int _selectedIndex = 0;
   late PageController _pageController;
-  final List<String> _buttonTexts = ['square', 'vertical', 'horizontal'];
+  final List<String> _buttonTexts = [
+    'Frame 1',
+    'Frame 2',
+    'Frame 3',
+    'Frame 4',
+    'Frame 5'
+  ];
 
+  Color? _selectedColor1;
+  Color? _selectedColor2;
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _selectedIndex);
+    _selectedIndex = 0;
+    _selectedColor1 = widget._frameColors[0];
+    _selectedColor2 = widget._frameColors[1];
   }
 
   @override
@@ -43,21 +70,32 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
-              percent: 0.20,
+              percent: 0.40,
               barRadius: const Radius.circular(20),
               progressColor: const Color(0xffED4D86),
               backgroundColor: const Color(0xffE6E6E6),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
-              child: Text(
-                'Step 1',
-                style: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: Color(0xff1C1C1C)),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back_ios)),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 150),
+                    child: Text(
+                      'Step 2',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xff1C1C1C)),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -88,11 +126,20 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                         setState(() {
                           _selectedIndex = index;
                         });
+                        _selectedColor1 = widget._frameColors[index * 2];
+                        _selectedColor2 = widget._frameColors[index * 2 + 1];
                       },
                       children: [
-                        buildContainer(342, 342),
-                        buildContainer(420, 342),
-                        buildContainer(200, 342),
+                        buildContainer(widget.height, widget.width,
+                            widget._frameColors[0], widget._frameColors[1]),
+                        buildContainer(widget.height, widget.width,
+                            widget._frameColors[2], widget._frameColors[3]),
+                        buildContainer(widget.height, widget.width,
+                            widget._frameColors[4], widget._frameColors[5]),
+                        buildContainer(widget.height, widget.width,
+                            widget._frameColors[6], widget._frameColors[7]),
+                        buildContainer(widget.height, widget.width,
+                            widget._frameColors[8], widget._frameColors[9]),
                       ],
                     ),
                   ),
@@ -148,9 +195,11 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SelectColorFrameScreen(
-                        height: _getHeight(),
-                        width: _getWidth(),
+                      builder: (context) => SelectImageScreen(
+                        height: widget.height,
+                        width: widget.width,
+                        frameColor1: _selectedColor1!,
+                        frameColor2: _selectedColor2!,
                       ),
                     ),
                   );
@@ -182,41 +231,19 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
     );
   }
 
-  // Helper function to get the height of the selected container
-  double _getHeight() {
-    switch (_selectedIndex) {
-      case 0:
-        return 342;
-      case 1:
-        return 420;
-      case 2:
-        return 200;
-      default:
-        return 0; // Default height
-    }
-  }
-
-// Helper function to get the width of the selected container
-  double _getWidth() {
-    switch (_selectedIndex) {
-      case 0:
-        return 342;
-      case 1:
-        return 342;
-      case 2:
-        return 342;
-      default:
-        return 0; // Default width
-    }
-  }
-
-  Widget buildContainer(double height, double width) {
+  Widget buildContainer(
+      double height, double width, Color color, Color color2) {
     return Center(
       child: Container(
         height: height,
         width: width,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black, width: 2),
+          border: GradientBoxBorder(
+              width: 8,
+              gradient: LinearGradient(
+                  colors: [color, color2],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter)),
         ),
       ),
     );

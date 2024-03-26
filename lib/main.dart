@@ -7,6 +7,7 @@ import 'package:simple_app/Provider/provider.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 import 'package:simple_app/screens/splash_screen/splash_screen.dart';
 import 'package:simple_app/services/firebase_service/firebase_options.dart';
+import 'package:simple_app/services/provider/container_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,24 +56,27 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion(
-      value: const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
-        statusBarColor: Colors.transparent,
-      ),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: ScaffoldMessenger(
-          child: Scaffold(
-            body: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return const BottomNavigationBarScreen();
-                } else {
-                  return const SplashScreen();
-                }
-              },
+    return ChangeNotifierProvider(
+      create: (context) => ContainerProvider(),
+      child: AnnotatedRegion(
+        value: const SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.transparent,
+          statusBarColor: Colors.transparent,
+        ),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: ScaffoldMessenger(
+            child: Scaffold(
+              body: StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return const BottomNavigationBarScreen();
+                  } else {
+                    return const SplashScreen();
+                  }
+                },
+              ),
             ),
           ),
         ),

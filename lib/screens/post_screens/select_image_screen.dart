@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
@@ -11,7 +12,14 @@ import 'package:simple_app/services/image_picker_service.dart';
 class SelectImageScreen extends StatefulWidget {
   final double height;
   final double width;
-  SelectImageScreen({super.key, required this.height, required this.width});
+  final Color frameColor1;
+  final Color frameColor2;
+  SelectImageScreen(
+      {super.key,
+      required this.height,
+      required this.width,
+      required this.frameColor1,
+      required this.frameColor2});
 
   final List<String> imageUrls = [];
   String? selectedImageUrl;
@@ -68,7 +76,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
-              percent: 0.50,
+              percent: 0.60,
               barRadius: const Radius.circular(20),
               progressColor: const Color(0xffED4D86),
               backgroundColor: const Color(0xffE6E6E6),
@@ -84,7 +92,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 150),
                     child: Text(
-                      'Step 2',
+                      'Step 3',
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
                             fontWeight: FontWeight.w600,
@@ -119,7 +127,15 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                       height: widget.height,
                       width: widget.width,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 2),
+                        border: GradientBoxBorder(
+                            width: 8,
+                            gradient: LinearGradient(
+                                colors: [
+                                  widget.frameColor1,
+                                  widget.frameColor2
+                                ],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter)),
                       ),
                       child: Center(
                         child: widget.selectedImageUrl!.isNotEmpty
@@ -215,6 +231,8 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                       containerHeight: widget.height,
                       containerWidth: widget.width,
                       imageUrl: widget.selectedImageUrl!,
+                      frameColor1: widget.frameColor1,
+                      frameColor2: widget.frameColor2,
                     ),
                   ),
                 );

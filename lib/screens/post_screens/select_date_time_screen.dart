@@ -13,12 +13,16 @@ class SelectDateAndTimeScreen extends StatefulWidget {
   final double containerWidth;
   final String imageUrl;
   final String enteredText;
+  final Color frameColor1;
+  final Color frameColor2;
   const SelectDateAndTimeScreen({
     super.key,
     required this.containerHeight,
     required this.containerWidth,
     required this.imageUrl,
     required this.enteredText,
+    required this.frameColor1,
+    required this.frameColor2,
   });
 
   @override
@@ -106,7 +110,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                         onPressed: () => Navigator.pop(context),
                         icon: const Icon(Icons.arrow_back_ios)),
                     Text(
-                      'Step 4',
+                      'Step 5',
                       style: GoogleFonts.montserrat(
                         textStyle: const TextStyle(
                             fontWeight: FontWeight.w600,
@@ -121,11 +125,12 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 OverViewScreenWhenSkipButtonPressed(
-                              containerHeight: widget.containerHeight,
-                              containerWidth: widget.containerWidth,
-                              imageUrl: widget.imageUrl,
-                              enteredText: widget.enteredText,
-                            ),
+                                    containerHeight: widget.containerHeight,
+                                    containerWidth: widget.containerWidth,
+                                    imageUrl: widget.imageUrl,
+                                    enteredText: widget.enteredText,
+                                    frameColor1: widget.frameColor1,
+                                    frameColor2: widget.frameColor2),
                           ),
                         );
                       },
@@ -376,6 +381,8 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                                 selectedDate: selectedDateString,
                                 selectedTime: selectedTime!.format(context),
                                 selectedPlatform: selectedPlatform.toString(),
+                                frameColor1: widget.frameColor1,
+                                frameColor2: widget.frameColor2,
                               ),
                             ),
                           );

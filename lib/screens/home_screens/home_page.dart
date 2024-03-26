@@ -27,8 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: StreamBuilder(
           //this is for getting data from firestore with userId found
           stream: FirebaseFirestore.instance
-              .collection("Post Data")
-              .where("userId", isEqualTo: user?.uid)
+              .collection("post_data")
+              .where("user_id", isEqualTo: user?.uid)
               .snapshots(),
 
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -109,32 +109,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                 snapshot.data!.docs.length - index - 1;
                             // this will fetch caption from firestore
                             var captionFirestore =
-                                snapshot.data!.docs[reversedIndex]['Caption'];
+                                snapshot.data!.docs[reversedIndex]['caption'];
 
                             // this will fetch platform from firestore
                             var platformFirestore =
-                                snapshot.data!.docs[reversedIndex]['Platform'];
+                                snapshot.data!.docs[reversedIndex]['platform'];
 
                             // this will fetch Schedule Time from firestore
                             var scheduleTimeFirestore = snapshot
-                                .data!.docs[reversedIndex]['Schedule Time'];
+                                .data!.docs[reversedIndex]['schedule_time'];
 
                             // this will fetch Schedule Date from firestore
                             var scheduleDateFirestore = snapshot
-                                .data!.docs[reversedIndex]['Schedule Date'];
+                                .data!.docs[reversedIndex]['schedule_date'];
 
                             var postImageFirestore =
-                                snapshot.data!.docs[reversedIndex]['Image'];
+                                snapshot.data!.docs[reversedIndex]['image'];
+
+                            var imageHeightFirestore = snapshot
+                                .data!.docs[reversedIndex]['image_height'];
+
+                            var imageWidthFirestore = snapshot
+                                .data!.docs[reversedIndex]['image_width'];
+
+                            //for converting firestore string to color
+                            Color hexToColor(String hexString) {
+                              int colorValue = int.parse(
+                                  hexString.replaceFirst('#', ''),
+                                  radix: 16);
+                              return Color(colorValue);
+                            }
+
+                            var frameColor1Firestore = snapshot
+                                .data!.docs[reversedIndex]['frame_color1'];
+                            var frameColor2Firestore = snapshot
+                                .data!.docs[reversedIndex]['frame_color2'];
+
+                            Color frameColor1 =
+                                hexToColor(frameColor1Firestore);
+                            Color frameColor2 =
+                                hexToColor(frameColor2Firestore);
 
                             //thi is a post id
                             // var docIdFirestore = snapshot.data!.docs[index].id;
 
                             return ListOfPostScreen(
-                                scheduleTime: scheduleTimeFirestore,
-                                scheduleDate: scheduleDateFirestore,
-                                caption: captionFirestore,
-                                platform: platformFirestore,
-                                postImage: postImageFirestore);
+                              scheduleTime: scheduleTimeFirestore,
+                              scheduleDate: scheduleDateFirestore,
+                              caption: captionFirestore,
+                              platform: platformFirestore,
+                              postImage: postImageFirestore,
+                              containerHeight: imageHeightFirestore,
+                              containerWidth: imageWidthFirestore,
+                              frameColor1: frameColor1,
+                              frameColor2: frameColor2,
+                            );
                           },
                         ),
                       ],
