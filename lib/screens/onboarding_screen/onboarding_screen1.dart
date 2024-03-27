@@ -66,127 +66,129 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: () {
-                  _pageController.animateToPage(
-                    _pages.length - 1,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.ease,
-                  );
-                },
-                child: Text('Skip',
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: CustomColors.darkGrey),
-                    )),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 1.5,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _pages.length,
-                onPageChanged: _onPageChanged,
-                itemBuilder: (context, index) {
-                  return _pages[index];
-                },
-              ),
-            ),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int i = 0; i < _pages.length; i++)
-                      Container(
-                        width: 10,
-                        height: _currentPage == i ? 17 : 7,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 3, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: _currentPage == i
-                              ? const Color(0xFFEE4D86)
-                              : Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                  ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  onPressed: () {
+                    _pageController.animateToPage(
+                      _pages.length - 1,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.ease,
+                    );
+                  },
+                  child: Text('Skip',
+                      style: GoogleFonts.montserrat(
+                        textStyle: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: CustomColors.darkGrey),
+                      )),
                 ),
-                _currentPage < _pages.length - 1
-                    ? GestureDetector(
-                        onTap: () {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.ease,
-                          );
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 342,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(6),
-                            ),
-                            color: Color(0xffED4D86),
-                          ),
-                          child: Center(
-                            child: Text('Next',
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: Color(0xffFFFFFC)),
-                                )),
-                          ),
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: _onDoneTapped,
-                        child: Container(
-                          height: 40,
-                          width: 342,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(6),
-                            ),
-                            color: Color(0xffED4D86),
-                          ),
-                          child: Center(
-                            child: Text('Finished',
-                                style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: Color(0xffFFFFFC)),
-                                )),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: _pages.length,
+                  onPageChanged: _onPageChanged,
+                  itemBuilder: (context, index) {
+                    return _pages[index];
+                  },
+                ),
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (int i = 0; i < _pages.length; i++)
+                        Container(
+                          width: 10,
+                          height: _currentPage == i ? 17 : 7,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 3, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: _currentPage == i
+                                ? const Color(0xFFEE4D86)
+                                : Colors.grey,
+                            shape: BoxShape.circle,
                           ),
                         ),
-                      ),
-                TextButton(
-                    onPressed: () {
-                      _pageController.previousPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.ease,
-                      );
-                    },
-                    child: _currentPage != 0
-                        ? Text('Back',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  color: CustomColors.pink),
-                            ))
-                        : const SizedBox()),
-              ],
-            ),
-          ],
+                    ],
+                  ),
+                  _currentPage < _pages.length - 1
+                      ? GestureDetector(
+                          onTap: () {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.ease,
+                            );
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 342,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6),
+                              ),
+                              color: Color(0xffED4D86),
+                            ),
+                            child: Center(
+                              child: Text('Next',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                        color: Color(0xffFFFFFC)),
+                                  )),
+                            ),
+                          ),
+                        )
+                      : GestureDetector(
+                          onTap: _onDoneTapped,
+                          child: Container(
+                            height: 40,
+                            width: 342,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6),
+                              ),
+                              color: Color(0xffED4D86),
+                            ),
+                            child: Center(
+                              child: Text('Finished',
+                                  style: GoogleFonts.montserrat(
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                        color: Color(0xffFFFFFC)),
+                                  )),
+                            ),
+                          ),
+                        ),
+                  TextButton(
+                      onPressed: () {
+                        _pageController.previousPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.ease,
+                        );
+                      },
+                      child: _currentPage != 0
+                          ? Text('Back',
+                              style: GoogleFonts.montserrat(
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: CustomColors.pink),
+                              ))
+                          : const SizedBox()),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

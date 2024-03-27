@@ -14,21 +14,21 @@ class SelectImageScreen extends StatefulWidget {
   final double width;
   final Color frameColor1;
   final Color frameColor2;
-  SelectImageScreen(
-      {super.key,
-      required this.height,
-      required this.width,
-      required this.frameColor1,
-      required this.frameColor2});
-
-  final List<String> imageUrls = [];
-  String? selectedImageUrl;
+  const SelectImageScreen({
+    super.key,
+    required this.height,
+    required this.width,
+    required this.frameColor1,
+    required this.frameColor2,
+  });
 
   @override
   State<SelectImageScreen> createState() => _SelectImageScreenState();
 }
 
 class _SelectImageScreenState extends State<SelectImageScreen> {
+  final List<String> imageUrls = [];
+  String? selectedImageUrl;
   void showImagePicker(
     BuildContext context,
     Function(File?) onImagePicked,
@@ -63,7 +63,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    widget.selectedImageUrl ??= '';
+    selectedImageUrl ??= '';
 
     return Scaffold(
       body: Padding(
@@ -138,9 +138,9 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                 end: Alignment.bottomCenter)),
                       ),
                       child: Center(
-                        child: widget.selectedImageUrl!.isNotEmpty
+                        child: selectedImageUrl!.isNotEmpty
                             ? Image.file(
-                                File(widget.selectedImageUrl!),
+                                File(selectedImageUrl!),
                                 fit: BoxFit.cover,
                                 width: widget.width,
                                 height: widget.height,
@@ -157,7 +157,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                       height: 100, // Adjust height as needed
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: widget.imageUrls.length + 1,
+                        itemCount: imageUrls.length + 1,
                         itemBuilder: (context, index) {
                           if (index == 0) {
                             return Padding(
@@ -168,8 +168,8 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                     if (selectedFile != null) {
                                       setState(() {
                                         final String newUrl = selectedFile.path;
-                                        widget.selectedImageUrl = newUrl;
-                                        widget.imageUrls.add(newUrl);
+                                        selectedImageUrl = newUrl;
+                                        imageUrls.add(newUrl);
                                       });
                                     }
                                   });
@@ -194,8 +194,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    widget.selectedImageUrl =
-                                        widget.imageUrls[assetIndex];
+                                    selectedImageUrl = imageUrls[assetIndex];
                                   });
                                 },
                                 child: Container(
@@ -206,7 +205,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                         color: Colors.black, width: 2),
                                   ),
                                   child: Image.file(
-                                    File(widget.imageUrls[assetIndex]),
+                                    File(imageUrls[assetIndex]),
                                     width: 100,
                                     height: 100,
                                     fit: BoxFit.cover,
@@ -230,7 +229,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                     builder: (context) => SelectCaptionScreen(
                       containerHeight: widget.height,
                       containerWidth: widget.width,
-                      imageUrl: widget.selectedImageUrl!,
+                      imageUrl: selectedImageUrl!,
                       frameColor1: widget.frameColor1,
                       frameColor2: widget.frameColor2,
                     ),

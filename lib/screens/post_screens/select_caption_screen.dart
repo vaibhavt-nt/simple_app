@@ -133,9 +133,9 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                                 end: Alignment.bottomCenter)),
                       ),
                       child: Center(
-                        child: widget.imageUrl!.isNotEmpty
+                        child: widget.imageUrl.isNotEmpty
                             ? Image.file(
-                                File(widget.imageUrl!),
+                                File(widget.imageUrl),
                                 fit: BoxFit.cover,
                                 width: widget.containerWidth,
                                 height: widget.containerHeight,
