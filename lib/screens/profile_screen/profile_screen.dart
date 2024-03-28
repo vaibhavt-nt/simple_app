@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
@@ -42,29 +43,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding:  EdgeInsets.all(10.0.w),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    const SizedBox(height: 60.0),
+                    SizedBox(height: 60.0.h,),
                     Text("Profile",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               color: Colors.black,
-                              fontSize: 32,
+                              fontSize: 32.sp,
                               fontWeight: FontWeight.w600),
                         )),
-                    const SizedBox(height: 30.0),
+                    SizedBox(height: 30.0.h),
                     GestureDetector(
                       onTap: () {},
                       child: Center(
                         child: SizedBox(
-                          height: 100,
-                          width: 100,
+                          height: 100.h,
+                          width: 100.w,
                           child: GestureDetector(
                               onTap: () {
                                 showDialog(
@@ -109,8 +110,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               child: Center(
                                   child: SizedBox(
-                                height: 100,
-                                width: 100,
+                                height: 100.h,
+                                width: 100.w,
                                 child: CircleAvatar(
                                   backgroundImage: _image != null
                                       ? FileImage(_image!) as ImageProvider
@@ -120,86 +121,103 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: 20.h,
+                      width: 183.w,
                     ),
                     Text("Edit your profile photo",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 16.spMin,
                               fontWeight: FontWeight.w500),
                         )),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:EdgeInsets.all(8.0.w),
                   child: Column(
                     children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Name",
-                              textAlign: TextAlign.left,
-                              textDirection: TextDirection.ltr,
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                          TextFormField(
-                            controller: userName,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "username is required";
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 10.0),
-                              hintText: user!.displayName,
-                              hintStyle: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w400),
+                          SizedBox(
+                            width: 342.spMin,
+                            height: 20.spMin,
+                            child: Text("Name",
+                                textAlign: TextAlign.left,
+                                textDirection: TextDirection.ltr,
+                                style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16.spMin,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ),
+                          SizedBox(
+                            width: 342.spMax,
+                            height: 40.spMax,
+                            child: TextFormField(
+                              controller: userName,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return "username is required";
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 4.0.h, horizontal: 10.0.w),
+                                hintText: user!.displayName,
+                                hintStyle: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                      fontSize: 16.spMin, fontWeight: FontWeight.w400),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFEE4D86))),
+                                border: const OutlineInputBorder(),
                               ),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFEE4D86))),
-                              border: const OutlineInputBorder(),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.w),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Email",
-                              textAlign: TextAlign.left,
-                              textDirection: TextDirection.ltr,
-                              style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              )),
-                          TextFormField(
-                            initialValue: '${user?.email}',
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 4.0, horizontal: 10.0),
-                              hintText: '${user!.email}',
-                              hintStyle: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w400),
+                          SizedBox(
+                            width: 342.spMin,
+                            height: 20.spMin,
+                            child: Text("Email",
+                                textAlign: TextAlign.left,
+                                textDirection: TextDirection.ltr,
+                                style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16.spMin,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                          ),
+                          SizedBox(
+                            width: 342.spMax,
+                            height: 40.spMax,
+                            child: TextFormField(
+                              initialValue: '${user?.email}',
+                              decoration: InputDecoration(
+                                contentPadding:  EdgeInsets.symmetric(
+                                    vertical: 4.0.h, horizontal: 10.0.w),
+                                hintText: '${user!.email}',
+                                hintStyle: GoogleFonts.montserrat(
+                                  textStyle:  TextStyle(
+                                      fontSize: 16.spMin, fontWeight: FontWeight.w400),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Color(0xFFEE4D86))),
+                                border: const OutlineInputBorder(),
                               ),
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFEE4D86))),
-                              border: const OutlineInputBorder(),
                             ),
                           ),
                         ],
@@ -207,103 +225,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                const Gap(
-                  height: 110,
+                Gap(
+                  height: 110.w,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
+                  padding:  EdgeInsets.all(8.0.sp),
+                  child: SizedBox(
+                    width: 342.w,
+                    height: 40.h,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
 
-                        setState(() {
-                          isUpdating = true;
-                        });
-
-                        // Get the updated name and photo from the form
-                        String updatedName = userName.text;
-                        String? updatedPhoto = _image != null
-                            ? await PickImage.uploadProfileImage(_image!)
-                            : user!.photoURL;
-
-                        // Call the updateUser method from FirebaseAuthentication
-                        User? updatedUser =
-                            await FirebaseAuthentication.updateUser(
-                                name: updatedName, photo: updatedPhoto!);
-
-                        if (updatedUser != null) {
-                          // Update the state to reflect the changes
                           setState(() {
-                            user = updatedUser;
-                            isUpdating = false;
+                            isUpdating = true;
                           });
 
-                          CustomSnackBar.showSuccessSnackBar(
-                            context,
-                            'Profile updated successfully',
-                          );
+                          // Get the updated name and photo from the form
+                          String updatedName = userName.text;
+                          String? updatedPhoto = _image != null
+                              ? await PickImage.uploadProfileImage(_image!)
+                              : user!.photoURL;
+
+                          // Call the updateUser method from FirebaseAuthentication
+                          User? updatedUser =
+                              await FirebaseAuthentication.updateUser(
+                                  name: updatedName, photo: updatedPhoto!);
+
+                          if (updatedUser != null) {
+                            // Update the state to reflect the changes
+                            setState(() {
+                              user = updatedUser;
+                              isUpdating = false;
+                            });
+
+                            CustomSnackBar.showSuccessSnackBar(
+                              context,
+                              'Profile updated successfully',
+                            );
+                          }
                         }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 16),
-                        backgroundColor: isUpdating
-                            ? CustomColors.lightGrey
-                            : const Color(0xFFEE4D86)),
-                    child: isUpdating
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                                strokeWidth: 2, color: Colors.white),
-                          )
-                        : Text("Update",
-                            textAlign: TextAlign.left,
-                            textDirection: TextDirection.ltr,
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            )),
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.w)),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.h, horizontal: 16.w),
+                          backgroundColor: isUpdating
+                              ? CustomColors.lightGrey
+                              : const Color(0xFFEE4D86)),
+                      child: isUpdating
+                          ?  SizedBox(
+                              width: 20.w,
+                              height: 20.h,
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 2.w, color: Colors.white),
+                            )
+                          : Text("Update",
+                              textAlign: TextAlign.left,
+                              textDirection: TextDirection.ltr,
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16.spMin,
+                                    fontWeight: FontWeight.w600),
+                              )),
+                    ),
                   ),
                 ),
-                const Gap(
-                  height: 15,
+                Gap(
+                  height: 15.w,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      CustomSnackBar.showSuccessSnackBar(
-                          context, 'Logout Successfully');
-                      FirebaseAuthentication.signOut();
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
-                          ));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          side: const BorderSide(color: CustomColors.pink),
-                          borderRadius: BorderRadius.circular(10)),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
+                  padding: EdgeInsets.all(8.0.w),
+                  child: SizedBox(
+                    width: 342.w,
+                      height: 40.h,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        CustomSnackBar.showSuccessSnackBar(
+                            context, 'Logout Successfully');
+                        FirebaseAuthentication.signOut();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(color: CustomColors.pink),
+                            borderRadius: BorderRadius.circular(10.w)),
+                        padding:  EdgeInsets.symmetric(
+                            vertical: 10.w, horizontal: 16.w),
+                      ),
+                      child: Text("Logout",
+                          textAlign: TextAlign.left,
+                          textDirection: TextDirection.ltr,
+                          style: GoogleFonts.montserrat(
+                            textStyle:TextStyle(
+                                color: CustomColors.darkGrey,
+                                fontSize: 16.spMin,
+                                fontWeight: FontWeight.w600),
+                          )),
                     ),
-                    child: Text("Logout",
-                        textAlign: TextAlign.left,
-                        textDirection: TextDirection.ltr,
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              color: CustomColors.darkGrey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
-                        )),
                   ),
                 ),
               ],
