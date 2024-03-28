@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Screens/post_screens/select_frame_screen.dart';
@@ -15,36 +16,41 @@ class EmptyHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(
-          height: 60,
+         SizedBox(
+          height: 60.h,
         ),
-        SvgPicture.asset(imagePath
-            // 'assets/home_images/empty.svg'
-            ),
-        const SizedBox(
-          height: 30,
+        SizedBox(
+          width: 335.w,
+          height: 247.h,
+          child: SvgPicture.asset(imagePath
+              // 'assets/home_images/empty.svg'
+              ),
+        ),
+         SizedBox(
+          height: 30.h,
         ),
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding:  EdgeInsets.all(15.0.w),
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(subtitle,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.montserrat(
-                  textStyle: const TextStyle(
+                  textStyle:  TextStyle(
                       color: Colors.black,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w400),
                 )),
           ),
         ),
-        const SizedBox(
-          height: 40,
+         SizedBox(
+          height: 40.h,
         ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding:  EdgeInsets.all(10.0.w),
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: 342.w,
+            height: 40.h,
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -61,9 +67,9 @@ class EmptyHomeScreen extends StatelessWidget {
               child: Text(buttonText,
                   // "Create Post",
                   style: GoogleFonts.montserrat(
-                    textStyle: const TextStyle(
+                    textStyle:  TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.spMin,
                         fontWeight: FontWeight.w600),
                   )),
             ),

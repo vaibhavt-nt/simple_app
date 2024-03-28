@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/empty_home_page_screen.dart';
@@ -46,17 +47,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 resizeToAvoidBottomInset: true,
                 body: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0.w),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(
-                          height: 50,
+                         SizedBox(
+                          height: 50.h,
                         ),
                         //username and image
                         UsernameImageDisplayInHomeScreen(),
-                        const Gap(
-                          height: 30,
+                         Gap(
+                          height: 30.h,
                         ),
                         const Center(
                           child: EmptyHomeScreen(
@@ -79,24 +80,24 @@ class _HomeScreenState extends State<HomeScreen> {
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(25.0),
+                    padding:  EdgeInsets.all(25.0.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Gap(
-                          height: 50,
+                         Gap(
+                          height: 50.h,
                         ),
                         //username and image
                         UsernameImageDisplayInHomeScreen(),
-                        const SizedBox(
-                          height: 20,
+                         SizedBox(
+                          height: 20.h,
                         ),
                         Text('Your Created Posts',
                             // "Create Post",
                             style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
+                              textStyle:  TextStyle(
                                   color: CustomColors.darkGrey,
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w500),
                             )),
                         ListView.builder(
