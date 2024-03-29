@@ -8,10 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
+import 'package:simple_app/custom_widgets/custom_texfeild.dart';
 import 'package:simple_app/custom_widgets/snack_bar.dart';
 import 'package:simple_app/screens/authentication_screens/login_screen.dart';
 import 'package:simple_app/services/firebase_service/firebase_authentication.dart';
 import 'package:simple_app/services/image_picker_service.dart';
+import 'package:simple_app/services/validations.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -43,20 +45,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Form(
           key: _formKey,
           child: Padding(
-            padding:  EdgeInsets.all(10.0.w),
+            padding: EdgeInsets.all(10.0.r),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    SizedBox(height: 60.0.h,),
+                    SizedBox(
+                      height: 60.0.h,
+                    ),
                     Text("Profile",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.montserrat(
                           textStyle: TextStyle(
                               color: Colors.black,
-                              fontSize: 32.sp,
+                              fontSize: 32.r,
                               fontWeight: FontWeight.w600),
                         )),
                     SizedBox(height: 30.0.h),
@@ -130,109 +134,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: GoogleFonts.montserrat(
                           textStyle: TextStyle(
                               color: Colors.black,
-                              fontSize: 16.spMin,
+                              fontSize: 16.r,
                               fontWeight: FontWeight.w500),
                         )),
                   ],
                 ),
                 Padding(
-                  padding:EdgeInsets.all(8.0.w),
+                  padding: EdgeInsets.all(8.0.r),
                   child: Column(
                     children: <Widget>[
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 342.spMin,
-                            height: 20.spMin,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.r),
                             child: Text("Name",
                                 textAlign: TextAlign.left,
                                 textDirection: TextDirection.ltr,
                                 style: GoogleFonts.montserrat(
                                   textStyle: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16.spMin,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w500),
                                 )),
                           ),
-                          SizedBox(
-                            width: 342.spMax,
-                            height: 40.spMax,
-                            child: TextFormField(
-                              controller: userName,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "username is required";
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 4.0.h, horizontal: 10.0.w),
-                                hintText: user!.displayName,
-                                hintStyle: GoogleFonts.montserrat(
-                                  textStyle: TextStyle(
-                                      fontSize: 16.spMin, fontWeight: FontWeight.w400),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFEE4D86))),
-                                border: const OutlineInputBorder(),
-                              ),
-                            ),
-                          ),
+                          NameEmailInputField(
+                            controller: userName,
+                            enterText: user!.displayName,
+                            validator: Validation.validateName,
+                          )
                         ],
                       ),
-                      SizedBox(height: 10.w),
+                      SizedBox(height: 10.h),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 342.spMin,
-                            height: 20.spMin,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.r),
                             child: Text("Email",
                                 textAlign: TextAlign.left,
                                 textDirection: TextDirection.ltr,
                                 style: GoogleFonts.montserrat(
                                   textStyle: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16.spMin,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.w500),
                                 )),
                           ),
-                          SizedBox(
-                            width: 342.spMax,
-                            height: 40.spMax,
-                            child: TextFormField(
-                              initialValue: '${user?.email}',
-                              decoration: InputDecoration(
-                                contentPadding:  EdgeInsets.symmetric(
-                                    vertical: 4.0.h, horizontal: 10.0.w),
-                                hintText: '${user!.email}',
-                                hintStyle: GoogleFonts.montserrat(
-                                  textStyle:  TextStyle(
-                                      fontSize: 16.spMin, fontWeight: FontWeight.w400),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Color(0xFFEE4D86))),
-                                border: const OutlineInputBorder(),
-                              ),
-                            ),
-                          ),
+                          NameEmailInputField(
+                              controller: userEmail, enterText: user!.email)
                         ],
                       ),
                     ],
                   ),
                 ),
                 Gap(
-                  height: 110.w,
+                  height: 110.h,
                 ),
                 Padding(
-                  padding:  EdgeInsets.all(8.0.sp),
+                  padding: EdgeInsets.symmetric(horizontal: 15.r),
                   child: SizedBox(
                     width: 342.w,
-                    height: 40.h,
+                    height: 50.h,
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -276,7 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ? CustomColors.lightGrey
                               : const Color(0xFFEE4D86)),
                       child: isUpdating
-                          ?  SizedBox(
+                          ? SizedBox(
                               width: 20.w,
                               height: 20.h,
                               child: CircularProgressIndicator(
@@ -288,20 +251,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16.spMin,
+                                    fontSize: 16.r,
                                     fontWeight: FontWeight.w600),
                               )),
                     ),
                   ),
                 ),
                 Gap(
-                  height: 15.w,
+                  height: 15.h,
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0.w),
+                  padding: EdgeInsets.symmetric(horizontal: 15.r),
                   child: SizedBox(
                     width: 342.w,
-                      height: 40.h,
+                    height: 50.h,
                     child: ElevatedButton(
                       onPressed: () {
                         CustomSnackBar.showSuccessSnackBar(
@@ -317,16 +280,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         shape: RoundedRectangleBorder(
                             side: const BorderSide(color: CustomColors.pink),
                             borderRadius: BorderRadius.circular(10.w)),
-                        padding:  EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                             vertical: 10.w, horizontal: 16.w),
                       ),
                       child: Text("Logout",
                           textAlign: TextAlign.left,
                           textDirection: TextDirection.ltr,
                           style: GoogleFonts.montserrat(
-                            textStyle:TextStyle(
+                            textStyle: TextStyle(
                                 color: CustomColors.darkGrey,
-                                fontSize: 16.spMin,
+                                fontSize: 16.r,
                                 fontWeight: FontWeight.w600),
                           )),
                     ),

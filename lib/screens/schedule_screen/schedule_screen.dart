@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
@@ -46,17 +47,21 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   automaticallyImplyLeading: false,
                   title: Text("Schedule List",
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             color: CustomColors.darkGrey,
-                            fontSize: 24,
+                            fontSize: 24.sp,
                             fontWeight: FontWeight.w500),
                       )),
                   centerTitle: true,
                 ),
                 body: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: EdgeInsets.all(15.0.r),
                   child: Center(
-                    child: SvgPicture.asset('assets/home_images/empty.svg'),
+                    child: SizedBox(
+                        width: 335.w,
+                        height: 247.h,
+                        child:
+                            SvgPicture.asset('assets/home_images/empty.svg')),
                   ),
                 ),
               );
@@ -69,9 +74,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   automaticallyImplyLeading: false,
                   title: Text("Schedule List",
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             color: CustomColors.darkGrey,
-                            fontSize: 24,
+                            fontSize: 24.sp,
                             fontWeight: FontWeight.w500),
                       )),
                   centerTitle: true,
@@ -153,24 +158,27 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               );
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8.0, bottom: 8, right: 20, left: 20),
+                              padding: EdgeInsets.only(
+                                  top: 8.0.r,
+                                  bottom: 8.r,
+                                  right: 20.r,
+                                  left: 20.r),
                               child: Container(
-                                height: 130,
-                                width: MediaQuery.of(context).size.width,
+                                height: 130.h,
+                                width: 342.w,
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(5.r),
                                     boxShadow: [
                                       BoxShadow(
-                                          blurRadius: 5,
+                                          blurRadius: 5.r,
                                           color: Colors.grey.shade300,
-                                          offset: const Offset(0, 7))
+                                          offset: Offset(0.r, 7.r))
                                     ]),
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.all(8.0.r),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -183,7 +191,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                         Container(
                                           decoration: BoxDecoration(
                                               border: GradientBoxBorder(
-                                                  width: 8,
+                                                  width: 8.w,
                                                   gradient: LinearGradient(
                                                       colors: [
                                                         frameColor1,
@@ -194,31 +202,31 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                                       end: Alignment
                                                           .bottomCenter)),
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  BorderRadius.circular(10.r),
                                               color: Colors.black,
                                               image: DecorationImage(
                                                   fit: BoxFit.fill,
                                                   image: NetworkImage(
                                                       postImageFirestore))),
-                                          height: 110,
-                                          width: 110,
+                                          height: 110.h,
+                                          width: 110.w,
                                         ),
-                                        const SizedBox(
-                                          width: 10,
+                                        SizedBox(
+                                          width: 10.w,
                                         ),
                                         //row 2
                                         //this is show caption , date , time , platform
                                         SizedBox(
-                                          height: 108,
-                                          width: 204,
+                                          height: 108.h,
+                                          width: 204.w,
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
                                               //this is show caption
                                               SizedBox(
-                                                height: 60,
-                                                width: 204,
+                                                height: 60.h,
+                                                width: 204.w,
                                                 child: Text(
                                                     //this will show caption from firestore
                                                     captionFirestore,
@@ -228,18 +236,18 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                                     textAlign: TextAlign.start,
                                                     style:
                                                         GoogleFonts.montserrat(
-                                                      textStyle: const TextStyle(
+                                                      textStyle: TextStyle(
                                                           color: CustomColors
                                                               .lightBlack,
-                                                          fontSize: 10,
+                                                          fontSize: 10.sp,
                                                           fontWeight:
                                                               FontWeight.w400),
                                                     )),
                                               ),
                                               //this is show date , time , caption
                                               SizedBox(
-                                                height: 40,
-                                                width: 204,
+                                                height: 40.h,
+                                                width: 204.w,
                                                 child: SingleChildScrollView(
                                                   child: Column(
                                                     mainAxisAlignment:
@@ -253,10 +261,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                                           scheduleDateFirestore,
                                                           style: GoogleFonts
                                                               .montserrat(
-                                                            textStyle: const TextStyle(
+                                                            textStyle: TextStyle(
                                                                 color: CustomColors
                                                                     .lightBlack,
-                                                                fontSize: 10,
+                                                                fontSize: 10.sp,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500),
@@ -265,10 +273,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                                           scheduleTimeFirestore,
                                                           style: GoogleFonts
                                                               .montserrat(
-                                                            textStyle: const TextStyle(
+                                                            textStyle: TextStyle(
                                                                 color: CustomColors
                                                                     .lightBlack,
-                                                                fontSize: 10,
+                                                                fontSize: 10.sp,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500),
@@ -276,10 +284,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                                       Text(platformFirestore,
                                                           style: GoogleFonts
                                                               .montserrat(
-                                                            textStyle: const TextStyle(
+                                                            textStyle: TextStyle(
                                                                 color: CustomColors
                                                                     .lightBlack,
-                                                                fontSize: 10,
+                                                                fontSize: 10.sp,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500),

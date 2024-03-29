@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_app/screens/home_screens/home_page.dart';
 import 'package:simple_app/screens/profile_screen/profile_screen.dart';
 import 'package:simple_app/screens/schedule_screen/schedule_screen.dart';
@@ -48,7 +49,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: const Color(0xFFEE4D86),
-        iconSize: 30,
+        iconSize: 30.r,
         onTap: _onItemTapped,
       ),
     );

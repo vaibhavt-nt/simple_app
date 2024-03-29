@@ -1,18 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
+import 'package:simple_app/custom_widgets/custom_texfeild.dart';
 import 'package:simple_app/screens/authentication_screens/forgot_password_screen.dart';
 import 'package:simple_app/screens/authentication_screens/sign_up_screen.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 import 'package:simple_app/services/firebase_service/firebase_authentication.dart';
 import 'package:simple_app/services/sq_lite_service/sqlite.dart';
 import 'package:simple_app/services/validations.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -26,7 +25,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool _passwordVisible = false;
 
   //for validation
   final _formKey = GlobalKey<FormState>();
@@ -142,8 +140,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -155,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 SizedBox(
+                SizedBox(
                   height: 100.h,
                 ),
                 _header(context),
@@ -163,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50.h,
                 ),
                 _inputField(context),
-                 Gap(
+                Gap(
                   height: 100.h,
                 ),
                 _signup(context),
@@ -194,33 +190,21 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Email",
-                    textAlign: TextAlign.center,
-                    textDirection: TextDirection.ltr,
-                    style: GoogleFonts.montserrat(
-                      textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.r,
-                          fontWeight: FontWeight.w500),
-                    )),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Text("Email",
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.r,
+                            fontWeight: FontWeight.w500),
+                      )),
+                ),
                 const Gap(),
-                CupertinoTextFormFieldRow(
-                  decoration:  BoxDecoration(
-                    border: Border.all(width: 1,  color: Colors.grey),
-                   borderRadius: BorderRadius.circular(5)
-                  ),
-                  validator: (value) => Validation.validateEmail(value),
-                  placeholder: 'Enter your email',
-                  placeholderStyle: GoogleFonts.montserrat(
-                    textStyle: TextStyle(
-                      color: CupertinoColors.systemGrey,
-                        fontSize: 16.r, fontWeight: FontWeight.w400),
-                  ),
-                  autofillHints: const [AutofillHints.email],
+                NameEmailInputField(
                   controller: emailController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  padding: EdgeInsets.symmetric(
-                      vertical: 4.0.h, horizontal: 10.0.w),
+                  validator: (value) => Validation.validateEmail(value),
+                  enterText: 'Enter your email',
                 ),
               ],
             ),
@@ -230,65 +214,20 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Password",
-                    textAlign: TextAlign.left,
-                    textDirection: TextDirection.ltr,
-                    style: GoogleFonts.montserrat(
-                      textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.r,
-                          fontWeight: FontWeight.w500),
-                    )),
-                const Gap(),
-                CupertinoTextFormFieldRow(
-                  decoration:  BoxDecoration(
-                      border: Border.all(width: 1,  color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5)
-                  ),
-                  validator: (value) => Validation.validateEmail(value),
-                  placeholder: 'Enter your email',
-                  placeholderStyle: GoogleFonts.montserrat(
-                    textStyle: TextStyle(
-                        color: CupertinoColors.systemGrey,
-                        fontSize: 16.r, fontWeight: FontWeight.w400),
-                  ),
-                  autofillHints: const [AutofillHints.email],
-                  controller: emailController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  padding: EdgeInsets.symmetric(
-                      vertical: 4.0.h, horizontal: 10.0.w),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Text("Password",
+                      style: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.r,
+                            fontWeight: FontWeight.w500),
+                      )),
                 ),
-                TextFormField(
-                  autofillHints: const [AutofillHints.password],
-                  validator: Validation.validatePassword,
-                  controller: passwordController,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    contentPadding:  EdgeInsets.symmetric(
-                        vertical: 4.0.h, horizontal: 10.0.w),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: const Color(0xFFEE4D86),
-                      ),
-                    ),
-                    hintText: "Enter your password",
-                    hintStyle: GoogleFonts.montserrat(
-                      textStyle: TextStyle(
-                          fontSize: 16.r, fontWeight: FontWeight.w400),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xFFEE4D86))),
-                    border: const OutlineInputBorder(),
-                  ),
+                const Gap(),
+                PasswordInputField(
+                  passwordController: passwordController,
+                  validator: (value) => Validation.validatePassword(value),
                 ),
                 Align(
                   alignment: Alignment.topRight,
@@ -297,8 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const ForgotPasswordScreen(),
+                            builder: (context) => const ForgotPasswordScreen(),
                           ));
                     },
                     child: Text("Forgot Password?",
@@ -313,37 +251,40 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             SizedBox(height: 70.w),
-            SizedBox(
-              height: 43.h,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _login,
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    padding:  EdgeInsets.symmetric(vertical: 12.h),
-                    backgroundColor:
-                        _isLoading ? Colors.grey : const Color(0xFFEE4D86)),
-                child: _isLoading
-                    ? SizedBox(
-                        height: 20.h,
-                        width: 20.w,
-                        child: const CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      )
-                    : Text(
-                        "Login",
-                        textAlign: TextAlign.left,
-                        textDirection: TextDirection.ltr,
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: SizedBox(
+                height: 50.h,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _login,
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 12.h),
+                      backgroundColor:
+                          _isLoading ? Colors.grey : const Color(0xFFEE4D86)),
+                  child: _isLoading
+                      ? SizedBox(
+                          height: 20.h,
+                          width: 20.w,
+                          child: const CircularProgressIndicator(
                             color: Colors.white,
-                            fontSize: 16.r,
-                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      : Text(
+                          "Login",
+                          textAlign: TextAlign.left,
+                          textDirection: TextDirection.ltr,
+                          style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.r,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                      ),
+                ),
               ),
             )
           ],

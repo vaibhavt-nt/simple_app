@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -35,22 +36,22 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+        padding: EdgeInsets.fromLTRB(24.r, 40.r, 24.r, 24.r),
         child: Column(
           children: [
-            const Gap(
-              height: 20,
+            Gap(
+              height: 20.h,
             ),
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
               percent: 0.80,
-              barRadius: const Radius.circular(20),
+              barRadius: Radius.circular(20.r),
               progressColor: const Color(0xffED4D86),
               backgroundColor: const Color(0xffE6E6E6),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
+              padding: EdgeInsets.fromLTRB(0, 24.r, 0, 24.r),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -58,14 +59,14 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(Icons.arrow_back_ios)),
                   Padding(
-                    padding: const EdgeInsets.only(right: 150),
+                    padding: EdgeInsets.only(right: 150.r),
                     child: Text(
                       'Step 4',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xff1C1C1C)),
+                            fontSize: 16.sp,
+                            color: const Color(0xff1C1C1C)),
                       ),
                     ),
                   ),
@@ -79,14 +80,14 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 24.0),
+                      padding: EdgeInsets.only(bottom: 24.0.r),
                       child: Text(
                         'Enter your caption.',
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Color(0xff1C1C1C)),
+                              fontSize: 16.sp,
+                              color: const Color(0xff1C1C1C)),
                         ),
                       ),
                     ),
@@ -97,33 +98,33 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                         enteredText = value;
                       });
                     },
-                    minLines: 4,
-                    maxLines: 4,
+                    minLines: 4.bitLength,
+                    maxLines: 4.bitLength,
                     controller: textFieldController,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w400),
                     decoration: InputDecoration(
                       hintStyle: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                        textStyle: TextStyle(
+                            fontSize: 16.sp, fontWeight: FontWeight.w400),
                       ),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Color(0xFFEE4D86))),
                       border: const OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Stack(alignment: Alignment.center, children: [
                     Container(
-                      height: widget.containerHeight,
-                      width: widget.containerWidth,
+                      height: widget.containerHeight.h,
+                      width: widget.containerWidth.w,
                       decoration: BoxDecoration(
                         border: GradientBoxBorder(
-                            width: 8,
+                            width: 8.w,
                             gradient: LinearGradient(
                                 colors: [
                                   widget.frameColor1,
@@ -137,29 +138,29 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                             ? Image.file(
                                 File(widget.imageUrl),
                                 fit: BoxFit.cover,
-                                width: widget.containerWidth,
-                                height: widget.containerHeight,
+                                width: widget.containerWidth.w,
+                                height: widget.containerHeight.h,
                               )
-                            : const Text(
+                            : Text(
                                 'Select Image',
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(fontSize: 20.sp),
                               ),
                       ),
                     ),
                     Positioned.fill(
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: EdgeInsets.all(16.0.r),
                           child: Container(
                             color: Colors.white,
                             child: Text(
                               enteredText,
                               textAlign: _textAlign,
                               style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
+                                textStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Color(0xff1C1C1C)),
+                                    fontSize: 16.r,
+                                    color: const Color(0xff1C1C1C)),
                               ),
                             ),
                           ),
@@ -167,21 +168,21 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                       ),
                     ),
                   ]),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text('Select text alignment',
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               fontWeight: FontWeight.w400,
-                              fontSize: 16,
+                              fontSize: 16.h,
                               color: Colors.black),
                         )),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -190,8 +191,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                         type: MaterialType.transparency,
                         child: Ink(
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1, color: CustomColors.pink),
+                            border: Border.all(
+                                width: 1.w, color: CustomColors.pink),
                             color: Colors.white,
                           ),
                           child: InkWell(
@@ -199,27 +200,27 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                             onTap: () {
                               setState(() => _textAlign = TextAlign.left);
                             },
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0.r),
                               child: Icon(
                                 // Icons.vertical_distribute,
                                 Icons.format_align_left_outlined,
-                                size: 20.0,
+                                size: 20.0.r,
                                 color: Colors.black,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 50,
+                      SizedBox(
+                        width: 50.w,
                       ),
                       Material(
                         type: MaterialType.transparency,
                         child: Ink(
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1, color: CustomColors.pink),
+                            border: Border.all(
+                                width: 1.w, color: CustomColors.pink),
                             color: Colors.white,
                           ),
                           child: InkWell(
@@ -227,27 +228,27 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                             onTap: () {
                               setState(() => _textAlign = TextAlign.center);
                             },
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0.r),
                               child: Icon(
                                 // Icons.vertical_distribute,
                                 Icons.format_align_center_outlined,
-                                size: 20.0,
+                                size: 20.0.r,
                                 color: Colors.black,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 50,
+                      SizedBox(
+                        width: 50.w,
                       ),
                       Material(
                         type: MaterialType.transparency,
                         child: Ink(
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1, color: CustomColors.pink),
+                            border: Border.all(
+                                width: 1.w, color: CustomColors.pink),
                             color: Colors.white,
                           ),
                           child: InkWell(
@@ -255,12 +256,12 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                             onTap: () {
                               setState(() => _textAlign = TextAlign.right);
                             },
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0.r),
                               child: Icon(
                                 // Icons.vertical_distribute,
                                 Icons.format_align_right_outlined,
-                                size: 20.0,
+                                size: 20.0.r,
                                 color: Colors.black,
                               ),
                             ),
@@ -269,8 +270,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                       ),
                     ],
                   ),
-                  const Gap(
-                    height: 30,
+                  Gap(
+                    height: 30.h,
                   )
                 ],
               ),
@@ -292,25 +293,28 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                 );
               },
               child: Container(
-                height: 40,
-                width: 342,
-                decoration: const BoxDecoration(
+                height: 40.h,
+                width: 342.w,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(6),
+                    Radius.circular(6.r),
                   ),
-                  color: Color(0xffED4D86),
+                  color: const Color(0xffED4D86),
                 ),
                 child: Center(
                   child: Text('Next',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xffFFFFFC)),
+                            fontSize: 16.sp,
+                            color: const Color(0xffFFFFFC)),
                       )),
                 ),
               ),
             ),
+            Gap(
+              height: 10.h,
+            )
           ],
         ),
       ),

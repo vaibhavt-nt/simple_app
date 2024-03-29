@@ -47,16 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 resizeToAvoidBottomInset: true,
                 body: SingleChildScrollView(
                   child: Padding(
-                    padding:  EdgeInsets.all(20.0.w),
+                    padding: EdgeInsets.all(20.0.w),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         SizedBox(
+                        SizedBox(
                           height: 50.h,
                         ),
                         //username and image
                         UsernameImageDisplayInHomeScreen(),
-                         Gap(
+                        Gap(
                           height: 30.h,
                         ),
                         const Center(
@@ -80,27 +80,31 @@ class _HomeScreenState extends State<HomeScreen> {
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Padding(
-                    padding:  EdgeInsets.all(25.0.w),
+                    padding: EdgeInsets.all(25.0.r),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                         Gap(
+                        Gap(
                           height: 50.h,
                         ),
                         //username and image
                         UsernameImageDisplayInHomeScreen(),
-                         SizedBox(
+                        SizedBox(
                           height: 20.h,
                         ),
                         Text('Your Created Posts',
                             // "Create Post",
                             style: GoogleFonts.montserrat(
-                              textStyle:  TextStyle(
+                              textStyle: TextStyle(
                                   color: CustomColors.darkGrey,
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w500),
                             )),
                         ListView.builder(
+                          reverse: true,
+                          addSemanticIndexes: true,
+                          addAutomaticKeepAlives: true,
+                          addRepaintBoundaries: true,
                           scrollDirection: Axis.vertical,
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -171,19 +175,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SelectFrameScreen(),
-                        ));
-                  },
-                  backgroundColor: CustomColors.pink,
-                  shape: const CircleBorder(),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
+                floatingActionButton: SizedBox(
+                  height: 60.h,
+                  width: 60.w,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SelectFrameScreen(),
+                          ));
+                    },
+                    backgroundColor: CustomColors.pink,
+                    shape: const CircleBorder(),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               );

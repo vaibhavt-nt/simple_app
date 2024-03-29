@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -86,106 +88,164 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 40, 24, 0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Gap(
-                height: 20,
-              ),
-              LinearPercentIndicator(
-                width: MediaQuery.of(context).size.width / 1.2,
-                lineHeight: 8.0,
-                percent: 1,
-                barRadius: const Radius.circular(20),
-                progressColor: const Color(0xffED4D86),
-                backgroundColor: const Color(0xffE6E6E6),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.arrow_back_ios)),
-                    Text(
-                      'Step 5',
+        padding: EdgeInsets.fromLTRB(24.r, 40.r, 24.r, 0),
+        child: Column(
+          children: [
+            Gap(
+              height: 20.h,
+            ),
+            LinearPercentIndicator(
+              width: MediaQuery.of(context).size.width / 1.2,
+              lineHeight: 8.0,
+              percent: 1,
+              barRadius: Radius.circular(20.r),
+              progressColor: const Color(0xffED4D86),
+              backgroundColor: const Color(0xffE6E6E6),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 24.r, 0, 24.r),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back_ios)),
+                  Text(
+                    'Step 5',
+                    style: GoogleFonts.montserrat(
+                      textStyle: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.sp,
+                          color: const Color(0xff1C1C1C)),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              OverViewScreenWhenSkipButtonPressed(
+                                  containerHeight: widget.containerHeight,
+                                  containerWidth: widget.containerWidth,
+                                  imageUrl: widget.imageUrl,
+                                  enteredText: widget.enteredText,
+                                  frameColor1: widget.frameColor1,
+                                  frameColor2: widget.frameColor2),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Skip',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xff1C1C1C)),
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.sp,
+                            color: const Color(0xff1C1C1C)),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                OverViewScreenWhenSkipButtonPressed(
-                                    containerHeight: widget.containerHeight,
-                                    containerWidth: widget.containerWidth,
-                                    imageUrl: widget.imageUrl,
-                                    enteredText: widget.enteredText,
-                                    frameColor1: widget.frameColor1,
-                                    frameColor2: widget.frameColor2),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Skip',
-                        style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Color(0xff1C1C1C)),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 1.4,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 24.0),
-                          child: Text(
-                            'Schedule your post.',
-                            style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Color(0xff1C1C1C)),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 24.0.r),
+                              child: Text(
+                                'Schedule your post.',
+                                style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16.sp,
+                                      color: const Color(0xff1C1C1C)),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Select post date',
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: Color(0xff1C1C1C)),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Select post date',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16.sp,
+                                    color: const Color(0xff1C1C1C)),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: SingleChildScrollView(
-                          child: ElevatedButton(
+                          SingleChildScrollView(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _pickDateDialog();
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.white),
+                                shadowColor:
+                                    MaterialStateProperty.all(Colors.white),
+                                foregroundColor:
+                                    MaterialStateProperty.all(Colors.black),
+                                // overlayColor: MaterialStateProperty.all(Colors.white),
+                                surfaceTintColor:
+                                    MaterialStateProperty.all(Colors.white),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    side: BorderSide(
+                                        width: 1.w, color: Colors.black12),
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    _selectedDate ==
+                                            null //ternary expression to check if date is null
+                                        ? 'Select Date'
+                                        : DateFormat.yMMMMd()
+                                            .format(_selectedDate!),
+                                    style: GoogleFonts.montserrat(
+                                      textStyle: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16.sp,
+                                          color: const Color(0xff1C1C1C)),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 35.w,
+                                  ),
+                                  const Icon(Icons.date_range_outlined)
+                                ],
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Select post time',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16.sp,
+                                    color: const Color(0xff1C1C1C)),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
                             onPressed: () {
-                              _pickDateDialog();
+                              _pickTimeDialog();
                             },
                             style: ButtonStyle(
                               backgroundColor:
@@ -198,10 +258,10 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                               surfaceTintColor:
                                   MaterialStateProperty.all(Colors.white),
                               shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
+                                RoundedRectangleBorder(
                                   borderRadius: BorderRadius.zero,
                                   side: BorderSide(
-                                      width: 1, color: Colors.black12),
+                                      width: 1.w, color: Colors.black12),
                                 ),
                               ),
                             ),
@@ -209,202 +269,146 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  _selectedDate ==
-                                          null //ternary expression to check if date is null
-                                      ? 'Select Date'
-                                      : DateFormat.yMMMMd()
-                                          .format(_selectedDate!),
+                                  selectedTime == null
+                                      ? 'Select time'
+                                      : selectedTime!.format(context),
                                   style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
+                                    textStyle: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        color: Color(0xff1C1C1C)),
+                                        fontSize: 16.sp,
+                                        color: const Color(0xff1C1C1C)),
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 35,
-                                ),
-                                const Icon(Icons.date_range_outlined)
+                                const Icon(Icons.watch_later_outlined)
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Select post time',
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: Color(0xff1C1C1C)),
+                          SizedBox(
+                            height: 20.h,
                           ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _pickTimeDialog();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                          shadowColor: MaterialStateProperty.all(Colors.white),
-                          foregroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          // overlayColor: MaterialStateProperty.all(Colors.white),
-                          surfaceTintColor:
-                              MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all(
-                            const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                              side: BorderSide(width: 1, color: Colors.black12),
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              selectedTime == null
-                                  ? 'Select time'
-                                  : selectedTime!.format(context),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Select Platform',
                               style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
+                                textStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: Color(0xff1C1C1C)),
+                                    fontSize: 16.sp,
+                                    color: const Color(0xff1C1C1C)),
                               ),
                             ),
-                            const Icon(Icons.watch_later_outlined)
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Select Platform',
-                          style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: Color(0xff1C1C1C)),
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          FilterChip(
-                            label: const Icon(
-                              Icons.facebook,
-                              color: Colors.blue,
-                              size: 36,
-                            ),
-                            selected: selectedPlatform == 'Facebook',
-                            showCheckmark: false,
-                            selectedColor: CustomColors.lightPink,
-                            side: const BorderSide(color: CustomColors.pink),
-                            onSelected: (value) {
-                              setState(() {
-                                selectedPlatform = 'Facebook';
-                              });
-                            },
+                          SizedBox(
+                            height: 20.h,
                           ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          FilterChip(
-                            label: SvgPicture.asset(
-                              'assets/icons_svg/instagram_outline.svg',
-                              width: 36,
-                              height: 36,
-                            ),
-                            selected: selectedPlatform == 'Instagram',
-                            showCheckmark: false,
-                            selectedColor: CustomColors.lightPink,
-                            side: const BorderSide(color: CustomColors.pink),
-                            onSelected: (value) {
-                              setState(() {
-                                selectedPlatform = 'Instagram';
-                              });
-                            },
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              FilterChip(
+                                label: Icon(
+                                  Icons.facebook,
+                                  color: Colors.blue,
+                                  size: 36.r,
+                                ),
+                                selected: selectedPlatform == 'Facebook',
+                                showCheckmark: false,
+                                selectedColor: CustomColors.lightPink,
+                                side:
+                                    const BorderSide(color: CustomColors.pink),
+                                onSelected: (value) {
+                                  setState(() {
+                                    selectedPlatform = 'Facebook';
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                width: 40.w,
+                              ),
+                              FilterChip(
+                                label: SvgPicture.asset(
+                                  'assets/icons_svg/instagram_outline.svg',
+                                  width: 36.w,
+                                  height: 36.h,
+                                ),
+                                selected: selectedPlatform == 'Instagram',
+                                showCheckmark: false,
+                                selectedColor: CustomColors.lightPink,
+                                side:
+                                    const BorderSide(color: CustomColors.pink),
+                                onSelected: (value) {
+                                  setState(() {
+                                    selectedPlatform = 'Instagram';
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5))),
-                    overlayColor: MaterialStateProperty.all(CustomColors.pink),
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.pressed)) {
-                          return Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withOpacity(0.5);
-                        } else if (states.contains(MaterialState.disabled))
-                          // ignore: curly_braces_in_flow_control_structures
-                          return Colors.grey;
-                        return CustomColors
-                            .pink; // Use the component's default.
-                      },
                     ),
-                  ),
-                  onPressed: _selectedDate != null &&
-                          selectedTime != null &&
-                          selectedPlatform != null
-                      ? () {
-                          final selectedDateString =
-                              DateFormat.yMMMMd().format(_selectedDate!);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OverViewScreen(
-                                containerHeight: widget.containerHeight,
-                                containerWidth: widget.containerWidth,
-                                imageUrl: widget.imageUrl,
-                                enteredText: widget.enteredText,
-                                selectedDate: selectedDateString,
-                                selectedTime: selectedTime!.format(context),
-                                selectedPlatform: selectedPlatform.toString(),
-                                frameColor1: widget.frameColor1,
-                                frameColor2: widget.frameColor2,
-                              ),
-                            ),
-                          );
-                        }
-                      : null,
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(
-                  //     content: Text('Please select a date, time, and platform.'),
-                  //     duration: Duration(seconds: 3),
-                  //   ),
-                  // );// Disable the button if either date or time is not selected
-                  child: Text('Next',
-                      style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xffFFFFFC)),
-                      )),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 40.h,
+              width: 342.w,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.r))),
+                  overlayColor: MaterialStateProperty.all(CustomColors.pink),
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.5);
+                      } else if (states.contains(MaterialState.disabled))
+                        // ignore: curly_braces_in_flow_control_structures
+                        return Colors.grey;
+                      return CustomColors.pink; // Use the component's default.
+                    },
+                  ),
+                ),
+                onPressed: _selectedDate != null &&
+                        selectedTime != null &&
+                        selectedPlatform != null
+                    ? () {
+                        final selectedDateString =
+                            DateFormat.yMMMMd().format(_selectedDate!);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OverViewScreen(
+                              containerHeight: widget.containerHeight,
+                              containerWidth: widget.containerWidth,
+                              imageUrl: widget.imageUrl,
+                              enteredText: widget.enteredText,
+                              selectedDate: selectedDateString,
+                              selectedTime: selectedTime!.format(context),
+                              selectedPlatform: selectedPlatform.toString(),
+                              frameColor1: widget.frameColor1,
+                              frameColor2: widget.frameColor2,
+                            ),
+                          ),
+                        );
+                      }
+                    : null,
+                child: Text('Next',
+                    style: GoogleFonts.montserrat(
+                      textStyle: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.sp,
+                          color: const Color(0xffFFFFFC)),
+                    )),
+              ),
+            ),
+            SizedBox(
+              height: 30.h,
+            )
+          ],
         ),
       ),
     );

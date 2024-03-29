@@ -12,14 +12,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
+import 'package:simple_app/custom_widgets/custom_texfeild.dart';
 import 'package:simple_app/screens/authentication_screens/login_screen.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 import 'package:simple_app/services/firebase_service/firebase_authentication.dart';
 import 'package:simple_app/services/image_picker_service.dart';
 import 'package:simple_app/services/sq_lite_service/sqlite.dart';
 import 'package:simple_app/services/validations.dart';
-
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -38,7 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   File? _image;
 
-  bool _passwordVisible = false;
   final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -50,8 +48,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isLoading = false;
 
   final db = DatabaseHelper();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -162,42 +158,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: 342.w,
-                              height: 20.h,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: Text("Name",
                                   textAlign: TextAlign.left,
                                   textDirection: TextDirection.ltr,
                                   style: GoogleFonts.montserrat(
-                                    textStyle:  TextStyle(
+                                    textStyle: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16.r,
                                         fontWeight: FontWeight.w500),
                                   )),
                             ),
                             const Gap(),
-                            SizedBox(
-                              width: 342.w,
-                              height: 40.h,
-                              child: TextFormField(
-                                maxLines: null,
-                                controller: usernameController,
-                                validator: Validation.validateName,
-                                decoration: InputDecoration(
-                                  contentPadding:  EdgeInsets.symmetric(
-                                      vertical: 4.0.h, horizontal: 10.0.w),
-                                  hintText: "Enter your name",
-                                  hintStyle: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
-                                        fontSize: 16.r,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFEE4D86))),
-                                  border: const OutlineInputBorder(),
-                                ),
-                              ),
+                            NameEmailInputField(
+                              controller: usernameController,
+                              validator: (value) =>
+                                  Validation.validateName(value),
+                              enterText: 'Enter your name',
                             ),
                           ],
                         ),
@@ -207,9 +185,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: 342.w,
-                              height: 20.h,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: Text("Email",
                                   textAlign: TextAlign.left,
                                   textDirection: TextDirection.ltr,
@@ -221,27 +198,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   )),
                             ),
                             const Gap(),
-                            SizedBox(
-                              width: 342.w,
-                              height: 40.h,
-                              child: TextFormField(
-                                validator: Validation.validateEmail,
-                                controller: emailController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 4.0.h, horizontal: 10.0.w),
-                                  hintText: "Enter your email",
-                                  hintStyle: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
-                                        fontSize: 16.r,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFEE4D86))),
-                                  border: const OutlineInputBorder(),
-                                ),
-                              ),
+                            NameEmailInputField(
+                              controller: emailController,
+                              validator: (value) =>
+                                  Validation.validateEmail(value),
+                              enterText: 'Enter your email',
                             ),
                           ],
                         ),
@@ -251,9 +212,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: 342.w,
-                              height: 20.h,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: Text("Password",
                                   textAlign: TextAlign.left,
                                   textDirection: TextDirection.ltr,
@@ -265,43 +225,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   )),
                             ),
                             const Gap(),
-                            SizedBox(
-                              width: 342.w,
-                              height: 40.h,
-                              child: TextFormField(
-                                validator: Validation.validatePassword,
-                                obscureText: !_passwordVisible,
-                                controller: passwordController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 4.0.sp, horizontal: 10.0.sp),
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _passwordVisible = !_passwordVisible;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      size: 20.r,
-                                      // Based on passwordVisible state choose the icon
-                                      _passwordVisible
-                                          ? Icons.visibility
-                                          : Icons.visibility_off,
-                                      color: const Color(0xFFEE4D86),
-                                    ),
-                                  ),
-                                  hintText: "Enter your password",
-                                  hintStyle: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
-                                        fontSize: 16.r,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFEE4D86))),
-                                  border: const OutlineInputBorder(),
-                                ),
-                              ),
+                            PasswordInputField(
+                              passwordController: passwordController,
+                              validator: (value) =>
+                                  Validation.validatePassword(value),
                             ),
                           ],
                         ),
@@ -310,10 +237,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0.w),
+                    padding: EdgeInsets.symmetric(horizontal: 15.r),
                     child: SizedBox(
-                      width: 342.w,
-                      height: 40.h,
+                      height: 50.h,
                       child: ElevatedButton(
                         onPressed: _isLoading
                             ? null
@@ -393,7 +319,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       );
                                     }
                                   }
-
                                   // Dismiss the loading indicator and show the AlertDialog
 
                                   setState(() {
@@ -423,7 +348,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               },
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.w)),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
                             padding: EdgeInsets.symmetric(vertical: 12.h),
                             backgroundColor: _isLoading
                                 ? Colors.grey
@@ -441,7 +367,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 style: GoogleFonts.montserrat(
                                   textStyle: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16.spMin,
+                                      fontSize: 16.r,
                                       fontWeight: FontWeight.w600),
                                 )),
                       ),
@@ -450,40 +376,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 70.w,
                   ),
-                  SizedBox(
-                    height: 30.h,
-                    width: 263.w,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Already have an account?",
-                            textAlign: TextAlign.left,
-                            textDirection: TextDirection.ltr,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Already have an account?",
+                          textAlign: TextAlign.left,
+                          textDirection: TextDirection.ltr,
+                          style: GoogleFonts.montserrat(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.r,
+                                fontWeight: FontWeight.w400),
+                          )),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              ));
+                        },
+                        child: Text("Login",
+                            textAlign: TextAlign.center,
                             style: GoogleFonts.montserrat(
                               textStyle: TextStyle(
-                                  color: Colors.black,
+                                  color: CustomColors.pink,
                                   fontSize: 16.r,
-                                  fontWeight: FontWeight.w400),
+                                  fontWeight: FontWeight.w600),
                             )),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoginPage(),
-                                ));
-                          },
-                          child: Text("Login",
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.montserrat(
-                                textStyle: TextStyle(
-                                    color: CustomColors.pink,
-                                    fontSize: 16.r,
-                                    fontWeight: FontWeight.w600),
-                              )),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   )
                 ],
               ),

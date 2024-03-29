@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_app/constants/colors.dart';
+import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/custom_widgets/snack_bar.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 
@@ -92,7 +94,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(15, 60, 10, 15),
+        minimum: EdgeInsets.fromLTRB(15.r, 60.r, 10.r, 15.r),
         child: Center(
           child: Column(
             children: [
@@ -105,13 +107,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       icon: const Icon(Icons.arrow_back)),
                   Text("Edit Post",
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             color: CustomColors.darkGrey,
-                            fontSize: 24,
+                            fontSize: 24.sp,
                             fontWeight: FontWeight.w500),
                       )),
-                  const SizedBox(
-                    width: 50,
+                  SizedBox(
+                    width: 50.w,
                   )
                 ],
               ),
@@ -120,17 +122,17 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
 
                       Stack(alignment: Alignment.center, children: [
                         Container(
-                            height: widget.imageHeight,
-                            width: widget.imageWidth,
+                            height: widget.imageHeight.h,
+                            width: widget.imageWidth.w,
                             decoration: BoxDecoration(
                               border: GradientBoxBorder(
-                                  width: 8,
+                                  width: 8.w,
                                   gradient: LinearGradient(
                                       colors: [
                                         widget.frameColor1,
@@ -146,11 +148,11 @@ class _EditPostScreenState extends State<EditPostScreen> {
                               height: widget.imageHeight,
                             )),
                         Positioned.fill(
-                          left: 40,
-                          right: 40,
+                          left: 40.r,
+                          right: 40.r,
                           child: Center(
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: EdgeInsets.all(16.0.r),
                               child: Container(
                                 color: Colors.white,
                                 child: TextField(
@@ -159,9 +161,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                     // Get.arguments['Caption'].toString(),
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(
+                                      textStyle: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           color: Colors.black),
                                     )),
                               ),
@@ -169,25 +171,25 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           ),
                         )
                       ]),
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
                       SizedBox(
-                        height: 20,
-                        width: 342,
+                        height: 20.h,
+                        width: 342.w,
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text('Edit Post Schedule',
                               style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
+                                textStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 16,
+                                    fontSize: 16.r,
                                     color: Colors.black),
                               )),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: 10.h,
                       ),
                       // this is to change date
                       GestureDetector(
@@ -195,13 +197,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           _pickDateDialog();
                         },
                         child: Container(
-                          height: 40,
-                          width: 342,
+                          height: 40.h,
+                          width: 342.w,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(color: CustomColors.pink)),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0.r),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -212,20 +214,23 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                       : DateFormat.yMMMMd()
                                           .format(_selectedDate!),
                                   style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
+                                    textStyle: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        color: Color(0xff1C1C1C)),
+                                        fontSize: 16.r,
+                                        color: const Color(0xff1C1C1C)),
                                   ),
                                 ),
-                                const Icon(Icons.date_range_outlined)
+                                Icon(
+                                  Icons.date_range_outlined,
+                                  size: 25.r,
+                                )
                               ],
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: 10.h,
                       ),
                       // this is to change time
                       GestureDetector(
@@ -233,13 +238,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           _pickTimeDialog();
                         },
                         child: Container(
-                          height: 40,
-                          width: 342,
+                          height: 40.h,
+                          width: 342.w,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(color: CustomColors.pink)),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0.r),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -248,20 +253,23 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                       ? widget.selectedTime
                                       : selectedTime!.format(context),
                                   style: GoogleFonts.montserrat(
-                                    textStyle: const TextStyle(
+                                    textStyle: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        color: Color(0xff1C1C1C)),
+                                        fontSize: 16.r,
+                                        color: const Color(0xff1C1C1C)),
                                   ),
                                 ),
-                                const Icon(Icons.watch_later_outlined)
+                                Icon(
+                                  Icons.watch_later_outlined,
+                                  size: 25.r,
+                                )
                               ],
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
+                      SizedBox(
+                        height: 10.h,
                       ),
 
                       // this is to change platform
@@ -274,9 +282,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                 alignment: Alignment.center,
                                 title: Text('Select Platform',
                                     style: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(
+                                      textStyle: TextStyle(
                                           fontWeight: FontWeight.w400,
-                                          fontSize: 16,
+                                          fontSize: 16.sp,
                                           color: Colors.black),
                                     )),
                                 actions: [
@@ -286,10 +294,10 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         FilterChip(
-                                          label: const Icon(
+                                          label: Icon(
                                             Icons.facebook,
                                             color: Colors.blue,
-                                            size: 36,
+                                            size: 36.r,
                                           ),
                                           selected:
                                               selectedPlatform == 'Facebook',
@@ -304,14 +312,14 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                             Navigator.pop(context);
                                           },
                                         ),
-                                        const SizedBox(
-                                          width: 40,
+                                        SizedBox(
+                                          width: 40.w,
                                         ),
                                         FilterChip(
                                           label: SvgPicture.asset(
                                             'assets/icons_svg/instagram_outline.svg',
-                                            width: 36,
-                                            height: 36,
+                                            width: 25.w,
+                                            height: 25.h,
                                           ),
                                           selected:
                                               selectedPlatform == 'Instagram',
@@ -335,13 +343,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           );
                         },
                         child: Container(
-                          height: 40,
-                          width: 342,
+                          height: 40.h,
+                          width: 342.w,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(color: CustomColors.pink)),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0.r),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -350,20 +358,19 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                         ? widget.platform
                                         : selectedPlatform.toString(),
                                     style: GoogleFonts.montserrat(
-                                      textStyle: const TextStyle(
+                                      textStyle: TextStyle(
                                           fontWeight: FontWeight.w400,
-                                          fontSize: 16,
+                                          fontSize: 16.r,
                                           color: Colors.black),
                                     )),
-                                const Icon(Icons.facebook)
+                                Icon(
+                                  Icons.facebook,
+                                  size: 25.r,
+                                )
                               ],
                             ),
                           ),
                         ),
-                      ),
-
-                      const SizedBox(
-                        height: 130,
                       ),
                     ],
                   ),
@@ -371,13 +378,14 @@ class _EditPostScreenState extends State<EditPostScreen> {
               ),
               //for update data in firestore
               SizedBox(
-                width: 342,
+                width: 342.w,
+                height: 40.h,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(CustomColors.pink),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5))),
+                        borderRadius: BorderRadius.circular(5.r))),
                   ),
                   onPressed: () {
                     if (captionText.text.isNotEmpty &&
@@ -402,21 +410,25 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   },
                   child: Text('Save',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xffFFFFFC)),
+                            fontSize: 16.sp,
+                            color: const Color(0xffFFFFFC)),
                       )),
                 ),
               ),
+              Gap(
+                height: 20.h,
+              ),
               // for delete data from firestore and ui
               SizedBox(
-                width: 342,
+                width: 342.w,
+                height: 40.h,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.red),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5))),
+                        borderRadius: BorderRadius.circular(5.r))),
                   ),
                   onPressed: () {
                     showDialog(
@@ -425,9 +437,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                         return AlertDialog(
                           title: Text('Are you sure you want to delete?',
                               style: GoogleFonts.montserrat(
-                                textStyle: const TextStyle(
+                                textStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     color: Colors.black),
                               )),
                           content: TextButton(
@@ -445,9 +457,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                             },
                             child: Text('Delete',
                                 style: GoogleFonts.montserrat(
-                                  textStyle: const TextStyle(
+                                  textStyle: TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 16,
+                                      fontSize: 16.sp,
                                       color: Colors.red),
                                 )),
                           ),
@@ -457,12 +469,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   },
                   child: Text('Delete',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xffFFFFFC)),
+                            fontSize: 16.sp,
+                            color: const Color(0xffFFFFFC)),
                       )),
                 ),
+              ),
+              Gap(
+                height: 20.h,
               ),
             ],
           ),

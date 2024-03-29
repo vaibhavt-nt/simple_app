@@ -16,7 +16,7 @@ class EmptyHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-         SizedBox(
+        SizedBox(
           height: 60.h,
         ),
         SizedBox(
@@ -26,28 +26,28 @@ class EmptyHomeScreen extends StatelessWidget {
               // 'assets/home_images/empty.svg'
               ),
         ),
-         SizedBox(
+        SizedBox(
           height: 30.h,
         ),
         Padding(
-          padding:  EdgeInsets.all(15.0.w),
+          padding: EdgeInsets.all(15.0.w),
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(subtitle,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.montserrat(
-                  textStyle:  TextStyle(
+                  textStyle: TextStyle(
                       color: Colors.black,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w400),
                 )),
           ),
         ),
-         SizedBox(
+        SizedBox(
           height: 40.h,
         ),
         Padding(
-          padding:  EdgeInsets.all(10.0.w),
+          padding: EdgeInsets.all(10.0.w),
           child: SizedBox(
             width: 342.w,
             height: 40.h,
@@ -67,7 +67,7 @@ class EmptyHomeScreen extends StatelessWidget {
               child: Text(buttonText,
                   // "Create Post",
                   style: GoogleFonts.montserrat(
-                    textStyle:  TextStyle(
+                    textStyle: TextStyle(
                         color: Colors.white,
                         fontSize: 16.spMin,
                         fontWeight: FontWeight.w600),
