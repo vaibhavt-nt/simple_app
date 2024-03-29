@@ -71,6 +71,7 @@ class FirebaseAuthentication {
     required String email,
     required String password,
   }) async {
+    Completer<User?> completer = Completer<User?>();
     try {
       final result = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -79,13 +80,32 @@ class FirebaseAuthentication {
       return result.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+            msg: "User Not Found",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        completer.completeError(e);
         debugPrint('No user found for that email.');
       } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(
+            msg: "Incorrect Password",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        completer.completeError(e);
         debugPrint('Wrong password provided.');
       } else {
         debugPrint('FirebaseAuthException: ${e.code} ${e.message}');
       }
     } catch (e) {
+      completer.completeError(e);
       debugPrint('Exception: $e');
     }
     return null;

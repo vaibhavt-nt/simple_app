@@ -1,8 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/custom_widgets/custom_texfeild.dart';
@@ -55,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => const BottomNavigationBarScreen(),
+              builder: (_) => BottomNavigationBarScreen(),
             ),
           );
           showDialog(
@@ -75,22 +74,14 @@ class _LoginPageState extends State<LoginPage> {
             },
           );
         } else {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: const Text('username or password is wrong'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              );
-            },
-          );
+          Fluttertoast.showToast(
+              msg: "Username or Password is Wrong",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-credential') {
@@ -254,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: SizedBox(
-                height: 50.h,
+                height: 40.h,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _login,
                   style: ElevatedButton.styleFrom(
@@ -279,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
                               color: Colors.white,
-                              fontSize: 16.r,
+                              fontSize: 14.r,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

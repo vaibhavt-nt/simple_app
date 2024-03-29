@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 15.r),
                   child: SizedBox(
                     width: 342.w,
-                    height: 50.h,
+                    height: 40.h,
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -264,7 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 15.r),
                   child: SizedBox(
                     width: 342.w,
-                    height: 50.h,
+                    height: 40.h,
                     child: ElevatedButton(
                       onPressed: () {
                         CustomSnackBar.showSuccessSnackBar(

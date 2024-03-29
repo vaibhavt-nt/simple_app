@@ -1,15 +1,12 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/custom_widgets/custom_texfeild.dart';
@@ -31,9 +28,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 //for storing image in firebase storage
   final firestore = FirebaseFirestore.instance;
   final userId = FirebaseAuth.instance.currentUser;
-  get data => null;
-
-  late SharedPreferences sharedPreferences;
 
   File? _image;
 
@@ -239,7 +233,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.r),
                     child: SizedBox(
-                      height: 50.h,
+                      height: 40.h,
                       child: ElevatedButton(
                         onPressed: _isLoading
                             ? null
@@ -269,6 +263,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                             email: emailController.text,
                                             password: passwordController.text,
                                             photo: downloadUrl);
+                                    if (!context.mounted) return;
                                     if (user != null) {
                                       showDialog(
                                         context: context,
@@ -293,30 +288,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                const BottomNavigationBarScreen(),
+                                                BottomNavigationBarScreen(),
                                           ));
                                     }
                                   } on FirebaseAuthException catch (e) {
                                     if (e.code == 'email-already-in-use') {
                                       // Show an AlertDialog instead of a SnackBar
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: const Text('Error'),
-                                            content: const Text(
-                                                'The email address is already in use by another account.'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text('OK'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
                                     }
                                   }
                                   // Dismiss the loading indicator and show the AlertDialog
@@ -326,24 +303,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   });
                                 } else if (_image == null) {
                                   // Show an AlertDialog instead of a SnackBar
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('Error'),
-                                        content: const Text(
-                                            'Please select a profile photo'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
+                                  Fluttertoast.showToast(
+                                      msg: "Please Select a Profile Photo",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
                                 }
                               },
                         style: ElevatedButton.styleFrom(

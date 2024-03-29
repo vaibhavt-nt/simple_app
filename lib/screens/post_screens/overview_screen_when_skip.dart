@@ -101,7 +101,7 @@ class _OverViewScreenWhenSkipButtonPressedState
       }).then((value) => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const BottomNavigationBarScreen(),
+              builder: (context) => BottomNavigationBarScreen(),
             ),
           ));
       setState(() {

@@ -103,7 +103,7 @@ class _OverViewScreenState extends State<OverViewScreen> {
       }).then((value) => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const BottomNavigationBarScreen(),
+            builder: (context) => BottomNavigationBarScreen(),
           )));
       setState(() {
         _isLoading = false;

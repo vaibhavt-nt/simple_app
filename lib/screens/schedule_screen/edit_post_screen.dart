@@ -297,7 +297,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                           label: Icon(
                                             Icons.facebook,
                                             color: Colors.blue,
-                                            size: 36.r,
+                                            size: 25.r,
                                           ),
                                           selected:
                                               selectedPlatform == 'Facebook',
@@ -372,6 +372,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           ),
                         ),
                       ),
+                      Gap(
+                        height: 20.h,
+                      )
                     ],
                   ),
                 ),
@@ -452,7 +455,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const BottomNavigationBarScreen(),
+                                        BottomNavigationBarScreen(),
                                   ));
                             },
                             child: Text('Delete',
