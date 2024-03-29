@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/Screens/onboarding_screen/onboarding_screen1.dart';
@@ -41,16 +42,16 @@ class _SplashScreenState extends State<SplashScreen> {
                 Center(
                   child: SvgPicture.asset(
                     "assets/splash_screen_images/splash_screen_image.svg",
-                    height: 300.0,
-                    width: 300.0,
+                    height: 300.0.h,
+                    width: 300.0.w,
                   ),
                 ),
                 Text("POST CRAFT",
                     textAlign: TextAlign.center,
                     style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                           color: Colors.black,
-                          fontSize: 32,
+                          fontSize: 32.sp,
                           fontWeight: FontWeight.w600),
                     )),
               ],

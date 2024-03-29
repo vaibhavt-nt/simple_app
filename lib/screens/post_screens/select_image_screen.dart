@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -67,22 +68,22 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+        padding: EdgeInsets.fromLTRB(24.r, 40.r, 24.r, 24.r),
         child: Column(
           children: [
-            const Gap(
-              height: 20,
+            Gap(
+              height: 20.h,
             ),
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
               percent: 0.60,
-              barRadius: const Radius.circular(20),
+              barRadius: Radius.circular(20.r),
               progressColor: const Color(0xffED4D86),
               backgroundColor: const Color(0xffE6E6E6),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
+              padding: EdgeInsets.fromLTRB(0.r, 24.r, 0.r, 24.r),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -90,14 +91,14 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(Icons.arrow_back_ios)),
                   Padding(
-                    padding: const EdgeInsets.only(right: 150),
+                    padding: EdgeInsets.only(right: 150.r),
                     child: Text(
                       'Step 3',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xff1C1C1C)),
+                            fontSize: 16.sp,
+                            color: const Color(0xff1C1C1C)),
                       ),
                     ),
                   ),
@@ -111,24 +112,24 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 24.0),
+                        padding: EdgeInsets.only(bottom: 24.0.r),
                         child: Text(
                           'Select your post background image.',
                           style: GoogleFonts.montserrat(
-                            textStyle: const TextStyle(
+                            textStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color: Color(0xff1C1C1C)),
+                                fontSize: 16.sp,
+                                color: const Color(0xff1C1C1C)),
                           ),
                         ),
                       ),
                     ),
                     Container(
-                      height: widget.height,
-                      width: widget.width,
+                      height: widget.height.h,
+                      width: widget.width.w,
                       decoration: BoxDecoration(
                         border: GradientBoxBorder(
-                            width: 8,
+                            width: 8.w,
                             gradient: LinearGradient(
                                 colors: [
                                   widget.frameColor1,
@@ -142,26 +143,26 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                             ? Image.file(
                                 File(selectedImageUrl!),
                                 fit: BoxFit.cover,
-                                width: widget.width,
-                                height: widget.height,
+                                width: widget.width.w,
+                                height: widget.height.h,
                               )
-                            : const Text(
+                            : Text(
                                 'Select Image',
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(fontSize: 20.sp),
                               ),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24.h),
                     //Horizontal gallery of images
                     SizedBox(
-                      height: 100, // Adjust height as needed
+                      height: 100.h, // Adjust height as needed
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: imageUrls.length + 1,
                         itemBuilder: (context, index) {
                           if (index == 0) {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.0.r),
                               child: GestureDetector(
                                 onTap: () {
                                   showImagePicker(context, (selectedFile) {
@@ -175,14 +176,14 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                   });
                                 },
                                 child: Container(
-                                  width: 100,
-                                  height: 100,
+                                  width: 100.w,
+                                  height: 100.h,
                                   decoration: const BoxDecoration(
                                     color: CustomColors.lightGrey,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.add,
-                                    size: 50,
+                                    size: 50.r,
                                   ),
                                 ),
                               ),
@@ -190,7 +191,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                           } else {
                             final int assetIndex = index - 1;
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.0.r),
                               child: GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -198,16 +199,16 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                   });
                                 },
                                 child: Container(
-                                  width: 100,
-                                  height: 100,
+                                  width: 100.w,
+                                  height: 100.h,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Colors.black, width: 2),
+                                        color: Colors.black, width: 2.w),
                                   ),
                                   child: Image.file(
                                     File(imageUrls[assetIndex]),
-                                    width: 100,
-                                    height: 100,
+                                    width: 100.w,
+                                    height: 100.h,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -237,25 +238,28 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                 );
               },
               child: Container(
-                height: 40,
-                width: 342,
-                decoration: const BoxDecoration(
+                height: 40.h,
+                width: 342.w,
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(6),
+                    Radius.circular(6.r),
                   ),
-                  color: Color(0xffED4D86),
+                  color: const Color(0xffED4D86),
                 ),
                 child: Center(
                   child: Text('Next',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xffFFFFFC)),
+                            fontSize: 16.sp,
+                            color: const Color(0xffFFFFFC)),
                       )),
                 ),
               ),
             ),
+            Gap(
+              height: 10.h,
+            )
           ],
         ),
       ),

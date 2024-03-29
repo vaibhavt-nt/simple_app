@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:simple_app/constants/colors.dart';
@@ -24,17 +25,17 @@ class ListOfPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(bottom: 15.0.sp),
       child: Stack(alignment: Alignment.topCenter, children: [
         Container(
-          height: containerHeight + 70,
-          width: containerWidth,
+          height: containerHeight.h + 70.h,
+          width: containerWidth.w + 30.w,
           decoration: BoxDecoration(
               color: CustomColors.lightPink,
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(5)),
+              borderRadius: BorderRadius.circular(5.r)),
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0.r),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,16 +47,16 @@ class ListOfPostScreen extends StatelessWidget {
                     Text("Schedule: $scheduleDate",
                         textAlign: TextAlign.left,
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               fontWeight: FontWeight.w400,
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: Colors.black),
                         )),
                     Text(platform,
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               fontWeight: FontWeight.w400,
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: Colors.black),
                         )),
                   ],
@@ -63,9 +64,9 @@ class ListOfPostScreen extends StatelessWidget {
                 Text(scheduleTime,
                     textAlign: TextAlign.left,
                     style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           color: Colors.black),
                     )),
               ],
@@ -73,17 +74,17 @@ class ListOfPostScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.0.r),
           child: Align(
             alignment: Alignment.topCenter,
             child: Container(
-              width: containerWidth,
-              height: containerHeight,
+              width: containerWidth.w,
+              height: containerHeight.h,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5.r),
                 border: GradientBoxBorder(
-                    width: 8,
+                    width: 8.w,
                     gradient: LinearGradient(
                         colors: [frameColor1, frameColor2],
                         begin: Alignment.topCenter,
@@ -92,8 +93,8 @@ class ListOfPostScreen extends StatelessWidget {
               child: Image.network(
                 postImage,
                 fit: BoxFit.cover,
-                width: containerWidth,
-                height: containerHeight,
+                width: containerWidth.w + 5.w,
+                height: containerHeight.h + 5.h,
               ),
             ),
           ),
@@ -101,19 +102,19 @@ class ListOfPostScreen extends StatelessWidget {
         Positioned.fill(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(60.0),
+              padding: EdgeInsets.all(60.0.r),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(5)),
+                    borderRadius: BorderRadius.circular(5.r)),
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: EdgeInsets.all(15.0.r),
                   child: Text(caption,
                       textAlign: TextAlign.left,
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             color: Colors.black),
                       )),
                 ),

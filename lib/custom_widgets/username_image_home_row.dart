@@ -29,7 +29,7 @@ class UsernameImageDisplayInHomeScreen extends StatelessWidget {
             style: GoogleFonts.montserrat(
               textStyle: TextStyle(
                   color: CustomColors.darkGrey,
-                  fontSize: 24.sp,
+                  fontSize: 24.r,
                   fontWeight: FontWeight.w500),
             )),
         Center(

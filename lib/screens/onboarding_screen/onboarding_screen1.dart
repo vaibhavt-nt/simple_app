@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -89,14 +88,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     )),
               ),
             ),
-            Gap(height: 20.spMin,),
+            Gap(
+              height: 20.spMin,
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     SizedBox(
                       height: 600.h,
-                      width:342.w ,
+                      width: 342.w,
                       child: PageView.builder(
                         controller: _pageController,
                         itemCount: _pages.length,
@@ -132,54 +133,54 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 _currentPage < _pages.length - 1
                     ? GestureDetector(
-                  onTap: () {
-                    _pageController.nextPage(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.ease,
-                    );
-                  },
-                  child: Container(
-                    height: 40.w,
-                    width: 342.w,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(6),
-                      ),
-                      color: Color(0xffED4D86),
-                    ),
-                    child: Center(
-                      child: Text('Next',
-                          style: GoogleFonts.montserrat(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.sp,
-                                color: const Color(0xffFFFFFC)),
-                          )),
-                    ),
-                  ),
-                )
+                        onTap: () {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.ease,
+                          );
+                        },
+                        child: Container(
+                          height: 40.w,
+                          width: 342.w,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                            color: Color(0xffED4D86),
+                          ),
+                          child: Center(
+                            child: Text('Next',
+                                style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.sp,
+                                      color: const Color(0xffFFFFFC)),
+                                )),
+                          ),
+                        ),
+                      )
                     : GestureDetector(
-                  onTap: _onDoneTapped,
-                  child: Container(
-                    height: 40.w,
-                    width: 342.w,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(6),
+                        onTap: _onDoneTapped,
+                        child: Container(
+                          height: 40.w,
+                          width: 342.w,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                            color: Color(0xffED4D86),
+                          ),
+                          child: Center(
+                            child: Text('Finished',
+                                style: GoogleFonts.montserrat(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.sp,
+                                      color: const Color(0xffFFFFFC)),
+                                )),
+                          ),
+                        ),
                       ),
-                      color: Color(0xffED4D86),
-                    ),
-                    child: Center(
-                      child: Text('Finished',
-                          style: GoogleFonts.montserrat(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.sp,
-                                color: const Color(0xffFFFFFC)),
-                          )),
-                    ),
-                  ),
-                ),
                 TextButton(
                     onPressed: () {
                       _pageController.previousPage(
@@ -189,14 +190,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     },
                     child: _currentPage != 0
                         ? Text('Back',
-                        style: GoogleFonts.montserrat(
-                          textStyle:  TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16.sp,
-                              color: CustomColors.pink),
-                        ))
-                        : const SizedBox()
-                ),
+                            style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16.sp,
+                                  color: CustomColors.pink),
+                            ))
+                        : const SizedBox()),
               ],
             ),
           ],
@@ -219,29 +219,36 @@ class _Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(height: 342.h, width: 342.w, child: SvgPicture.asset(imagePath)),
-        SizedBox(height: 30.spMin),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: GoogleFonts.montserrat(
-            textStyle:  TextStyle(
-                color: Colors.black, fontSize: 24.sp, fontWeight: FontWeight.w600),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+              height: 342.h, width: 342.w, child: SvgPicture.asset(imagePath)),
+          SizedBox(height: 30.spMin),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
-        ),
-        SizedBox(height: 20.spMin),
-        Text(
-          description,
-          textAlign: TextAlign.center,
-          style: GoogleFonts.montserrat(
-            textStyle: TextStyle(
-                color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.w400),
+          SizedBox(height: 20.spMin),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.montserrat(
+              textStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

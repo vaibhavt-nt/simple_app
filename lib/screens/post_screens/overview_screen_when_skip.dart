@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:screenshot/screenshot.dart';
@@ -128,22 +129,22 @@ class _OverViewScreenWhenSkipButtonPressedState
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0.r),
                   child: Column(
                     children: [
-                      const Gap(
-                        height: 70,
+                      Gap(
+                        height: 70.h,
                       ),
                       Screenshot(
                         controller: screenshotController,
                         child: Stack(alignment: Alignment.center, children: [
                           // Display the container image
                           Container(
-                            height: widget.containerHeight,
-                            width: widget.containerWidth,
+                            height: widget.containerHeight.h,
+                            width: widget.containerWidth.w,
                             decoration: BoxDecoration(
                               border: GradientBoxBorder(
-                                  width: 8,
+                                  width: 8.w,
                                   gradient: LinearGradient(
                                       colors: [
                                         widget.frameColor1,
@@ -157,28 +158,28 @@ class _OverViewScreenWhenSkipButtonPressedState
                                     File(widget.imageUrl),
                                     fit: BoxFit.cover,
                                   )
-                                : const Text(
+                                : Text(
                                     'Container',
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20.sp),
                                   ),
                           ),
                           // Display the entered text
                           Positioned.fill(
                             child: Center(
                               child: Padding(
-                                padding: const EdgeInsets.all(30.0),
+                                padding: EdgeInsets.all(30.0.r),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5)),
+                                      borderRadius: BorderRadius.circular(5.r)),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
+                                    padding: EdgeInsets.all(15.0.r),
                                     child: Text(
                                       widget.enteredText,
                                       style: GoogleFonts.montserrat(
-                                        textStyle: const TextStyle(
+                                        textStyle: TextStyle(
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 16,
+                                            fontSize: 16.sp,
                                             color: CustomColors.darkGrey),
                                       ),
                                     ),
@@ -189,29 +190,30 @@ class _OverViewScreenWhenSkipButtonPressedState
                           ),
                         ]),
                       ),
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
                       SafeArea(
                         right: true,
                         left: true,
                         bottom: false,
                         top: false,
-                        minimum: const EdgeInsets.all(20),
+                        minimum: EdgeInsets.all(20.r),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width / 2.5,
+                              width: 155.w,
+                              height: 44.h,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   surfaceTintColor: Colors.white,
                                   shadowColor: Colors.white,
                                   backgroundColor: Colors.white,
-                                  side: const BorderSide(
-                                      width: 2, color: CustomColors.pink),
+                                  side: BorderSide(
+                                      width: 2.w, color: CustomColors.pink),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
+                                      borderRadius: BorderRadius.circular(5.r)),
                                 ),
                                 onPressed: () {
                                   DownloadShareService.saveToGallery(
@@ -223,17 +225,17 @@ class _OverViewScreenWhenSkipButtonPressedState
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.file_download_outlined,
-                                        size: 20,
+                                        size: 20.r,
                                         color: Colors.black,
                                       ),
                                       Text(
                                         'Download',
                                         style: GoogleFonts.montserrat(
-                                          textStyle: const TextStyle(
+                                          textStyle: TextStyle(
                                               fontWeight: FontWeight.w400,
-                                              fontSize: 16,
+                                              fontSize: 16.r,
                                               color: CustomColors.darkGrey),
                                         ),
                                       ),
@@ -244,16 +246,17 @@ class _OverViewScreenWhenSkipButtonPressedState
                               ),
                             ),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width / 2.5,
+                              width: 155.w,
+                              height: 44.h,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   surfaceTintColor: Colors.white,
                                   shadowColor: Colors.white,
                                   backgroundColor: Colors.white,
-                                  side: const BorderSide(
-                                      width: 2, color: CustomColors.pink),
+                                  side: BorderSide(
+                                      width: 2.w, color: CustomColors.pink),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
+                                      borderRadius: BorderRadius.circular(5.r)),
                                 ),
                                 onPressed: () {
                                   DownloadShareService.shareImage(
@@ -264,17 +267,17 @@ class _OverViewScreenWhenSkipButtonPressedState
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Icon(
-                                        size: 15,
+                                      Icon(
+                                        size: 15.r,
                                         Icons.share_outlined,
                                         color: Colors.black,
                                       ),
                                       Text(
                                         'Share',
                                         style: GoogleFonts.montserrat(
-                                          textStyle: const TextStyle(
+                                          textStyle: TextStyle(
                                               fontWeight: FontWeight.w400,
-                                              fontSize: 16,
+                                              fontSize: 16.r,
                                               color: CustomColors.darkGrey),
                                         ),
                                       ),
@@ -286,23 +289,21 @@ class _OverViewScreenWhenSkipButtonPressedState
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(
-                        height: 100,
-                      ),
+                      )
                     ],
                   ),
                 ),
               ),
             ),
             SizedBox(
-              width: 342,
+              width: 342.w,
+              height: 40.h,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 16),
+                        borderRadius: BorderRadius.circular(10.r)),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.r, horizontal: 16.r),
                     backgroundColor: _isLoading
                         ? CustomColors.lightGrey
                         : const Color(0xFFEE4D86)),
@@ -312,25 +313,25 @@ class _OverViewScreenWhenSkipButtonPressedState
                         onSubmitButton();
                       },
                 child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
+                    ? SizedBox(
+                        width: 20.w,
+                        height: 20.h,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                            strokeWidth: 2.w, color: Colors.white),
                       )
                     : Text("Go to home",
                         textAlign: TextAlign.left,
                         textDirection: TextDirection.ltr,
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
+                              fontSize: 16.r,
                               fontWeight: FontWeight.w600),
                         )),
               ),
             ),
-            const Gap(
-              height: 20,
+            Gap(
+              height: 30.h,
             )
           ],
         ),

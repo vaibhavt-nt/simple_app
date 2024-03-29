@@ -35,11 +35,11 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding:  EdgeInsets.fromLTRB(24.w, 40.w, 24.w, 24.w),
+        padding: EdgeInsets.fromLTRB(24.r, 40.r, 24.r, 24.r),
         child: Column(
           children: [
-             Gap(
-              height: 20.w,
+            Gap(
+              height: 20.h,
             ),
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
@@ -50,7 +50,7 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
               backgroundColor: const Color(0xffE6E6E6),
             ),
             Padding(
-              padding:  EdgeInsets.fromLTRB(0.w, 24.w, 0.w, 24.w),
+              padding: EdgeInsets.fromLTRB(0.r, 24.r, 0.r, 24.r),
               child: Text(
                 'Step 1',
                 style: GoogleFonts.montserrat(
@@ -68,11 +68,11 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 24.0.w),
+                      padding: EdgeInsets.only(bottom: 24.0.r),
                       child: Text(
                         'Select your post frame.',
                         style: GoogleFonts.montserrat(
-                          textStyle:  TextStyle(
+                          textStyle: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 16.sp,
                               color: const Color(0xff1C1C1C)),
@@ -81,7 +81,7 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 420.w,
+                    height: 420.h,
                     width: 342.w,
                     child: PageView(
                       controller: _pageController,
@@ -91,14 +91,14 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                         });
                       },
                       children: [
-                        buildContainer(342.w, 342.w),
-                        buildContainer(420.w, 342.w),
-                        buildContainer(200.w, 342.w),
+                        buildContainer(342.h, 342.w),
+                        buildContainer(420.h, 342.w),
+                        buildContainer(200.h, 342.w),
                       ],
                     ),
                   ),
                   Padding(
-                    padding:  EdgeInsets.fromLTRB(0, 32.w, 0, 22.w),
+                    padding: EdgeInsets.fromLTRB(0, 32.r, 0, 22.r),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -114,11 +114,11 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                               color: Color(0xffED4D86),
                             )),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                          padding: EdgeInsets.symmetric(horizontal: 20.0.r),
                           child: Text(
                             _buttonTexts[_selectedIndex],
                             style: GoogleFonts.montserrat(
-                              textStyle:  TextStyle(
+                              textStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16.sp,
                                   color: const Color(0xff1C1C1C)),
@@ -143,7 +143,7 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
               ),
             )),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 20.w, 0, 10.w),
+              padding: EdgeInsets.fromLTRB(0, 20.r, 0, 10.r),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -157,13 +157,13 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
                   );
                 },
                 child: Container(
-                  height: 40.w,
+                  height: 40.h,
                   width: 342.w,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(6),
+                      Radius.circular(6.r),
                     ),
-                    color: Color(0xffED4D86),
+                    color: const Color(0xffED4D86),
                   ),
                   child: Center(
                     child: Text('Next',
@@ -187,11 +187,11 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
   double _getHeight() {
     switch (_selectedIndex) {
       case 0:
-        return 342.w;
+        return 342.h;
       case 1:
-        return 420.w;
+        return 420.h;
       case 2:
-        return 200.w;
+        return 200.h;
       default:
         return 0; // Default height
     }
@@ -214,10 +214,10 @@ class _SelectFrameScreenState extends State<SelectFrameScreen> {
   Widget buildContainer(double height, double width) {
     return Center(
       child: Container(
-        height: height,
-        width: width,
+        height: height.h,
+        width: width.w,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black, width: 2),
+          border: Border.all(color: Colors.black, width: 2.w),
         ),
       ),
     );

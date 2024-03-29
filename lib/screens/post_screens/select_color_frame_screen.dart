@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:simple_app/constants/colors.dart';
@@ -61,22 +62,22 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
+        padding: EdgeInsets.fromLTRB(24.r, 40.r, 24.r, 24.r),
         child: Column(
           children: [
-            const Gap(
-              height: 20,
+            Gap(
+              height: 20.h,
             ),
             LinearPercentIndicator(
               width: MediaQuery.of(context).size.width / 1.2,
               lineHeight: 8.0,
               percent: 0.40,
-              barRadius: const Radius.circular(20),
+              barRadius: Radius.circular(20.r),
               progressColor: const Color(0xffED4D86),
               backgroundColor: const Color(0xffE6E6E6),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
+              padding: EdgeInsets.fromLTRB(0, 24.r, 0, 24.r),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,14 +85,14 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(Icons.arrow_back_ios)),
                   Padding(
-                    padding: const EdgeInsets.only(right: 150),
+                    padding: EdgeInsets.only(right: 150.r),
                     child: Text(
                       'Step 2',
                       style: GoogleFonts.montserrat(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xff1C1C1C)),
+                            fontSize: 16.sp,
+                            color: const Color(0xff1C1C1C)),
                       ),
                     ),
                   ),
@@ -105,21 +106,21 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 24.0),
+                      padding: EdgeInsets.only(bottom: 24.0.r),
                       child: Text(
                         'Select your post frame.',
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Color(0xff1C1C1C)),
+                              fontSize: 16.sp,
+                              color: const Color(0xff1C1C1C)),
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 420,
-                    width: 342,
+                    height: 420.h,
+                    width: 342.w,
                     child: PageView(
                       controller: _pageController,
                       onPageChanged: (index) {
@@ -144,7 +145,7 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 32, 0, 22),
+                    padding: EdgeInsets.fromLTRB(0, 32.r, 0, 22.r),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -160,14 +161,14 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
                               color: Color(0xffED4D86),
                             )),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: EdgeInsets.symmetric(horizontal: 20.0.r),
                           child: Text(
                             _buttonTexts[_selectedIndex],
                             style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
+                              textStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Color(0xff1C1C1C)),
+                                  fontSize: 16.sp,
+                                  color: const Color(0xff1C1C1C)),
                             ),
                           ),
                         ),
@@ -189,7 +190,7 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
               ),
             )),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+              padding: EdgeInsets.fromLTRB(0, 20.r, 0, 10.r),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -205,21 +206,21 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
                   );
                 },
                 child: Container(
-                  height: 40,
-                  width: 342,
-                  decoration: const BoxDecoration(
+                  height: 40.h,
+                  width: 342.w,
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(6),
+                      Radius.circular(6.r),
                     ),
-                    color: Color(0xffED4D86),
+                    color: const Color(0xffED4D86),
                   ),
                   child: Center(
                     child: Text('Next',
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color(0xffFFFFFC)),
+                              fontSize: 16.sp,
+                              color: const Color(0xffFFFFFC)),
                         )),
                   ),
                 ),
@@ -235,11 +236,11 @@ class _SelectColorFrameScreenState extends State<SelectColorFrameScreen> {
       double height, double width, Color color, Color color2) {
     return Center(
       child: Container(
-        height: height,
-        width: width,
+        height: height.h,
+        width: width.w,
         decoration: BoxDecoration(
           border: GradientBoxBorder(
-              width: 8,
+              width: 8.w,
               gradient: LinearGradient(
                   colors: [color, color2],
                   begin: Alignment.topCenter,

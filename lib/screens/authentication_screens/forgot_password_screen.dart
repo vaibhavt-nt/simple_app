@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/services/firebase_service/firebase_authentication.dart';
@@ -24,34 +25,34 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(21),
+                padding: EdgeInsets.all(21.r),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Reset Password?",
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               color: CustomColors.lightBlack,
-                              fontSize: 24,
+                              fontSize: 24.r,
                               fontWeight: FontWeight.w500),
                         )),
-                    const SizedBox(
-                      height: 11,
+                    SizedBox(
+                      height: 11.h,
                     ),
                     Text(
                         "Enter the email so we can send reset password option to it.",
                         style: GoogleFonts.montserrat(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                               color: CustomColors.grey,
-                              fontSize: 16,
+                              fontSize: 16.r,
                               fontWeight: FontWeight.w500),
                         )),
-                    const SizedBox(
-                      height: 41,
+                    SizedBox(
+                      height: 41.h,
                     ),
                     emailField(),
-                    const SizedBox(
-                      height: 11,
+                    SizedBox(
+                      height: 11.h,
                     ),
                     sendVerificationEmailButton(context)
                   ],
@@ -74,13 +75,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: CustomColors.pink)),
           hintText: 'Enter email...',
-          hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14)),
+          hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14.r)),
     );
   }
 
   Widget sendVerificationEmailButton(context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 21, bottom: 21),
+      padding: EdgeInsets.only(top: 21.r, bottom: 21.r),
       child: MaterialButton(
           onPressed: email.isEmpty
               ? null
@@ -95,16 +96,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ));
                   });
                 },
-          padding: const EdgeInsets.symmetric(vertical: 13),
+          padding: EdgeInsets.symmetric(vertical: 13.r),
           minWidth: double.infinity,
           color: CustomColors.pink,
           disabledColor: Colors.grey.shade300,
           textColor: Colors.white,
           child: showLoading
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
+              ? SizedBox(
+                  height: 20.h,
+                  width: 20.w,
+                  child: const CircularProgressIndicator(
                     color: Colors.white,
                   ),
                 )
