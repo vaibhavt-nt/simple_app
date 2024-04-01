@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SelectFrameScreen(),
+                            builder: (context) => SelectFrameScreen(),
                           ));
                     },
                     backgroundColor: CustomColors.pink,

@@ -4,18 +4,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/post_screens/overview_screen.dart';
 import 'package:simple_app/screens/post_screens/overview_screen_when_skip.dart';
+import 'package:simple_app/services/provider/post_date_time_provider.dart';
 
-class SelectDateAndTimeScreen extends StatefulWidget {
+class SelectDateAndTimeScreen extends StatelessWidget {
   final double containerHeight;
   final double containerWidth;
   final String imageUrl;
   final String enteredText;
   final Color frameColor1;
   final Color frameColor2;
+
   const SelectDateAndTimeScreen({
     super.key,
     required this.containerHeight,
@@ -27,62 +30,10 @@ class SelectDateAndTimeScreen extends StatefulWidget {
   });
 
   @override
-  State<SelectDateAndTimeScreen> createState() =>
-      _SelectDateAndTimeScreenState();
-}
-
-class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
-  int buttonSelected = 0;
-  bool chipSelected = false;
-  String? selectedPlatform;
-
-// For Date Pick Method
-  DateTime? _selectedDate;
-  void _pickDateDialog() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            //which date will display when user open the picker
-            firstDate: DateTime.now(),
-            //what will be the previous supported year in picker
-            lastDate: DateTime(
-                2025)) //what will be the up to supported date in picker
-        .then((pickedDate) {
-      //then usually do the future job
-      if (pickedDate == null) {
-        //if user tap cancel then this function will stop
-        return;
-      }
-      setState(() {
-        //for rebuilding the ui
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
-  TimeOfDay? selectedTime;
-  void _pickTimeDialog() {
-    showTimePicker(
-            context: context,
-            initialTime: TimeOfDay
-                .now()) //what will be the up to supported date in picker
-        .then((pickedDate) {
-      //then usually do the future job
-      if (pickedDate == null) {
-        //if user tap cancel then this function will stop
-        return;
-      }
-      setState(() {
-        //for rebuilding the ui
-        selectedTime = pickedDate;
-      });
-    });
-  }
-
-  //for time pick method
-
-  @override
   Widget build(BuildContext context) {
+    final PostDateTimeProvider model = Provider.of<PostDateTimeProvider>(
+      context,
+    );
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
@@ -125,12 +76,12 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                         MaterialPageRoute(
                           builder: (context) =>
                               OverViewScreenWhenSkipButtonPressed(
-                                  containerHeight: widget.containerHeight,
-                                  containerWidth: widget.containerWidth,
-                                  imageUrl: widget.imageUrl,
-                                  enteredText: widget.enteredText,
-                                  frameColor1: widget.frameColor1,
-                                  frameColor2: widget.frameColor2),
+                                  containerHeight: containerHeight,
+                                  containerWidth: containerWidth,
+                                  imageUrl: imageUrl,
+                                  enteredText: enteredText,
+                                  frameColor1: frameColor1,
+                                  frameColor2: frameColor2),
                         ),
                       );
                     },
@@ -185,7 +136,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                           SingleChildScrollView(
                             child: ElevatedButton(
                               onPressed: () {
-                                _pickDateDialog();
+                                model.pickDateDialog(context);
                               },
                               style: ButtonStyle(
                                 backgroundColor:
@@ -210,11 +161,11 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    _selectedDate ==
+                                    model.selectedDate ==
                                             null //ternary expression to check if date is null
                                         ? 'Select Date'
                                         : DateFormat.yMMMMd()
-                                            .format(_selectedDate!),
+                                            .format(model.selectedDate!),
                                     style: GoogleFonts.montserrat(
                                       textStyle: TextStyle(
                                           fontWeight: FontWeight.w400,
@@ -244,7 +195,7 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              _pickTimeDialog();
+                              model.pickTimeDialog(context);
                             },
                             style: ButtonStyle(
                               backgroundColor:
@@ -268,9 +219,9 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  selectedTime == null
+                                  model.selectedTime == null
                                       ? 'Select time'
-                                      : selectedTime!.format(context),
+                                      : model.selectedTime!.format(context),
                                   style: GoogleFonts.montserrat(
                                     textStyle: TextStyle(
                                         fontWeight: FontWeight.w400,
@@ -309,15 +260,13 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                                   color: Colors.blue,
                                   size: 36.r,
                                 ),
-                                selected: selectedPlatform == 'Facebook',
+                                selected: model.selectedPlatform == 'Facebook',
                                 showCheckmark: false,
                                 selectedColor: CustomColors.lightPink,
                                 side:
                                     const BorderSide(color: CustomColors.pink),
                                 onSelected: (value) {
-                                  setState(() {
-                                    selectedPlatform = 'Facebook';
-                                  });
+                                  model.selectedPlatform = 'Facebook';
                                 },
                               ),
                               SizedBox(
@@ -329,15 +278,13 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                                   width: 36.w,
                                   height: 36.h,
                                 ),
-                                selected: selectedPlatform == 'Instagram',
+                                selected: model.selectedPlatform == 'Instagram',
                                 showCheckmark: false,
                                 selectedColor: CustomColors.lightPink,
                                 side:
                                     const BorderSide(color: CustomColors.pink),
                                 onSelected: (value) {
-                                  setState(() {
-                                    selectedPlatform = 'Instagram';
-                                  });
+                                  model.selectedPlatform = 'Instagram';
                                 },
                               ),
                             ],
@@ -371,25 +318,26 @@ class _SelectDateAndTimeScreenState extends State<SelectDateAndTimeScreen> {
                     },
                   ),
                 ),
-                onPressed: _selectedDate != null &&
-                        selectedTime != null &&
-                        selectedPlatform != null
+                onPressed: model.selectedDate != null &&
+                        model.selectedTime != null &&
+                        model.selectedPlatform != null
                     ? () {
                         final selectedDateString =
-                            DateFormat.yMMMMd().format(_selectedDate!);
+                            DateFormat.yMMMMd().format(model.selectedDate!);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => OverViewScreen(
-                              containerHeight: widget.containerHeight,
-                              containerWidth: widget.containerWidth,
-                              imageUrl: widget.imageUrl,
-                              enteredText: widget.enteredText,
+                              containerHeight: containerHeight,
+                              containerWidth: containerWidth,
+                              imageUrl: imageUrl,
+                              enteredText: enteredText,
                               selectedDate: selectedDateString,
-                              selectedTime: selectedTime!.format(context),
-                              selectedPlatform: selectedPlatform.toString(),
-                              frameColor1: widget.frameColor1,
-                              frameColor2: widget.frameColor2,
+                              selectedTime: model.selectedTime!.format(context),
+                              selectedPlatform:
+                                  model.selectedPlatform.toString(),
+                              frameColor1: frameColor1,
+                              frameColor2: frameColor2,
                             ),
                           ),
                         );
