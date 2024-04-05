@@ -7,7 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:simple_app/screens/navigation_screen/bottom_navigation_screen.dart';
 import 'package:simple_app/screens/splash_screen/splash_screen.dart';
 import 'package:simple_app/services/firebase_service/firebase_options.dart';
+import 'package:simple_app/services/provider/post_caption_provider.dart';
+import 'package:simple_app/services/provider/post_color_frame_provider.dart';
+import 'package:simple_app/services/provider/post_date_time_provider.dart';
+import 'package:simple_app/services/provider/post_frame_size_provider.dart';
 import 'package:simple_app/services/provider/navigation_provider.dart';
+import 'package:simple_app/services/provider/post_image_provider.dart';
 import 'package:simple_app/services/provider/sign_up_provider.dart';
 
 void main() async {
@@ -32,6 +37,11 @@ class Wrapper extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => SignUpProvider()),
         ChangeNotifierProvider(create: (context) => NavigationProvider()),
+        ChangeNotifierProvider(create: (context) => PostFrameSizeProvider()),
+        ChangeNotifierProvider(create: (context) => PostFrameColorProvider()),
+        ChangeNotifierProvider(create: (context) => PostImageProvider()),
+        ChangeNotifierProvider(create: (context) => PostCaptionProvider()),
+        ChangeNotifierProvider(create: (context) => PostDateTimeProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),

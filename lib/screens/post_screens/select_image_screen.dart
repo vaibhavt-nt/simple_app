@@ -5,16 +5,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/post_screens/select_caption_screen.dart';
 import 'package:simple_app/services/image_picker_service.dart';
+import 'package:simple_app/services/provider/post_image_provider.dart';
 
-class SelectImageScreen extends StatefulWidget {
+class SelectImageScreen extends StatelessWidget {
   final double height;
   final double width;
   final Color frameColor1;
   final Color frameColor2;
+
   const SelectImageScreen({
     super.key,
     required this.height,
@@ -24,48 +27,10 @@ class SelectImageScreen extends StatefulWidget {
   });
 
   @override
-  State<SelectImageScreen> createState() => _SelectImageScreenState();
-}
-
-class _SelectImageScreenState extends State<SelectImageScreen> {
-  final List<String> imageUrls = [];
-  String? selectedImageUrl;
-  void showImagePicker(
-    BuildContext context,
-    Function(File?) onImagePicked,
-  ) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: const Text("Camera"),
-              onTap: () async {
-                Navigator.pop(context);
-                await PickImage.pickImageFromCamera(onImagePicked);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.image),
-              title: const Text("Gallery"),
-              onTap: () async {
-                Navigator.pop(context);
-                await PickImage.pickImageFromGallery(onImagePicked);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    selectedImageUrl ??= '';
-
+    final PostImageProvider model = Provider.of<PostImageProvider>(
+      context,
+    );
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.fromLTRB(24.r, 40.r, 24.r, 24.r),
@@ -125,30 +90,27 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                       ),
                     ),
                     Container(
-                      height: widget.height.h,
-                      width: widget.width.w,
+                      height: height.h,
+                      width: width.w,
                       decoration: BoxDecoration(
                         border: GradientBoxBorder(
                             width: 8.w,
                             gradient: LinearGradient(
-                                colors: [
-                                  widget.frameColor1,
-                                  widget.frameColor2
-                                ],
+                                colors: [frameColor1, frameColor2],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter)),
                       ),
                       child: Center(
-                        child: selectedImageUrl!.isNotEmpty
-                            ? Image.file(
-                                File(selectedImageUrl!),
-                                fit: BoxFit.cover,
-                                width: widget.width.w,
-                                height: widget.height.h,
-                              )
-                            : Text(
+                        child: model.selectedImageUrl == null
+                            ? Text(
                                 'Select Image',
                                 style: TextStyle(fontSize: 20.sp),
+                              )
+                            : Image.file(
+                                File(model.selectedImageUrl!),
+                                fit: BoxFit.cover,
+                                width: width.w,
+                                height: height.h,
                               ),
                       ),
                     ),
@@ -158,7 +120,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                       height: 100.h, // Adjust height as needed
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: imageUrls.length + 1,
+                        itemCount: model.imageUrls.length + 1,
                         itemBuilder: (context, index) {
                           if (index == 0) {
                             return Padding(
@@ -167,11 +129,9 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                 onTap: () {
                                   showImagePicker(context, (selectedFile) {
                                     if (selectedFile != null) {
-                                      setState(() {
-                                        final String newUrl = selectedFile.path;
-                                        selectedImageUrl = newUrl;
-                                        imageUrls.add(newUrl);
-                                      });
+                                      model.addImageUrl(selectedFile.path);
+                                      model.setSelectedImageUrl(
+                                          selectedFile.path);
                                     }
                                   });
                                 },
@@ -194,9 +154,8 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                               padding: EdgeInsets.all(8.0.r),
                               child: GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    selectedImageUrl = imageUrls[assetIndex];
-                                  });
+                                  model.setSelectedImageUrl(
+                                      model.imageUrls[assetIndex]);
                                 },
                                 child: Container(
                                   width: 100.w,
@@ -206,7 +165,7 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                                         color: Colors.black, width: 2.w),
                                   ),
                                   child: Image.file(
-                                    File(imageUrls[assetIndex]),
+                                    File(model.imageUrls[assetIndex]),
                                     width: 100.w,
                                     height: 100.h,
                                     fit: BoxFit.cover,
@@ -228,11 +187,11 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => SelectCaptionScreen(
-                      containerHeight: widget.height,
-                      containerWidth: widget.width,
-                      imageUrl: selectedImageUrl!,
-                      frameColor1: widget.frameColor1,
-                      frameColor2: widget.frameColor2,
+                      containerHeight: height,
+                      containerWidth: width,
+                      imageUrl: model.selectedImageUrl!,
+                      frameColor1: frameColor1,
+                      frameColor2: frameColor2,
                     ),
                   ),
                 );
@@ -265,4 +224,36 @@ class _SelectImageScreenState extends State<SelectImageScreen> {
       ),
     );
   }
+}
+
+void showImagePicker(
+  BuildContext context,
+  Function(File?) onImagePicked,
+) {
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.camera_alt),
+            title: const Text("Camera"),
+            onTap: () async {
+              Navigator.pop(context);
+              await PickImage.pickImageFromCamera(onImagePicked);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.image),
+            title: const Text("Gallery"),
+            onTap: () async {
+              Navigator.pop(context);
+              await PickImage.pickImageFromGallery(onImagePicked);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

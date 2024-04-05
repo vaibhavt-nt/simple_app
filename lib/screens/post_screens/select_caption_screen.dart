@@ -5,16 +5,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/constants/colors.dart';
 import 'package:simple_app/custom_widgets/gap.dart';
 import 'package:simple_app/screens/post_screens/select_date_time_screen.dart';
+import 'package:simple_app/services/provider/post_caption_provider.dart';
 
-class SelectCaptionScreen extends StatefulWidget {
+class SelectCaptionScreen extends StatelessWidget {
   final double containerHeight;
   final double containerWidth;
   final String imageUrl;
   final Color frameColor1;
   final Color frameColor2;
+
   const SelectCaptionScreen({
     super.key,
     required this.containerHeight,
@@ -25,15 +28,10 @@ class SelectCaptionScreen extends StatefulWidget {
   });
 
   @override
-  State<SelectCaptionScreen> createState() => _SelectCaptionScreenState();
-}
-
-class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
-  final textFieldController = TextEditingController();
-  String enteredText = '';
-  TextAlign? _textAlign;
-  @override
   Widget build(BuildContext context) {
+    final PostCaptionProvider model = Provider.of<PostCaptionProvider>(
+      context,
+    );
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.fromLTRB(24.r, 40.r, 24.r, 24.r),
@@ -94,13 +92,11 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                   ),
                   TextField(
                     onChanged: (value) {
-                      setState(() {
-                        enteredText = value;
-                      });
+                      model.updateEnteredText(value);
                     },
                     minLines: 4.bitLength,
                     maxLines: 4.bitLength,
-                    controller: textFieldController,
+                    controller: model.textFieldController,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 16.sp,
@@ -120,26 +116,23 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                   ),
                   Stack(alignment: Alignment.center, children: [
                     Container(
-                      height: widget.containerHeight.h,
-                      width: widget.containerWidth.w,
+                      height: containerHeight.h,
+                      width: containerWidth.w,
                       decoration: BoxDecoration(
                         border: GradientBoxBorder(
                             width: 8.w,
                             gradient: LinearGradient(
-                                colors: [
-                                  widget.frameColor1,
-                                  widget.frameColor2
-                                ],
+                                colors: [frameColor1, frameColor2],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter)),
                       ),
                       child: Center(
-                        child: widget.imageUrl.isNotEmpty
+                        child: imageUrl.isNotEmpty
                             ? Image.file(
-                                File(widget.imageUrl),
+                                File(imageUrl),
                                 fit: BoxFit.cover,
-                                width: widget.containerWidth.w,
-                                height: widget.containerHeight.h,
+                                width: containerWidth.w,
+                                height: containerHeight.h,
                               )
                             : Text(
                                 'Select Image',
@@ -154,8 +147,8 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                           child: Container(
                             color: Colors.white,
                             child: Text(
-                              enteredText,
-                              textAlign: _textAlign,
+                              model.enteredText,
+                              textAlign: model.textAlign,
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -198,7 +191,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                           child: InkWell(
                             //borderRadius: BorderRadius.circular(100.0),
                             onTap: () {
-                              setState(() => _textAlign = TextAlign.left);
+                              model.setTextAlign(TextAlign.left);
                             },
                             child: Padding(
                               padding: EdgeInsets.all(10.0.r),
@@ -226,7 +219,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                           child: InkWell(
                             //borderRadius: BorderRadius.circular(100.0),
                             onTap: () {
-                              setState(() => _textAlign = TextAlign.center);
+                              model.setTextAlign(TextAlign.center);
                             },
                             child: Padding(
                               padding: EdgeInsets.all(10.0.r),
@@ -254,7 +247,7 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                           child: InkWell(
                             //borderRadius: BorderRadius.circular(100.0),
                             onTap: () {
-                              setState(() => _textAlign = TextAlign.right);
+                              model.setTextAlign(TextAlign.right);
                             },
                             child: Padding(
                               padding: EdgeInsets.all(10.0.r),
@@ -282,12 +275,12 @@ class _SelectCaptionScreenState extends State<SelectCaptionScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => SelectDateAndTimeScreen(
-                      containerHeight: widget.containerHeight,
-                      containerWidth: widget.containerWidth,
-                      imageUrl: widget.imageUrl,
-                      enteredText: enteredText,
-                      frameColor1: widget.frameColor1,
-                      frameColor2: widget.frameColor2,
+                      containerHeight: containerHeight,
+                      containerWidth: containerWidth,
+                      imageUrl: imageUrl,
+                      enteredText: model.enteredText,
+                      frameColor1: frameColor1,
+                      frameColor2: frameColor2,
                     ),
                   ),
                 );
